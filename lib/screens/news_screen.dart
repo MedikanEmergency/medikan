@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:medikan/Themes/theme_data.dart';
+import 'package:medikan/themes/theme_data.dart';
 import 'package:medikan/components/sos_button.dart';
 import 'package:medikan/icons.dart';
 

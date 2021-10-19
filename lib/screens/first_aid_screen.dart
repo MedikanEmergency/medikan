@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medikan/icons.dart';
-import '../Themes/theme_data.dart';
+import '../themes/theme_data.dart';
 
 class FirstAid extends StatelessWidget {
   @override

@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:medikan/Themes/theme_data.dart';
+import 'package:medikan/themes/theme_data.dart';
 import 'package:medikan/screens/sos_screen.dart';
 
 class SOS extends StatelessWidget {
