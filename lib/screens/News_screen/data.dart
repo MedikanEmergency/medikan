@@ -25,10 +25,10 @@ final List<Article> forYou = [
     title: 'Vệ sinh tay đúng cách',
     description:
         'Bạn có thể rửa tay bằng xà phòng diệt trùng và nước (lạnh hay ấm đều được), vì đây là cách hiệu quả nhất để loại trừ các tác nhân gây hại trên tay ở hầu hết tình huống.Ngoài ra có thể bằng nước rửa tay (dạng bọt, kem, hoặc gel) (hand sanitizers) có chứa 60%-95% cồn (alcohol) trong tình huống không thể rửa tay bằng xà phòng và nước. Tuy nhiên, cần lưu ý rằng cách này không loại trừ hết tất cả các tác nhân gây bệnh hoặc hóa chất độc hại trên tay.',
-    time: '30min trước',
+    time: '30ph trước',
     author: 'Bao Thanh nien',
-    image: 'assets/image_news/rua_tay.jpg',
-    authorImg: 'assets/image_news/skyNews.png',
+    image: 'assets/image_news/rua_tay.png',
+    authorImg: 'assets/image_news/bao_thanhnien.png',
   ),
   Article(
     category: 'Tin tức',
