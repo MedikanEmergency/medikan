@@ -16,11 +16,11 @@ class ColorData {
 }
 
 class ElevationData {
-  static const elevated0 = 0;
-  static const elevated5 = 5;
-  static const elevated10 = 10;
-  static const elevated15 = 15;
-  static const elevated20 = 20;
+  static const double elevated5 = 5;
+  static const double elevated0 = 0;
+  static const double elevated10 = 10;
+  static const double elevated15 = 15;
+  static const double elevated20 = 20;
 }
 
 class FontStyleData {
