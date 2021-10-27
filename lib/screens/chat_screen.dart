@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:medikan/components/confirm_chat_button.dart';
+import 'package:medikan/components/chat-components/confirm_chat_button.dart';
 import 'package:medikan/themes/theme_data.dart';
 
 class Chat extends StatelessWidget {
