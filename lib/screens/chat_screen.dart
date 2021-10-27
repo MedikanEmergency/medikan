@@ -16,7 +16,7 @@ class Chat extends StatelessWidget {
             color: ColorData.secondary,
             gradient: RadialGradient(
               colors: [
-                ColorData.secondary.withOpacity(0.5),
+                ColorData.secondary.withOpacity(0.1),
                 ColorData.secondary,
               ],
               center: Alignment.center,
