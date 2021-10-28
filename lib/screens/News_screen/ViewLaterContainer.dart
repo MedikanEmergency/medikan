@@ -6,15 +6,15 @@ import 'package:medikan/icons.dart';
 import 'package:medikan/screens/News_screen/viewlater_screen.dart';
 import 'package:medikan/screens/News_screen/download_screen.dart';
 
-class ForYouContainer extends StatefulWidget {
+class ViewlaterContainer extends StatefulWidget {
   final Article article;
 
-  const ForYouContainer({Key? key, required this.article}) : super(key: key);
+  const ViewlaterContainer({Key? key, required this.article}) : super(key: key);
   @override
-  _ForYouContainerState createState() => _ForYouContainerState();
+  _ViewLaterContainerState createState() => _ViewLaterContainerState();
 }
 
-class _ForYouContainerState extends State<ForYouContainer> {
+class _ViewLaterContainerState extends State<ViewlaterContainer> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -54,11 +54,13 @@ class _ForYouContainerState extends State<ForYouContainer> {
                   image: AssetImage(widget.article.image),
                 ),
               ),
+              
             ),
             SizedBox(
               width: 15,
             ),
             Expanded(
+              
               child: Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: Column(
@@ -76,16 +78,25 @@ class _ForYouContainerState extends State<ForYouContainer> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        FittedBox(
-                          child: Text(
-                            widget.article.time,
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w700,
-                            ),
+                        Positioned(
+                          top:0.0,
+                          right: 0.0,
+                          child: new IconButton(
+                          icon: Icon(Icons.delete,color: Colors.grey),
+                          padding: EdgeInsets.zero,
+                          constraints: BoxConstraints(),
+                          onPressed: () {
+                            ViewLater.remove(widget.article);
+                            Navigator.of(context).pop(context);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ViewlaterPage(),
+                                  ),
+                                );
+                          }
                           ),
-                        ),
+                        )
                       ],
                     ),
                     Text(
@@ -119,13 +130,13 @@ class _ForYouContainerState extends State<ForYouContainer> {
                         ),
                         IconButton(
                             onPressed: () {
-                                Download.add(widget.article);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => DownloadPage(),
-                                  ),
-                                );
+                                // Download.add(widget.article);
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) => DownloadPage(),
+                                //   ),
+                                // );
                               },
                               icon: const Icon(
                                 MyFlutterApp.download,
@@ -137,13 +148,13 @@ class _ForYouContainerState extends State<ForYouContainer> {
                         ),
                         IconButton(
                             onPressed: () {
-                                ViewLater.add(widget.article);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ViewlaterPage(),
-                                  ),
-                                );
+                                // ViewLater.add(widget.article);
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) => ViewlaterPage(),
+                                //   ),
+                                // );
                               },
                               icon: const Icon(
                                 MyFlutterApp.clock,
@@ -158,7 +169,7 @@ class _ForYouContainerState extends State<ForYouContainer> {
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

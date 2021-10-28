@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:medikan/screens/News_screen/data.dart';
-
+import 'package:medikan/screens/News_screen/news_screen.dart';
+import 'package:medikan/themes/theme_data.dart';
+import 'package:medikan/screens/News_screen/ForYouContainer.dart';
 class ArticleScreen extends StatefulWidget {
   final Article article;
 
@@ -14,6 +16,38 @@ class _ArticleScreenState extends State<ArticleScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          // actions: [
+          //    Positioned(
+          //     left: 10,
+          //     top: 10,
+          //     child: 
+          // IconButton(
+          //   onPressed: () {
+          //         Navigator.of(context).pop(context);
+          //         },
+          //     icon: const Icon(
+          //         Icons.arrow_back,
+          //         size:30,
+          //         color: ColorData.onPrimary,
+          //         ),
+          //       ),
+          // ),
+          // ],
+          iconTheme: IconThemeData(
+            color: Colors.black, //change your color here
+          ),
+          title: Text(
+          widget.article.category,
+          style: TextStyle(
+              color: ColorData.onPrimary,
+              fontSize: 27,
+              fontWeight: FontWeight.bold,
+          ),
+          ),
+          centerTitle: true,
+          backgroundColor: ColorData.secondary,
+        ),
         body: Stack(
           children: [
             ListView(
@@ -21,7 +55,7 @@ class _ArticleScreenState extends State<ArticleScreen> {
                 Stack(
                   children: [
                     Container(
-                      height: MediaQuery.of(context).size.height / 2,
+                      height: MediaQuery.of(context).size.height / 2.5,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(50),
@@ -33,15 +67,6 @@ class _ArticleScreenState extends State<ArticleScreen> {
                         ),
                       ),
                     ),
-                    Positioned(
-                      right: 10,
-                      top: 10,
-                      child: Icon(
-                        Icons.more_vert,
-                        size: 40,
-                        color: Colors.black,
-                      ),
-                    )
                   ],
                 ),
                 SizedBox(
@@ -56,10 +81,10 @@ class _ArticleScreenState extends State<ArticleScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            widget.article.category,
+                            widget.article.author,
                             style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 30,
+                              color: ColorData.sos,
+                              fontSize: 24,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -67,7 +92,7 @@ class _ArticleScreenState extends State<ArticleScreen> {
                             widget.article.time,
                             style: TextStyle(
                               color: Colors.grey,
-                              fontSize: 20,
+                              fontSize: 15,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
@@ -102,8 +127,8 @@ class _ArticleScreenState extends State<ArticleScreen> {
                         widget.article.description,
                         style: TextStyle(
                           color: Colors.black54,
-                          fontSize: 20,
-//                      fontWeight: FontWeight.w700,
+                          fontSize: 16,
+                          //fontWeight: FontWeight.w700,
                         ),
                       ),
                     ],
@@ -111,39 +136,6 @@ class _ArticleScreenState extends State<ArticleScreen> {
                 )
               ],
             ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Icon(
-                        Icons.arrow_back,
-                        size: 30,
-                        color: Colors.black,
-                      ),
-                      Icon(
-                        Icons.share,
-                        size: 30,
-                        color: Colors.black,
-                      ),
-                      Icon(
-                        Icons.arrow_forward,
-                        color: Colors.black,
-                        size: 30,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            )
           ],
         ),
       ),
