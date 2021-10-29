@@ -1,7 +1,7 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
-import 'package:medikan/screens/chatting_screen.dart';
+import 'package:medikan/screens/chat%20screen/chatting_screen.dart';
 import 'package:medikan/themes/theme_data.dart';
 
 class ConfirmChatButton extends StatelessWidget {

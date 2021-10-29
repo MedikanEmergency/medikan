@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:medikan/themes/theme_data.dart';
 import 'package:medikan/components/sos_button.dart';
 import 'package:medikan/icons.dart';
-import 'package:medikan/screens/chat_screen.dart';
+import 'package:medikan/screens/chat%20screen/chat_screen.dart';
 import 'package:medikan/screens/first_aid_screen.dart';
 import 'package:medikan/screens/news_screen.dart';
 import 'package:medikan/screens/personal_info.dart';
