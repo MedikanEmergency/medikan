@@ -11,9 +11,9 @@ void main() async {
   ]);
   try {
     await Firebase.initializeApp();
-    print("success");
+    print("\n\n\nsuccess\n\n\n");
   } catch (e) {
-    print("failed");
+    print("\n\n\nfailed\n\n\n");
   }
   runApp(Medikan());
 }
