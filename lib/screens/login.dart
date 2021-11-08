@@ -1,10 +1,13 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:medikan/themes/theme_data.dart';
 import 'package:medikan/icons.dart';
 
-class Family extends StatelessWidget {
-  String? _chosenValue;
+class Login extends StatelessWidget {
   @override
+  final ButtonStyle style =
+        ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -19,7 +22,7 @@ class Family extends StatelessWidget {
           //TODO sublist for icon
         ],
         title: Text(
-          "Thêm người thân",
+          "Đăng nhập",
           style: FontStyleData.H1_bold_36,
         ),
       ),
@@ -32,14 +35,14 @@ class Family extends StatelessWidget {
     // controller: emailAddressLoginController,
     obscureText: false,
     decoration: InputDecoration(
-      labelText: 'Họ và tên',//TODO get user info
+      labelText: 'Số điện thoại',
       // labelStyle: FlutterFlowTheme.bodyText1.override(
       //   fontFamily: 'Lexend Deca',
       //   color: Color(0xFF95A1AC),
       //   fontSize: 14,
       //   fontWeight: FontWeight.normal,
       // ),
-      hintText: '',
+      // hintText: 'Enter your email...',
       // hintStyle: FlutterFlowTheme.bodyText1.override(
       //   fontFamily: 'Lexend Deca',
       //   color: Color(0xFF95A1AC),
@@ -72,23 +75,20 @@ class Family extends StatelessWidget {
     // ),
   ),
 )
-
-,
-Text("Số điện thoại"),
-         Padding(
-  padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+,Padding(
+  padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
   child: TextFormField(
-    // controller: emailAddressLoginController,
-    obscureText: false,
+    // controller: passwordLoginController,
+    // obscureText: !passwordLoginVisibility,
     decoration: InputDecoration(
-      labelText: '_ _ _ _ _ _ _ _ _',
+      labelText: 'Password',
       // labelStyle: FlutterFlowTheme.bodyText1.override(
       //   fontFamily: 'Lexend Deca',
       //   color: Color(0xFF95A1AC),
       //   fontSize: 14,
       //   fontWeight: FontWeight.normal,
       // ),
-      hintText: '',//TODO get user info
+      hintText: 'Enter your password...',
       // hintStyle: FlutterFlowTheme.bodyText1.override(
       //   fontFamily: 'Lexend Deca',
       //   color: Color(0xFF95A1AC),
@@ -112,56 +112,7 @@ Text("Số điện thoại"),
       filled: true,
       fillColor: Colors.white,
       contentPadding: EdgeInsetsDirectional.fromSTEB(20, 24, 20, 24),
-    ),
-    // style: FlutterFlowTheme.bodyText1.override(
-    //   fontFamily: 'Lexend Deca',
-    //   color: Color(0xFF14181B),
-    //   fontSize: 14,
-    //   fontWeight: FontWeight.normal,
-    // ),
-  ),
-)
-,
-Text("Mối liên hệ"),
-// _buildPanel(),
-DropdownButton<String>(
-            value: _chosenValue,
-            underline: Container(), // this is the magic
-            items: <String>['Ông/bà', 'Cha/mẹ', 'Vợ/chồng', 'Anh/Chị', 'Con/Cháu', 'Họ hàng', 'Khác']
-                .map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-            onChanged: (String? value) {
-              
-                _chosenValue = value;
-              
-            },
-          ),
-          Text("Ảnh đại diện"),
-Row(
-children: [
-                  Center(
-                    
-                    child: Padding(
-                      
-                    
-                      padding: EdgeInsets.all(10),
-                      child: Expanded(
-                        child:
-                        CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            "https://www.trendrr.net/wp-content/uploads/2017/06/Deepika-Padukone-1.jpg",
-                          ),
-                        ),
-                        flex:2 ,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child:InkWell(
+      suffixIcon: InkWell(
         // onTap: () => setState(
         //   () => passwordLoginVisibility = !passwordLoginVisibility,
         // ),
@@ -169,25 +120,68 @@ children: [
           // passwordLoginVisibility
           //     ? Icons.visibility_outlined
           //     : 
-          Icons.upload_rounded,
+          Icons.visibility_off_outlined,
           color: Color(0xFF95A1AC),
           size: 20,
         ),
       ),
-                    flex:1 ,
-                  ),
-],
-)
+    ),
+    // style: FlutterFlowTheme.bodyText1.override(
+    //   fontFamily: 'Lexend Deca',
+    //   color: Color(0xFF14181B),
+    //   fontSize: 14,
+    //   fontWeight: FontWeight.normal,
+    // ),
+  ),
+),
+ElevatedButton(
+            style: style,
+            onPressed: () {},
+            child: const Text('Quên mật khẩu'),
+          ),
+        
 
+
+ Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          const SizedBox(height: 30),
+          ElevatedButton(
+            style: style,
+            onPressed: () {},
+            child: const Text('Login'),
+          ),
+        ],
+      ),
+    ),
+    
+    Row(
+      children: [
+        Text("Chưa có tài khoản?"),
+
+    ElevatedButton(
+            style: style,
+            onPressed: () {},
+            child: const Text('Login'),
+          ),
+     
+
+      ],
+    )  , 
+    IconButton(
+          icon: const Icon(Icons.volume_up),
+          tooltip: 'Increase volume by 10',
+          onPressed: () {
+            // setState(() {
+            //   _volume += 10;
+            // });
+          },
+        ),
+        Text('Volume : ')//$_volume
         ],
 
       ),
     );
   }
 }
-
-
-
-
-
-

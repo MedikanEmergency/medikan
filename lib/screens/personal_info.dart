@@ -11,13 +11,23 @@ class PersonalInfo extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: ColorData.secondary,
         actions: [
-          IconButton(
-              onPressed: () {},
-              icon: Icon(
+          PopupMenuButton(
+            icon: Icon(
                 MyFlutterApp.setting,
                 color: ColorData.onPrimary,
-              ))
-          //TODO sublist for icon
+              ),
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    child: Text("First"),
+                    value: 1,
+                  ),
+                  PopupMenuItem(
+                    child: Text("Second"),
+                    value: 2,
+                  )
+                ]
+            )
+          
         ],
         title: Text(
           "Tài khoản của bạn",
