@@ -98,10 +98,10 @@ class PersonalInfo extends StatelessWidget {
               //Move to Account info
             },
             icon: Icon(
-            Icons.favorite,
-            color: Colors.pink,
-            size: 24.0,
-          ),
+              Icons.favorite,
+              color: Colors.pink,
+              size: 24.0,
+            ),
             style: ElevatedButton.styleFrom(
               shape: new RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(20.0),
@@ -112,8 +112,8 @@ class PersonalInfo extends StatelessWidget {
           Card(
             child:Container(
 
-                height: 100,
-                color: Colors.white,
+              height: 100,
+              color: Colors.white,
 
               child: Row(
                 children: [
@@ -149,8 +149,8 @@ class PersonalInfo extends StatelessWidget {
                     ),
                     flex:7 ,
                   ),
-                Expanded(
-                  child:
+                  Expanded(
+                    child:
                     ElevatedButton.icon(
                       label:Text(""),
                       onPressed: () => {
