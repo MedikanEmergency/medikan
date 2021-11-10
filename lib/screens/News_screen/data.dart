@@ -45,7 +45,7 @@ final List<Article> forYou = [
   ),
   Article(
     category: 'Tin tức',
-    title: 'Ngày 20/10, cả nước ghi nhận 3.646 ca mắc COVID-19 ',
+    title: 'Ngày 20/10, cả nước ghi nhận 3.646 ca mắc COVID-19',
     description:
         'Theo Bộ Y tế, tính 17h ngày 19/10 đến 17h ngày 20/10, trên Hệ thống Quốc gia quản lý ca bệnh COVID-19 ghi nhận 3.646 ca nhiễm mới, trong đó 11 ca nhập cảnh và 3.635 ca ghi nhận trong nước (tăng 608 ca so với ngày trước đó) tại 50 tỉnh, thành phố (có 1.810 ca trong cộng đồng).',
     time: '3h trước',
@@ -69,7 +69,7 @@ final List<Article> forYou = [
     category: 'Mẹo vặt',
     title: 'Cách sống cho một dạ dày khỏe mạnh',
     description:
-        'Một số cách có thể giúp có thể kể đến như: Xua tan căng thẳng để giảm cơn đau dạ dày, bỏ hút thuốc lá hay ăn uống đúng cách. Ngoài ra, chúng ta cũng nên giảm cân khi bạn quá cân hoặc đừng uống rượu bia quá nhiều. ',
+        'Một số cách có thể giúp có thể kể đến như: Xua tan căng thẳng để giảm cơn đau dạ dày, bỏ hút thuốc lá hay ăn uống đúng cách. Ngoài ra, chúng ta cũng nên giảm cân khi bạn quá cân hoặc đừng uống rượu bia quá nhiều.',
     time: '8h45 trước',
     view: '1.9k',
     author: 'Bao thanh nien',
