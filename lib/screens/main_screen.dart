@@ -5,6 +5,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:medikan/screens/chat%20screen/doctor_screen.dart';
 import 'package:medikan/screens/signup_screen.dart';
+import 'package:medikan/screens/sos_screen.dart';
 import 'package:medikan/themes/theme_data.dart';
 import 'package:medikan/components/sos_button.dart';
 import 'package:medikan/icons.dart';
