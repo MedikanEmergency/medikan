@@ -148,7 +148,11 @@ packages:
       name: meta
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "1.7.0"
+=======
+    version: "1.4.0"
+>>>>>>> 47e384a3aec79b0f3a771ebe5e3e3b85b8bfeab6
   path:
     dependency: transitive
     description:
@@ -168,6 +172,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  smooth_page_indicator:
+    dependency: "direct main"
+    description:
+      name: smooth_page_indicator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0+2"
   source_span:
     dependency: transitive
     description:
@@ -209,7 +220,11 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
+<<<<<<< HEAD
     version: "0.4.2"
+=======
+    version: "0.4.0"
+>>>>>>> 47e384a3aec79b0f3a771ebe5e3e3b85b8bfeab6
   typed_data:
     dependency: transitive
     description:
