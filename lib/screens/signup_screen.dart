@@ -33,7 +33,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     bool isValid = true;
     if (_name.text.length == 0) {
       _isNameError = true;
-      _nameError = "Không được để trống Họ và tên";
+      _nameError = "Không được để trống \"Họ và tên\"";
       isValid = false;
     }
     if (_password.text != _rePassword.text) {
@@ -113,6 +113,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   setState(() {});
                 },
                 maxLength: 10,
+                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   counterText: "",
                   errorText: _isPhoneError ? _phoneError : null,
@@ -137,8 +138,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 obscureText: _passwordSecure,
                 decoration: InputDecoration(
                   errorText: _isPasswordError ? _passwordError : null,
-                  suffix: Icon(
-                    MyFlutterApp.eye,
+                  suffix: GestureDetector(
+                    child: Icon(
+                      _passwordSecure ? Icons.remove_red_eye : Icons.shield,
+                    ),
+                    onTap: () {
+                      _passwordSecure = !_passwordSecure;
+                      setState(() {});
+                    },
                   ),
                   label: Text(
                     "Mật khẩu",
@@ -161,13 +168,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 obscureText: _rePasswordSecure,
                 decoration: InputDecoration(
                   suffix: GestureDetector(
-                    child: _rePasswordSecure
-                        ? Icon(
-                            MyFlutterApp.eye,
-                          )
-                        : Icon(
-                            MyFlutterApp.no_eye,
-                          ),
+                    child: Icon(
+                      _rePasswordSecure ? Icons.remove_red_eye : Icons.shield,
+                    ),
                     onTap: () {
                       _rePasswordSecure = !_rePasswordSecure;
                       setState(() {});
