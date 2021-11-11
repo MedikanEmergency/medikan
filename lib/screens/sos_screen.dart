@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:medikan/components/sos_countdown.dart';
-import 'package:medikan/screens/sos_target.dart';
+import 'package:medikan/components/sos_components/sos_countdown.dart';
+import 'package:medikan/components/sos_components/sos_target.dart';
 import 'package:medikan/themes/theme_data.dart';
 
 class SosScreen extends StatefulWidget {
