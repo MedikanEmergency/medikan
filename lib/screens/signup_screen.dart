@@ -28,6 +28,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController _rePassword = TextEditingController();
   TextEditingController _phone = TextEditingController();
   TextEditingController _name = TextEditingController();
+  void viewPassword() {
+    _passwordSecure = !_passwordSecure;
+    setState(() {});
+  }
+
+  void viewRe_password() {
+    _rePasswordSecure = !_rePasswordSecure;
+    setState(() {});
+  }
+
+  void removeRe_passwordWarning() {
+    _isRePasswordError = false;
+    setState(() {});
+  }
+
+  void removePasswordWarning() {
+    _isPasswordError = false;
+    setState(() {});
+  }
+
+  void removePhoneWarning() {
+    _isPhoneError = false;
+    setState(() {});
+  }
+
+  void removeNameWarning() {
+    _isNameError = false;
+    setState(() {});
+  }
 
   bool validateInput() {
     bool isValid = true;
@@ -86,10 +115,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             Form(
               child: TextFormField(
                 controller: _name,
-                onTap: () {
-                  _isNameError = false;
-                  setState(() {});
-                },
+                onTap: removeNameWarning,
                 keyboardType: TextInputType.name,
                 textCapitalization: TextCapitalization.words,
                 decoration: InputDecoration(
@@ -108,10 +134,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             Form(
               child: TextFormField(
                 controller: _phone,
-                onTap: () {
-                  _isPhoneError = false;
-                  setState(() {});
-                },
+                onTap: removePhoneWarning,
                 maxLength: 10,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
@@ -131,10 +154,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             Form(
               child: TextFormField(
                 controller: _password,
-                onTap: () {
-                  _isPasswordError = false;
-                  setState(() {});
-                },
+                onTap: removePasswordWarning,
                 obscureText: _passwordSecure,
                 decoration: InputDecoration(
                   errorText: _isPasswordError ? _passwordError : null,
@@ -142,10 +162,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: Icon(
                       _passwordSecure ? Icons.remove_red_eye : Icons.shield,
                     ),
-                    onTap: () {
-                      _passwordSecure = !_passwordSecure;
-                      setState(() {});
-                    },
+                    onTap: viewPassword,
                   ),
                   label: Text(
                     "Mật khẩu",
@@ -161,20 +178,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
             Form(
               child: TextFormField(
                 controller: _rePassword,
-                onTap: () {
-                  _isRePasswordError = false;
-                  setState(() {});
-                },
+                onTap: removeRe_passwordWarning,
                 obscureText: _rePasswordSecure,
                 decoration: InputDecoration(
                   suffix: GestureDetector(
                     child: Icon(
                       _rePasswordSecure ? Icons.remove_red_eye : Icons.shield,
                     ),
-                    onTap: () {
-                      _rePasswordSecure = !_rePasswordSecure;
-                      setState(() {});
-                    },
+                    onTap: viewRe_password,
                   ),
                   errorText: _isRePasswordError ? _rePasswordError : null,
                   label: Text(
