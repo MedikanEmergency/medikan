@@ -39,12 +39,15 @@ class SOS extends StatelessWidget {
             ),
           ),
           Center(
-            child: Text(
-              "S.O.S",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
+            child: FittedBox(
+              fit: BoxFit.fitWidth,
+              child: Text(
+                "S.O.S",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           )
         ],

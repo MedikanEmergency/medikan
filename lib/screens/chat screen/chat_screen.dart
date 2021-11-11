@@ -28,7 +28,7 @@ class Chat extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(
-                padding: EdgeInsets.only(top: 30),
+                padding: EdgeInsets.only(top: screen_width * 0.075),
                 child: Text(
                   "Số lần nhắn tin còn lại trong ngày",
                   style: FontStyleData.H2_bold_30,
@@ -36,7 +36,7 @@ class Chat extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 50),
+                padding: EdgeInsets.symmetric(vertical: screen_width * 0.1),
                 child: Text(
                   "3",
                   style: TextStyle(
@@ -46,7 +46,7 @@ class Chat extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(top: 10),
+                padding: EdgeInsets.only(top: screen_width * 0.06),
                 child: ConfirmChatButton(),
               ),
             ],
