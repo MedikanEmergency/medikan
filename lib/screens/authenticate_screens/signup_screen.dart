@@ -2,7 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:medikan/components/authen_components/done_button.dart';
+import 'package:medikan/components/input-components/input_name.dart';
+import 'package:medikan/components/input-components/input_phone.dart';
+import 'package:medikan/components/input-components/input_pwd.dart';
 import 'package:medikan/icons.dart';
+import 'package:medikan/screens/login.dart';
 import 'package:medikan/themes/theme_data.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -58,36 +63,56 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() {});
   }
 
-  bool validateInput() {
-    bool isValid = true;
-    if (_name.text.length == 0) {
+  void validateInput() {
+    var isPassName = validateName();
+    var isPassPhone = validatePhone();
+    var isPassPwd = validatePassword();
+
+    setState(() {});
+    if (isPassPwd && isPassName && isPassPhone)
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (ctx) => Login(),
+        ),
+      );
+  }
+
+  bool validateName() {
+    if (_name.text.isEmpty) {
       _isNameError = true;
       _nameError = "Không được để trống \"Họ và tên\"";
-      isValid = false;
+      return false;
     }
+    return true;
+  }
+
+  bool validatePassword() {
     if (_password.text != _rePassword.text) {
       _isRePasswordError = true;
       _rePasswordError = "Mật khẩu nhập lại không trùng khớp";
-      isValid = false;
+      return false;
     }
 
     if (_password.text.length <= 4) {
       _isPasswordError = true;
       _passwordError = "Mật khẩu phải nhiều hơn 4 ký tự";
-      isValid = false;
+      return false;
     }
 
+    return true;
+  }
+
+  bool validatePhone() {
     RegExp regExp = RegExp(
         r"^(0|\+84)(\s|\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\d)(\s|\.)?(\d{3})(\s|\.)?(\d{3})$");
     var matches = regExp.allMatches(_phone.text);
-    if (matches.length < 1) {
+    if (matches.isEmpty) {
       _isPhoneError = true;
       _phoneError = "Số điện thoại không hợp lệ";
-      isValid = false;
+      return false;
     }
 
-    setState(() {});
-    return isValid;
+    return true;
   }
 
   var signUpAppBar = AppBar(
@@ -112,118 +137,54 @@ class _SignUpScreenState extends State<SignUpScreen> {
             SizedBox(
               height: height * 0.02,
             ),
-            Form(
-              child: TextFormField(
-                controller: _name,
-                onTap: removeNameWarning,
-                keyboardType: TextInputType.name,
-                textCapitalization: TextCapitalization.words,
-                decoration: InputDecoration(
-                  errorText: _isNameError ? _nameError : null,
-                  label: Text(
-                    "Họ và tên",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  border: OutlineInputBorder(),
-                ),
-              ),
+            InputName(
+              nameController: _name,
+              isNameError: _isNameError,
+              removeNameWarning: removeNameWarning,
+              errorMsg: _nameError,
             ),
             SizedBox(
               height: height * 0.05,
             ),
-            Form(
-              child: TextFormField(
-                controller: _phone,
-                onTap: removePhoneWarning,
-                maxLength: 10,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  counterText: "",
-                  errorText: _isPhoneError ? _phoneError : null,
-                  label: Text(
-                    "Số điện thoại",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  border: OutlineInputBorder(),
-                ),
-              ),
+            InputPhone(
+              removeWarning: removePhoneWarning,
+              errorMessage: _phoneError,
+              isPhoneError: _isPhoneError,
+              phoneController: _phone,
             ),
             SizedBox(
               height: height * 0.05,
             ),
-            Form(
-              child: TextFormField(
-                controller: _password,
-                onTap: removePasswordWarning,
-                obscureText: _passwordSecure,
-                decoration: InputDecoration(
-                  errorText: _isPasswordError ? _passwordError : null,
-                  suffix: GestureDetector(
-                    child: Icon(
-                      _passwordSecure ? Icons.remove_red_eye : Icons.shield,
-                    ),
-                    onTap: viewPassword,
-                  ),
-                  label: Text(
-                    "Mật khẩu",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  border: OutlineInputBorder(),
-                ),
-              ),
+            InputPassword(
+              errorMsg: _passwordError,
+              isPwdError: _isPasswordError,
+              isSecure: _passwordSecure,
+              label: "Mật khẩu",
+              pwdController: _password,
+              removePwdWarning: removePasswordWarning,
+              viewPassword: viewPassword,
             ),
             SizedBox(
               height: height * 0.05,
             ),
-            Form(
-              child: TextFormField(
-                controller: _rePassword,
-                onTap: removeRe_passwordWarning,
-                obscureText: _rePasswordSecure,
-                decoration: InputDecoration(
-                  suffix: GestureDetector(
-                    child: Icon(
-                      _rePasswordSecure ? Icons.remove_red_eye : Icons.shield,
-                    ),
-                    onTap: viewRe_password,
-                  ),
-                  errorText: _isRePasswordError ? _rePasswordError : null,
-                  label: Text(
-                    "Nhập lại mật khẩu",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  border: OutlineInputBorder(),
-                ),
-              ),
+            InputPassword(
+              label: "Nhập lại mật khẩu",
+              pwdController: _rePassword,
+              isSecure: _rePasswordSecure,
+              isPwdError: _isRePasswordError,
+              errorMsg: _rePasswordError,
+              viewPassword: viewRe_password,
+              removePwdWarning: removeRe_passwordWarning,
             ),
             SizedBox(
               height: height * 0.05,
             ),
             Align(
-              child: ElevatedButton(
-                onPressed: () {
-                  if (validateInput()) {
-                    // move on
-                  }
-                },
-                child: FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: Text(
-                    "Đăng ký",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: ColorData.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  fixedSize: Size(
-                    size.width * 0.4,
-                    height * 0.075,
-                  ),
-                ),
-              ),
+              child: DoneButton(
+                  width: size.width,
+                  height: height,
+                  func: validateInput,
+                  label: "Đăng ký"),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10),
