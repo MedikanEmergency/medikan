@@ -3,7 +3,7 @@ import 'package:medikan/components/first_aid_detail_components/pageview.dart';
 import 'package:medikan/icons.dart';
 import 'package:medikan/models/first_aid_list.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '../themes/theme_data.dart';
+import '../../themes/theme_data.dart';
 
 class DetailScreen extends StatefulWidget {
   DetailScreen({
