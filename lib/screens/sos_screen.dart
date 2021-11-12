@@ -61,32 +61,33 @@ class _SosScreenState extends State<SosScreen> {
       },
     );
     return Scaffold(
-        body: Column(
-      children: [
-        SizedBox(
-          width: width,
-          height: height * 0.1,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SosTarget(
-              target: "Bệnh viện",
-            ),
-            SizedBox(
-              width: width * 0.1,
-            ),
-            SosTarget(
-              target: "Người thân",
-            ),
-          ],
-        ),
-        SizedBox(
-          width: width,
-          height: height * 0.15,
-        ),
-        CountDown(width: width, second: _second, timer: timer, height: height)
-      ],
-    ));
+      body: Column(
+        children: [
+          SizedBox(
+            width: width,
+            height: height * 0.1,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SosTarget(
+                target: "Bệnh viện",
+              ),
+              SizedBox(
+                width: width * 0.1,
+              ),
+              SosTarget(
+                target: "Người thân",
+              ),
+            ],
+          ),
+          SizedBox(
+            width: width,
+            height: height * 0.15,
+          ),
+          CountDown(width: width, second: _second, timer: timer, height: height)
+        ],
+      ),
+    );
   }
 }
