@@ -3,11 +3,14 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:medikan/screens/chat%20screen/doctor_screen.dart';
+import 'package:medikan/screens/signup_screen.dart';
+import 'package:medikan/screens/sos_screen.dart';
 import 'package:medikan/themes/theme_data.dart';
-import 'package:medikan/components/sos_button.dart';
+import 'package:medikan/components/sos_components/sos_button.dart';
 import 'package:medikan/icons.dart';
 import 'package:medikan/screens/chat%20screen/chat_screen.dart';
-import 'package:medikan/screens/first_aid_screen.dart';
+import 'package:medikan/screens/First_aid/first_aid_screen.dart';
 import 'package:medikan/screens/News_screen/news_screen.dart';
 import 'package:medikan/screens/personal_info.dart';
 
@@ -21,10 +24,10 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedPage = 0;
   final List<Widget> _pages = [
-    FirstAid(),
-    Chat(),
-    News(),
-    PersonalInfo(),
+    SafeArea(child: FirstAid()),
+    SafeArea(child: DoctorScreen()),
+    SafeArea(child: News()),
+    SafeArea(child: PersonalInfo()),
   ];
   PageController? _pageController = PageController(initialPage: 0);
 
