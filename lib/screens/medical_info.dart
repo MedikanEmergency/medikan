@@ -81,7 +81,7 @@ class _MedicalInfoState extends State<MedicalInfo> {
                   ),
                 ),
                 Expanded(
-                  flex: 8,
+                  // flex: 8,
                   child: Padding(
                       padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                       child: Column(
@@ -95,37 +95,37 @@ class _MedicalInfoState extends State<MedicalInfo> {
               ],
             ),
 
-            GridView.count(
-              // Create a grid with 2 columns. If you change the scrollDirection to
-              // horizontal, this produces 2 rows.
-              crossAxisCount: 2,
-              // Generate 100 widgets that display their index in the List.
-              children: [
-                Container(
-                  child: Column(
-                    children: [
-                      Text("Chiều cao: (m)"),
-                      TextFormField(
-                          decoration: InputDecoration(
-                        enabled: true,
-                      ))
-                    ],
-                  ),
-                ),
-                Container(
-                  child: Column(
-                    children: [
-                      Text("Chiều cao: (m)"),
-                      TextFormField(
-                          decoration: InputDecoration(
-                        enabled: true,
-                        suffixText: "1m56",
-                      ))
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            // GridView.count(
+            //   // Create a grid with 2 columns. If you change the scrollDirection to
+            //   // horizontal, this produces 2 rows.
+            //   crossAxisCount: 2,
+            //   // Generate 100 widgets that display their index in the List.
+            //   children: [
+            //     Container(
+            //       child: Column(
+            //         children: [
+            //           Text("Chiều cao: (m)"),
+            //           TextFormField(
+            //               decoration: InputDecoration(
+            //             enabled: true,
+            //           ))
+            //         ],
+            //       ),
+            //     ),
+            //     Container(
+            //       child: Column(
+            //         children: [
+            //           Text("Chiều cao: (m)"),
+            //           TextFormField(
+            //               decoration: InputDecoration(
+            //             enabled: true,
+            //             suffixText: "1m56",
+            //           ))
+            //         ],
+            //       ),
+            //     ),
+            //   ],
+            // ),
           ],
         ),
       ),
