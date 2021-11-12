@@ -1,9 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_sms/flutter_sms.dart';
 import 'package:medikan/components/sos_components/sos_countdown.dart';
 import 'package:medikan/components/sos_components/sos_target.dart';
 import 'package:medikan/themes/theme_data.dart';
+import 'package:sms_maintained/contact.dart';
+import 'package:sms_maintained/generated/i18n.dart';
+import 'package:sms_maintained/globals.dart';
+import 'package:sms_maintained/sms.dart';
 
 class SosScreen extends StatefulWidget {
   @override
@@ -27,6 +32,7 @@ class _SosScreenState extends State<SosScreen> {
     });
   }
 
+  List<String> addresses = ["0987654321", "0987654322", "0987654323"];
   @override
   Widget build(BuildContext context) {
     var height =
@@ -37,6 +43,20 @@ class _SosScreenState extends State<SosScreen> {
         if (_second == 0) {
           timer?.cancel();
           // do something to send S.O.S message
+
+          SmsSender sender = SmsSender();
+          List<SmsMessage> messages = [];
+          for (var i = 0; i < addresses.length; i++) {
+            messages.add(SmsMessage(addresses[i], 'Hello flutter!'));
+            messages[i].onStateChanged.listen((state) {
+              if (state == SmsMessageState.Sent) {
+                print("SMS is sent!");
+              } else if (state == SmsMessageState.Delivered) {
+                print("SMS is delivered!");
+              }
+            });
+            sender.sendSms(messages[i]);
+          }
         }
       },
     );
