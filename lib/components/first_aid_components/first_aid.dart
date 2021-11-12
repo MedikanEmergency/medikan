@@ -3,7 +3,7 @@ import 'package:medikan/themes/theme_data.dart';
 import 'package:medikan/icons.dart';
 import 'package:medikan/models/first_aid_list.dart';
 import 'package:medikan/components/first_aid_components/first_aid_card.dart';
-import 'package:medikan/screens/first_aid_detail_screen.dart';
+import 'package:medikan/screens/First_aid/first_aid_detail_screen.dart';
 
 class FirstAids extends StatefulWidget {
   FirstAids({Key? key}) : super(key: key);
