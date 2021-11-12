@@ -7,7 +7,7 @@ import 'package:medikan/components/input-components/input_name.dart';
 import 'package:medikan/components/input-components/input_phone.dart';
 import 'package:medikan/components/input-components/input_pwd.dart';
 import 'package:medikan/icons.dart';
-import 'package:medikan/screens/login.dart';
+import 'package:medikan/screens/authenticate_screens/login.dart';
 import 'package:medikan/themes/theme_data.dart';
 
 class SignUpScreen extends StatefulWidget {
