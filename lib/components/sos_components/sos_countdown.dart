@@ -24,8 +24,13 @@ class CountDown extends StatelessWidget {
       width: width * 0.75,
       height: width * 0.75,
       decoration: BoxDecoration(
+        gradient: RadialGradient(
+          colors: [
+            ColorData.secondary.withOpacity(0.05),
+            ColorData.secondary,
+          ],
+        ),
         borderRadius: BorderRadius.circular(15),
-        color: ColorData.secondary,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
