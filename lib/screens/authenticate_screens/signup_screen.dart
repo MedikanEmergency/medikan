@@ -72,7 +72,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (isPassPwd && isPassName && isPassPhone)
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (ctx) => Login(),
+          builder: (ctx) => LoginScreen(),
         ),
       );
   }
