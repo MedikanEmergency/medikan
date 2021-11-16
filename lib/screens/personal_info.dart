@@ -59,14 +59,11 @@ class PersonalInfo extends StatelessWidget {
                     Center(
                       child: Padding(
                         padding: EdgeInsets.all(10),
-                        child: Expanded(
-                          child: CircleAvatar(
-                            backgroundImage: NetworkImage(
-                              user_img,
-                            ),
-                            radius: 50.0,
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(
+                            user_img,
                           ),
-                          flex: 2,
+                          radius: 50.0,
                         ),
                       ),
                     ),
