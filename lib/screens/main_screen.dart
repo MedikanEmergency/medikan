@@ -5,6 +5,8 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:medikan/screens/Onboarding/onboarding_screen.dart';
 import 'package:medikan/screens/authenticate_screens/forgot-password/forgot_password.dart';
+import 'package:medikan/screens/authenticate_screens/forgot-password/new_password.dart';
+import 'package:medikan/screens/authenticate_screens/forgot-password/otp_screen.dart';
 import 'package:medikan/screens/chat%20screen/doctor_screen.dart';
 import 'package:medikan/screens/authenticate_screens/signup_screen.dart';
 import 'package:medikan/screens/sos_screen.dart';
@@ -27,7 +29,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedPage = 0;
   final List<Widget> _pages = [
-    SafeArea(child: FirstAid()),
+    SafeArea(child: SignUpScreen()),
     SafeArea(child: DoctorScreen()),
     SafeArea(child: News()),
     SafeArea(child: PersonalInfo()),

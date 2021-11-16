@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:medikan/components/authen_components/cancel_button.dart';
 import 'package:medikan/components/authen_components/done_button.dart';
 import 'package:medikan/screens/authenticate_screens/forgot-password/otp_screen.dart';
+import 'package:medikan/screens/authenticate_screens/login.dart';
 import 'package:medikan/themes/theme_data.dart';
 
 class ForgotPwdScreen extends StatefulWidget {
@@ -42,7 +43,13 @@ class _ForgotPwdScreenState extends State<ForgotPwdScreen> {
     setState(() {});
     if (isValid) {
       Navigator.of(context).push(
-          MaterialPageRoute(builder: (ctx) => OtpScreen(num: _phone.text)));
+        MaterialPageRoute(
+          builder: (ctx) => LoginScreen(
+              // num: _phone.text,
+              // verificationId: "123",
+              ),
+        ),
+      );
     }
   }
 

@@ -9,12 +9,12 @@ class InputOTP extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: PinCodeTextField(
         controller: controller,
         keyboardType: TextInputType.number,
         appContext: context,
-        length: 4,
+        length: otpLength,
         onChanged: (value) {},
         pinTheme: PinTheme.defaults(
           inactiveColor: ColorData.primary,

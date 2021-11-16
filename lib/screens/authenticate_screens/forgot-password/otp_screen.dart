@@ -1,19 +1,25 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:medikan/components/authen_components/cancel_button.dart';
 import 'package:medikan/components/authen_components/done_button.dart';
 import 'package:medikan/components/input-components/input_otp.dart';
 import 'package:medikan/components/authen_components/resent_text.dart';
+import 'package:medikan/screens/authenticate_screens/login.dart';
 import 'package:medikan/screens/authenticate_screens/signup_screen.dart';
 import 'package:medikan/themes/theme_data.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class OtpScreen extends StatefulWidget {
+  FirebaseAuth firebaseAuth;
   String _num;
-  OtpScreen({required num}) : _num = num {
-    _num = _num.replaceRange(4, 10, "xxxxxx");
+  String verificationId;
+  OtpScreen(
+      {required num, required this.verificationId, required this.firebaseAuth})
+      : _num = num {
+    _num = _num.replaceRange(6, 12, "xxxxxx");
   }
 
   @override
@@ -50,14 +56,31 @@ class _OtpScreenState extends State<OtpScreen> {
     Navigator.of(context).pop();
   }
 
-  void next() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (ctx) {
-          return Scaffold();
-        },
-      ),
-    );
+  void next() async {
+    PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
+        verificationId: widget.verificationId, smsCode: _controller.text);
+    // Navigator.of(context).push(
+    //   MaterialPageRoute(
+    //     builder: (ctx) {
+    //       return Scaffold();
+    //     },
+    //   ),
+    // );
+    try {
+      final authCredential =
+          await widget.firebaseAuth.signInWithCredential(phoneAuthCredential);
+
+      if (authCredential.user != null) {
+        final credential = EmailAuthProvider.credential(
+            email: "0918869175@gmail.com", password: "123456");
+        widget.firebaseAuth.currentUser?.linkWithCredential(credential);
+        print("we did it");
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => LoginScreen()));
+      }
+    } on FirebaseAuthException catch (e) {
+      print("something's wrong");
+    }
   }
 
   bool validateOTP(String? otp) {
@@ -74,7 +97,7 @@ class _OtpScreenState extends State<OtpScreen> {
 
   PreferredSizeWidget appBar = AppBar(
     title: Text(
-      "Quên mật khẩu",
+      "Xác thực",
       style: FontStyleData.H1_bold_36,
     ),
     backgroundColor: ColorData.secondary,
@@ -107,7 +130,7 @@ class _OtpScreenState extends State<OtpScreen> {
                 SizedBox(height: height * 0.15),
                 InputOTP(
                   controller: _controller,
-                  otpLength: 4,
+                  otpLength: 6,
                 ),
                 SizedBox(height: height * 0.02),
                 Center(
@@ -115,13 +138,24 @@ class _OtpScreenState extends State<OtpScreen> {
                   re_sentOTP: re_sentOTP,
                   second: _second,
                 )),
-                SizedBox(height: height * 0.13),
+                SizedBox(height: height * 0.1),
                 Center(
-                  child: CancelButton(
-                    width: width,
-                    height: height,
-                    func: cancel,
-                    label: "Hủy bỏ",
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      CancelButton(
+                        width: width,
+                        height: height,
+                        func: cancel,
+                        label: "Hủy bỏ",
+                      ),
+                      DoneButton(
+                        width: width,
+                        height: height,
+                        func: next,
+                        label: "Tiếp tục",
+                      ),
+                    ],
                   ),
                 )
               ],

@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:medikan/components/authen_components/done_button.dart';
@@ -7,8 +8,11 @@ import 'package:medikan/components/input-components/input_name.dart';
 import 'package:medikan/components/input-components/input_phone.dart';
 import 'package:medikan/components/input-components/input_pwd.dart';
 import 'package:medikan/icons.dart';
+import 'package:medikan/screens/authenticate_screens/forgot-password/otp_screen.dart';
 import 'package:medikan/screens/authenticate_screens/login.dart';
 import 'package:medikan/themes/theme_data.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -33,6 +37,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController _rePassword = TextEditingController();
   TextEditingController _phone = TextEditingController();
   TextEditingController _name = TextEditingController();
+
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
   void viewPassword() {
     _passwordSecure = !_passwordSecure;
     setState(() {});
@@ -63,18 +70,60 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() {});
   }
 
-  void validateInput() {
+  void validateInput(context) async {
+    ProgressDialog progressDialog = ProgressDialog(context);
     var isPassName = validateName();
     var isPassPhone = validatePhone();
     var isPassPwd = validatePassword();
 
     setState(() {});
-    if (isPassPwd && isPassName && isPassPhone)
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (ctx) => LoginScreen(),
-        ),
-      );
+    if (isPassPwd && isPassName && isPassPhone) {
+      // var email = '${_phone.text}@gmail.com';
+      try {
+        // UserCredential result =
+        //     await firebaseAuth.createUserWithEmailAndPassword(
+        //         email: email, password: _password.text);
+
+        var phoneTmp = _phone.text.replaceRange(0, 1, "+84");
+        print(phoneTmp);
+        progressDialog.show();
+        await firebaseAuth.verifyPhoneNumber(
+          timeout: Duration(minutes: 2),
+          phoneNumber: phoneTmp,
+          verificationCompleted:
+              (PhoneAuthCredential phoneAuthCredential) async {
+            print("Helloooooo");
+            // firebaseAuth.signInWithCredential(phoneAuthCredential);
+          },
+          verificationFailed: (FirebaseAuthException authException) async {
+            print("\n\n\nFailed\n\n");
+            print(authException.message);
+          },
+          codeSent: (String verificationId, int? resendToken) {
+            print("check for code ${resendToken}}");
+            progressDialog.hide();
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => OtpScreen(
+                  num: phoneTmp,
+                  verificationId: verificationId,
+                  firebaseAuth: firebaseAuth,
+                ),
+              ),
+            );
+          },
+          codeAutoRetrievalTimeout: (String verificationId) {},
+        );
+      } on FirebaseAuthException catch (e) {
+        print("\n\n\n\nsomething wrong\n\n\n");
+        print(e.message);
+      }
+    }
+    // Navigator.of(context).pushReplacement(
+    //   MaterialPageRoute(
+    //     builder: (ctx) => LoginScreen(),
+    //   ),
+    // );
   }
 
   bool validateName() {
@@ -183,7 +232,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: DoneButton(
                   width: size.width,
                   height: height,
-                  func: validateInput,
+                  func: () => validateInput(context),
                   label: "Đăng ký"),
             ),
             Padding(
