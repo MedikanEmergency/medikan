@@ -1,6 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:medikan/components/authen_components/done_button.dart';
+import 'package:medikan/components/input-components/input_phone.dart';
+import 'package:medikan/components/input-components/input_pwd.dart';
+import 'package:medikan/screens/main_screen.dart';
 import 'package:medikan/themes/theme_data.dart';
 import 'package:medikan/icons.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -15,6 +23,8 @@ class _LoginScreenState extends State<LoginScreen> {
   String _phoneError = "";
   String _passwordError = "";
 
+  final _auth = Get.find<FirebaseAuth>();
+
   TextEditingController _phone = TextEditingController();
   TextEditingController _password = TextEditingController();
 
@@ -27,10 +37,60 @@ class _LoginScreenState extends State<LoginScreen> {
     _isPhoneError = false;
     setState(() {});
   }
+
   void removePasswordWarning() {
     _isPasswordError = false;
     setState(() {});
   }
+
+  void login(BuildContext context) async {
+    ProgressDialog dialog = ProgressDialog(context);
+    dialog.style(message: "Đang đăng nhập");
+
+    if (validateInput()) {
+      var email = _phone.text + "@gmail.com";
+      try {
+        dialog.show();
+        await _auth
+            .signInWithEmailAndPassword(email: email, password: _password.text)
+            .then(
+          (value) {
+            print(_auth.currentUser?.uid);
+            dialog.hide();
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (_) => MainScreen(),
+              ),
+            );
+          },
+        );
+      } on FirebaseAuthException catch (e) {
+        if (dialog.isShowing()) dialog.hide();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              "Đăng nhập thất bại",
+              style: TextStyle(
+                color: ColorData.background,
+              ),
+            ),
+            backgroundColor: ColorData.primaryVariant,
+          ),
+        );
+        if (e.code == 'user-not-found') {
+          _phoneError = 'Số điện thoại không tồn tại, vui lòng kiểm tra lại';
+          _isPhoneError = true;
+          setState(() {});
+        } else if (e.code == 'wrong-password') {
+          _passwordError = 'Mật khẩu không đúng, vui lòng kiểm tra lại';
+          _isPasswordError = true;
+          setState(() {});
+        }
+      }
+    }
+    if (dialog.isShowing()) dialog.hide();
+  }
+
   bool validateInput() {
     bool isValid = true;
     if (_phone.text.length == 0) {
@@ -56,6 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {});
     return isValid;
   }
+
   var LoginAppBar = AppBar(
     title: Text(
       "Đăng nhập",
@@ -63,26 +124,6 @@ class _LoginScreenState extends State<LoginScreen> {
     ),
     backgroundColor: ColorData.secondary,
   );
-  // final loginButton = Material(
-  //     elevation: 5,
-  //     borderRadius: BorderRadius.circular(20),
-  //     color: ColorData.primaryVariant,
-  //     child: MaterialButton(
-  //       onPressed: () {
-  //         if (validateInput()) {
-  //                   // move on
-  //                 }
-  //       },
-  //       child: Text(
-  //         'Đăng nhập',
-  //         style: TextStyle(
-  //           color: Colors.white,
-  //           fontSize: 20,
-  //           fontWeight: FontWeight.bold,
-  //         ),
-  //       ),
-  //       padding: EdgeInsets.fromLTRB(30, 12, 30, 12),
-  //     ));
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -92,151 +133,84 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
         appBar: LoginAppBar,
         body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: height * 0.17,
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(15, 10, 15, 15),
-                child: TextFormField(
-                  controller: _phone,
-                  onTap: removePhoneWarning,
-                  maxLength: 10,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    counterText: "",
-                    labelText: 'Số điện thoại',
-                    hintText: 'Enter your phone...',
-                    errorText: _isPhoneError ? _phoneError : null,
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.grey,
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.grey,
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    border: OutlineInputBorder(),
-                    filled: true,
-                    fillColor: Colors.white,
-                    contentPadding:
-                        EdgeInsetsDirectional.fromSTEB(20, 24, 20, 24),
-                  ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: height * 0.2,
                 ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(15, 10, 15, 20),
-                child: TextFormField(
-                  controller: _password,
-                  onTap: removePasswordWarning,
-                  obscureText: _passwordSecure,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    hintText: 'Enter your password...',
-                    errorText: _isPasswordError ? _passwordError : null,
-                    suffix: GestureDetector(
-                    child: Icon(
-                      _passwordSecure ? Icons.remove_red_eye : Icons.shield,
-                    ),
-                    onTap: viewPassword,
-                  ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.grey,
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.grey,
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    border: OutlineInputBorder(),
-                    filled: true,
-                    fillColor: Colors.white,
-                    contentPadding:EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
-                    
-                  ),
+                InputPhone(
+                  phoneController: _phone,
+                  isPhoneError: _isPhoneError,
+                  errorMessage: _phoneError,
+                  removeWarning: removePhoneWarning,
                 ),
-              ),
-              //Quên mk
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: size.width * 0.04,
-                  ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Text(
-                      "Quên mật khẩu?",
-                      style: TextStyle(
-                          color: ColorData.clickable,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16),
-                    ),
-                  )
-                ],
-              ),
-
-              SizedBox(
-                height: height * 0.12,
-              ),
-              //Dang nhap Button
-              //loginButton,
-              Material(
-                elevation: 5,
-      borderRadius: BorderRadius.circular(20),
-      color: ColorData.primaryVariant,
-      child: MaterialButton(
-        onPressed: () {
-          if (validateInput()) {
-                    // move on
-                  }
-        },
-        child: Text(
-          'Đăng nhập',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        padding: EdgeInsets.fromLTRB(30, 12, 30, 12),
-              )),
-              SizedBox(
-                height: height * 0.02,
-              ),
-              //Chưa có tk, dki
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      "Chưa có tài khoản? ",
-                      style: TextStyle(fontSize: 16),
-                    ),
+                SizedBox(
+                  height: height * 0.05,
+                ),
+                InputPassword(
+                  label: "Mật khẩu",
+                  pwdController: _password,
+                  isSecure: _passwordSecure,
+                  isPwdError: _isPasswordError,
+                  errorMsg: _passwordError,
+                  viewPassword: viewPassword,
+                  removePwdWarning: removePasswordWarning,
+                ),
+                //Quên mk
+                SizedBox(
+                  height: height * 0.025,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
                     GestureDetector(
                       onTap: () {},
                       child: Text(
-                        "Đăng kí",
+                        "Quên mật khẩu?",
                         style: TextStyle(
                             color: ColorData.clickable,
                             fontWeight: FontWeight.bold,
                             fontSize: 16),
                       ),
                     )
-                  ]),
-            ],
+                  ],
+                ),
+
+                SizedBox(
+                  height: height * 0.12,
+                ),
+                DoneButton(
+                  width: size.width,
+                  height: height,
+                  func: () => login(context),
+                  label: "Đăng nhập",
+                ),
+                SizedBox(
+                  height: height * 0.02,
+                ),
+                //Chưa có tk, dki
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "Chưa có tài khoản? ",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      GestureDetector(
+                        onTap: () {},
+                        child: Text(
+                          "Đăng kí",
+                          style: TextStyle(
+                              color: ColorData.clickable,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
+                        ),
+                      )
+                    ]),
+              ],
+            ),
           ),
         ));
   }

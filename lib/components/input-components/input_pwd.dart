@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medikan/themes/theme_data.dart';
 
 class InputPassword extends StatelessWidget {
   final TextEditingController pwdController;
@@ -27,17 +28,27 @@ class InputPassword extends StatelessWidget {
         obscureText: isSecure,
         decoration: InputDecoration(
           errorText: isPwdError ? errorMsg : null,
-          suffix: GestureDetector(
-            child: Icon(
+          suffixIcon: IconButton(
+            icon: Icon(
               isSecure ? Icons.remove_red_eye : Icons.shield,
             ),
-            onTap: () => viewPassword(),
+            onPressed: () => viewPassword(),
           ),
           label: Text(
             label,
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(
+              fontSize: 20,
+              color: ColorData.inactive,
+            ),
           ),
           border: OutlineInputBorder(),
+          focusColor: ColorData.primaryVariant,
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: ColorData.primaryVariant,
+              width: 1.75,
+            ),
+          ),
         ),
       ),
     );

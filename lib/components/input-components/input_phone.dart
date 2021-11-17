@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medikan/themes/theme_data.dart';
 
 class InputPhone extends StatelessWidget {
   final TextEditingController phoneController;
@@ -26,9 +27,19 @@ class InputPhone extends StatelessWidget {
           errorText: isPhoneError ? errorMessage : null,
           label: Text(
             "Số điện thoại",
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(
+              fontSize: 20,
+              color: ColorData.inactive,
+            ),
           ),
           border: OutlineInputBorder(),
+          focusColor: ColorData.primaryVariant,
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: ColorData.primaryVariant,
+              width: 1.75,
+            ),
+          ),
         ),
       ),
     );

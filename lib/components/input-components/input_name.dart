@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medikan/themes/theme_data.dart';
 
 class InputName extends StatelessWidget {
   final TextEditingController nameController;
@@ -22,9 +23,19 @@ class InputName extends StatelessWidget {
           errorText: isNameError ? errorMsg : null,
           label: Text(
             "Họ và tên",
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(
+              fontSize: 20,
+              color: ColorData.inactive,
+            ),
           ),
           border: OutlineInputBorder(),
+          focusColor: ColorData.primaryVariant,
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: ColorData.primaryVariant,
+              width: 1.75,
+            ),
+          ),
         ),
       ),
     );

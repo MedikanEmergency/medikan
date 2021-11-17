@@ -29,7 +29,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedPage = 0;
   final List<Widget> _pages = [
-    SafeArea(child: SignUpScreen()),
+    SafeArea(child: FirstAid()),
     SafeArea(child: DoctorScreen()),
     SafeArea(child: News()),
     SafeArea(child: PersonalInfo()),
