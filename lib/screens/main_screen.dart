@@ -3,13 +3,21 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:medikan/screens/Onboarding/onboarding_screen.dart';
+import 'package:medikan/screens/authenticate_screens/forgot-password/forgot_password.dart';
+import 'package:medikan/screens/authenticate_screens/forgot-password/new_password.dart';
+import 'package:medikan/screens/authenticate_screens/forgot-password/otp_screen.dart';
+import 'package:medikan/screens/chat%20screen/doctor_screen.dart';
+import 'package:medikan/screens/authenticate_screens/signup_screen.dart';
+import 'package:medikan/screens/sos_screen.dart';
 import 'package:medikan/themes/theme_data.dart';
-import 'package:medikan/components/sos_button.dart';
+import 'package:medikan/components/sos_components/sos_button.dart';
 import 'package:medikan/icons.dart';
-import 'package:medikan/screens/chat_screen.dart';
-import 'package:medikan/screens/first_aid_screen.dart';
-import 'package:medikan/screens/news_screen.dart';
+import 'package:medikan/screens/chat%20screen/chat_screen.dart';
+import 'package:medikan/screens/First_aid/first_aid_screen.dart';
+import 'package:medikan/screens/News_screen/news_screen.dart';
 import 'package:medikan/screens/personal_info.dart';
+import 'package:medikan/screens/authenticate_screens/login.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -21,10 +29,10 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedPage = 0;
   final List<Widget> _pages = [
-    FirstAid(),
-    Chat(),
-    News(),
-    PersonalScreen(),
+    SafeArea(child: FirstAid()),
+    SafeArea(child: DoctorScreen()),
+    SafeArea(child: News()),
+    SafeArea(child: PersonalScreen()),
   ];
   PageController? _pageController = PageController(initialPage: 0);
 

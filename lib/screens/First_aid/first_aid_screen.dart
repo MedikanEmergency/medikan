@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:medikan/components/first_aid_components/first_aid.dart';
 import 'package:medikan/icons.dart';
-import '../themes/theme_data.dart';
+import '../../themes/theme_data.dart';
 
 class FirstAid extends StatelessWidget {
   @override
@@ -13,8 +14,9 @@ class FirstAid extends StatelessWidget {
           style: FontStyleData.H1_bold_36,
         ),
       ),
-      body: Center(
-        child: Text("First Aid"),
+      body: Container(
+        child: 
+          FirstAids(),
       ),
     );
   }

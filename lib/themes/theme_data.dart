@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 
 class ColorData {
   static const primary = Color(0xFF4db1c8);
-  static const primaryVariant = Color(0xFF4DB1C8);
+  static const primaryVariant = Color(0xFF2B94AC);
   static const secondaryVariant = Color(0xFF8DDAEC);
   static const secondary = Color(0xFFC9E7EE);
   static const sos = Color(0xffff2819);
@@ -16,11 +16,11 @@ class ColorData {
 }
 
 class ElevationData {
-  static const elevated0 = 0;
-  static const elevated5 = 5;
-  static const elevated10 = 10;
-  static const elevated15 = 15;
-  static const elevated20 = 20;
+  static const double elevated5 = 5;
+  static const double elevated0 = 0;
+  static const double elevated10 = 10;
+  static const double elevated15 = 15;
+  static const double elevated20 = 20;
 }
 
 class FontStyleData {
