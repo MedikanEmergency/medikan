@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:medikan/components/authen_components/done_button.dart';
 import 'package:medikan/components/input-components/input_phone.dart';
 import 'package:medikan/components/input-components/input_pwd.dart';
+import 'package:medikan/models/auth_info.dart';
 import 'package:medikan/screens/main_screen.dart';
 import 'package:medikan/themes/theme_data.dart';
 import 'package:medikan/icons.dart';
@@ -24,8 +26,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   String _phoneError = "";
   String _passwordError = "";
+  bool isSuccess = false;
 
   final _auth = Get.find<FirebaseAuth>();
+  var _userState = null;
+  final _store = Get.find<FirebaseFirestore>();
 
   TextEditingController _phone = TextEditingController();
   TextEditingController _password = TextEditingController();
@@ -33,6 +38,16 @@ class _LoginScreenState extends State<LoginScreen> {
   void viewPassword() {
     _passwordSecure = !_passwordSecure;
     setState(() {});
+  }
+
+  @override
+  void initState() {
+    try {
+      _userState = Get.find<AuthInfo>();
+    } catch (e) {
+      _userState = Get.put(AuthInfo());
+    }
+    super.initState();
   }
 
   void removePhoneWarning() {
@@ -58,14 +73,32 @@ class _LoginScreenState extends State<LoginScreen> {
             .then(
           (value) {
             print(_auth.currentUser?.uid);
-            dialog.hide();
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (_) => MainScreen(),
-              ),
-            );
+            isSuccess = true;
           },
         );
+        if (isSuccess) {
+          dialog.hide();
+
+          // check if this is doctor
+          await _store
+              .collection('account')
+              .doc('${_auth.currentUser!.uid}')
+              .get()
+              .then((value) {
+            var temp = value.data()!['is_doctor'].toString();
+            print(temp);
+            _userState.setDoctor(temp == 'true');
+          });
+
+          _userState.setPhone(_phone.text);
+          _userState.setPassword(_password.text);
+
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (_) => MainScreen(),
+            ),
+          );
+        }
       } on FirebaseAuthException catch (e) {
         if (dialog.isShowing()) dialog.hide();
         ScaffoldMessenger.of(context).showSnackBar(

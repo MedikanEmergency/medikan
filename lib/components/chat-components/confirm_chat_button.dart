@@ -5,15 +5,8 @@ import 'package:medikan/screens/chat%20screen/chatting_screen.dart';
 import 'package:medikan/themes/theme_data.dart';
 
 class ConfirmChatButton extends StatelessWidget {
-  void startChatting(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) {
-          return ChattingScreen();
-        },
-      ),
-    );
-  }
+  final VoidCallback callback;
+  ConfirmChatButton({required this.callback});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +21,7 @@ class ConfirmChatButton extends StatelessWidget {
                 letterSpacing: 0,
                 fontWeight: FontWeight.bold),
           ),
-          onPressed: () => startChatting(context),
+          onPressed: callback,
           style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(90),

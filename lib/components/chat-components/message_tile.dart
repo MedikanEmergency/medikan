@@ -7,7 +7,7 @@ import 'package:medikan/themes/theme_data.dart';
 import '../../icons.dart';
 
 class MessageTile extends StatelessWidget {
-  final int id;
+  final String id;
   final String name;
   final String message;
   final bool isRead;

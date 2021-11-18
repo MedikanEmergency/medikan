@@ -1,11 +1,17 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:medikan/icons.dart';
+import 'package:medikan/models/auth_info.dart';
 import 'package:medikan/themes/theme_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class InputMessage extends StatelessWidget {
+  FirebaseFirestore firestore = Get.find<FirebaseFirestore>();
+  FirebaseAuth auth = Get.find<FirebaseAuth>();
+  AuthInfo userState = Get.find<AuthInfo>();
   var height, width;
-  final fractor = 0.075;
+  final fractor = 0.06;
   final link;
   TextEditingController messageController = TextEditingController();
 
@@ -18,11 +24,19 @@ class InputMessage extends StatelessWidget {
 
   void _sendMessage() {
     if (messageController.text.isEmpty) return;
-    FirebaseFirestore.instance.collection(link).add({
+    var time = Timestamp.now();
+    firestore.collection(link).add({
       'text': messageController.text.trim(),
-      'time': Timestamp.now(),
-      'isDoctor': false,
+      'time': time,
+      'is_doctor': userState.getDoctor(),
     });
+    firestore.collection('conversations').doc('${auth.currentUser!.uid}').set(
+      {
+        'latest_message_time': time,
+        'latest_message': messageController.text.trim(),
+      },
+      SetOptions(merge: true),
+    );
     messageController.clear();
   }
 
@@ -46,12 +60,15 @@ class InputMessage extends StatelessWidget {
               child: TextField(
                 controller: messageController,
                 decoration: InputDecoration(
-                    contentPadding: EdgeInsets.fromLTRB(20, 5, 0, 5),
-                    hintText: "Aa",
-                    border: InputBorder.none,
-                    focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Colors.red.withOpacity(0)))),
+                  contentPadding: EdgeInsets.fromLTRB(20, 5, 0, 5),
+                  hintText: "Aa",
+                  border: InputBorder.none,
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.red.withOpacity(0),
+                    ),
+                  ),
+                ),
               ),
             ),
             IconButton(onPressed: _sendMessage, icon: Icon(MyFlutterApp.send))

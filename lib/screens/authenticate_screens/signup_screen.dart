@@ -109,6 +109,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           progressDialog.hide();
           authState.setPhone(_phone.text);
           authState.setPassword(_password.text);
+          authState.setName(_name.text);
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (_) => OtpScreen(
