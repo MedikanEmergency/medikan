@@ -3,6 +3,7 @@ import 'package:medikan/screens/First_aid/first_aid_screen.dart';
 import '../../themes/theme_data.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:medikan/models/onboarding.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoarding extends StatefulWidget {
   const OnBoarding({Key? key}) : super(key: key);
@@ -109,59 +110,83 @@ class _OnBoardingState extends State<OnBoarding> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: size.height * .01, bottom: size.height * .01,),
+            padding: EdgeInsets.only(
+              top: size.height * .01,
+              bottom: size.height * .01,
+            ),
             child: currentIndex == contents.length - 1
-                ? RaisedButton(
-                    child: const Text(
-                      'Đăng ký',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                ? ElevatedButton(
+                    onPressed: () {},
+                    child: FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Text(
+                        "Đăng ký",
+                        style: TextStyle(fontSize: 20),
                       ),
                     ),
-                    onPressed: () {
-                      // Navigator.pushReplacement(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (_) => FirstAid(),
-                      //   ),
-                      // );
-                    },
-                    color: ColorData.primary,
-                    textColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
+                    style: ElevatedButton.styleFrom(
+                      primary: ColorData.primary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      fixedSize: Size(
+                        size.width * 0.4,
+                        size.height * 0.075,
+                      ),
                     ),
-                    elevation: ElevationData.elevated15,
                   )
                 : null,
           ),
           Padding(
-            padding: EdgeInsets.only(bottom: size.height * .01,),
-            child: currentIndex == contents.length - 1 ? Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Đã có tài khoản ?',
-                  style: FontStyleData.Paragraph_Regular_20,
-                ),
-                Text(
-                  'Đăng nhập',
-                  style: TextStyle(
-                    color: ColorData.clickable,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ) : null,
+            padding: EdgeInsets.only(
+              bottom: size.height * .01,
+            ),
+            child: currentIndex == contents.length - 1
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Đã có tài khoản ?',
+                        style: FontStyleData.Paragraph_Regular_20,
+                      ),
+                      Text(
+                        'Đăng nhập',
+                        style: TextStyle(
+                          color: ColorData.clickable,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  )
+                : null,
           ),
+          // Container(
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.center,
+          //     children: List.generate(
+          //       contents.length,
+          //       (index) => buildDot(index, context),
+          //     ),
+          //   ),
+          // ),
           Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                contents.length,
-                (index) => buildDot(index, context),
+            padding: EdgeInsets.all(10),
+            child: Center(
+              child: SmoothPageIndicator(
+                controller: _controller,
+                count: contents.length,
+                effect: ExpandingDotsEffect(
+                  dotColor: ColorData.primary,
+                  activeDotColor: ColorData.primary,
+                  dotHeight: size.height * .01,
+                  dotWidth: size.height * .01,
+                ),
+                onDotClicked: (index) => _controller.animateToPage(
+                  index,
+                  duration: Duration(milliseconds: 500),
+                  curve: Curves.easeInCubic,
+                ),
               ),
             ),
           ),
@@ -170,16 +195,16 @@ class _OnBoardingState extends State<OnBoarding> {
     );
   }
 
-  Container buildDot(int index, BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    return Container(
-      height: size.height * .015,
-      width: currentIndex == index ? 25 : 10,
-      margin: EdgeInsets.only(right: 5),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: ColorData.primaryVariant,
-      ),
-    );
-  }
+  // Container buildDot(int index, BuildContext context) {
+  //   var size = MediaQuery.of(context).size;
+  //   return Container(
+  //     height: size.height * .015,
+  //     width: currentIndex == index ? 25 : 10,
+  //     margin: EdgeInsets.only(right: 5),
+  //     decoration: BoxDecoration(
+  //       borderRadius: BorderRadius.circular(20),
+  //       color: ColorData.primary,
+  //     ),
+  //   );
+  // }
 }

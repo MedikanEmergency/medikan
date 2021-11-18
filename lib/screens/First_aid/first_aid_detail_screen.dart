@@ -44,8 +44,8 @@ class _DetailScreenState extends State<DetailScreen> {
                       effect: ExpandingDotsEffect(
                         dotColor: ColorData.primary,
                         activeDotColor: ColorData.primary,
-                        dotHeight: size.height * .02,
-                        dotWidth: size.height * .02,
+                        dotHeight: size.height * .01,
+                        dotWidth: size.height * .01,
                       ),
                       onDotClicked: (index) => _pageController.animateToPage(
                         index,

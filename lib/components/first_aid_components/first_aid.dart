@@ -104,24 +104,39 @@ class _FirstAidsState extends State<FirstAids> {
                 itemCount: _searchList.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  childAspectRatio: 0.8,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
+                  childAspectRatio: 0.83,
+                  mainAxisSpacing: 15,
+                  crossAxisSpacing: 15,
                 ),
-                itemBuilder: (context, index) {
-                  return ItemFirstAid(
-                    firstaids: _searchList[index],
-                    size: size,
-                    press: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailScreen(
-                          firstaids: firstaid[index],
-                        ),
-                      ),
+                itemBuilder: (context, index) => ItemFirstAid(
+                  firstaids: _searchList[index],
+                  size: size,
+                  press: () => Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      transitionDuration: Duration(seconds: 1),
+                      transitionsBuilder: (context, animation, animationTime, child) {
+                        animation = CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.ease
+                        );
+                        return FadeTransition(
+                          
+                          opacity: animation,
+                          child: child,
+                        );
+                      },
+                      pageBuilder: (context, animation, animationTime) {
+                        return DetailScreen(firstaids: firstaid[index]);
+                      }
                     ),
-                  );
-                },
+                    // MaterialPageRoute(
+                    //   builder: (context) => DetailScreen(
+                    //     firstaids: firstaid[index],
+                    //   ),
+                    // ),
+                  ),
+                ),
               ),
             ),
           ),

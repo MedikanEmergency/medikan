@@ -3,6 +3,7 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:medikan/screens/Onboarding/onboarding_screen.dart';
 import 'package:medikan/screens/chat%20screen/doctor_screen.dart';
 import 'package:medikan/screens/signup_screen.dart';
 import 'package:medikan/screens/sos_screen.dart';
@@ -27,7 +28,7 @@ class _MainScreenState extends State<MainScreen> {
     SafeArea(child: FirstAid()),
     SafeArea(child: DoctorScreen()),
     SafeArea(child: News()),
-    SafeArea(child: PersonalInfo()),
+    SafeArea(child: OnBoarding()),
   ];
   PageController? _pageController = PageController(initialPage: 0);
 
