@@ -9,5 +9,10 @@ class MemberModel {
   String phone;
   String pic;
   String relate;
-  MemberModel(this.name, this.phone, this.relate, this.pic);
+  MemberModel(
+    this.name,
+    this.phone,
+    this.relate,
+    this.pic,
+  );
 }

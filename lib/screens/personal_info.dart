@@ -1,4 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:medikan/models/auth_info.dart';
 import 'package:medikan/screens/Profile/add_family.dart';
 import 'package:medikan/screens/Profile/member_widget.dart';
 import 'package:medikan/screens/Profile/model_person.dart';
@@ -10,19 +14,6 @@ import './medical_info.dart';
 import 'Profile/family_provider.dart';
 import 'authenticate_screens/login.dart';
 
-class PersonalScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return //MultiProvider(providers: [
-        ChangeNotifierProvider<FamilyProviders>(
-      create: (_) {
-        return FamilyProviders();
-      },
-      child: PersonalInfo(),
-    );
-  }
-}
-
 class PersonalInfo extends StatefulWidget {
   bool edit;
   PersonalInfo({Key? key, this.edit = false}) : super(key: key);
@@ -32,12 +23,23 @@ class PersonalInfo extends StatefulWidget {
 }
 
 class _PersonalInfoState extends State<PersonalInfo> {
-  // @override
-  // State<StatefulWidget> createState() {
-  //   // TODO: implement createState
-  //   throw UnimplementedError();
-  // }
-  // List<MemberModel>? mem;
+  FirebaseFirestore _auth = Get.find<FirebaseFirestore>();
+  FirebaseAuth account = Get.find<FirebaseAuth>();
+  AuthInfo _state = Get.find<AuthInfo>();
+
+  List<MemberModel> family = [];
+  var collectionReference;
+  Future<void> _signOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
+  @override
+  void initState() {
+    collectionReference = _auth
+        .collection('account/' + account.currentUser!.uid + '/family_member')
+        .orderBy('name');
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +51,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
     final user_img =
         "https://wallup.net/wp-content/uploads/2017/11/23/438674-duck-yellow.jpg";
     // setState(() {});
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorData.secondary,
@@ -69,8 +72,10 @@ class _PersonalInfoState extends State<PersonalInfo> {
                     PopupMenuItem(
                       child: TextButton(
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => LoginScreen()));
+                          _signOut();
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => LoginScreen()));
                         },
                         child: Text("Đăng xuất"),
                       ),
@@ -114,15 +119,14 @@ class _PersonalInfoState extends State<PersonalInfo> {
                           alignment: Alignment.centerLeft,
                           child: ListTile(
                             title: Text(
-                              "Võ Hồng Phúc",
+                              _state.getName(),
+                              //"Võ Hồng Phúc",
                             ),
-                            subtitle: Text("0919813176"),
+                            subtitle: Text(
+                              _state.getPhone(),
+                              // "0919813176"
+                            ),
                           ),
-                          decoration: BoxDecoration(
-
-                              // boxShadow: BoxShadow({blurRadius: 2.5}),
-                              //TODO: đổ bóng
-                              ),
                         ),
                         flex: 8,
                       ),
@@ -171,16 +175,23 @@ class _PersonalInfoState extends State<PersonalInfo> {
                   ),
                 ),
               ),
-              Consumer<FamilyProviders>(
-                builder: (context, FamilyProviders data, child) {
-                  final mem = data.getMember;
+              StreamBuilder(
+                stream: collectionReference.snapshots(),
+                builder: (ctx, AsyncSnapshot<QuerySnapshot> snapShot) {
+                  if (snapShot.connectionState == ConnectionState.waiting)
+                    return Text("Waitting");
+                  var document = snapShot.data!.docs;
                   return Column(
-                      children: mem
-                          .map((e) =>
-                              MemberWidget(mem: e, index: mem.indexOf(e)))
-                          .toList());
+                    children: document
+                        .map((e) => MemberWidget(
+                            mem: MemberModel(
+                                e['name'], e['phone'], e['relation'], e['img']),
+                            key: Key(e.id)))
+                        .toList(),
+                  );
                 },
               ),
+
               ElevatedButton.icon(
                 label: Text(
                   "Thêm người thân",
@@ -198,7 +209,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 ),
                 style: ElevatedButton.styleFrom(
                   primary: Colors.white,
-                  shape: new RoundedRectangleBorder(
+                  shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(20.0),
                   ),
                 ),

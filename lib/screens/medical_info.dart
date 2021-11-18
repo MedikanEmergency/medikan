@@ -1,16 +1,17 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:medikan/screens/Profile/model_person.dart';
 import 'package:medikan/themes/theme_data.dart';
-import 'package:medikan/icons.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
-import './personal_info.dart';
 import 'Profile/model_person.dart';
 import 'Profile/ill_widget.dart';
 import 'Profile/ill_provider.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
+import 'package:medikan/models/auth_info.dart';
 
 class MedicalScreen extends StatelessWidget {
   @override
@@ -50,16 +51,30 @@ class _MedicalInfoState extends State<MedicalInfo> {
         .toList();
   }
 
+  FirebaseAuth _auth = Get.find<FirebaseAuth>();
+  FirebaseFirestore _store = Get.find<FirebaseFirestore>();
+  AuthInfo _state = Get.find<AuthInfo>();
+  var collectionReference;
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final videosState = Provider.of<IllProviders>(context);
-    userIll = videosState.userIll;
+  void initState() {
+    collectionReference = _store
+        .collection('account/' + _auth.currentUser!.uid + '/medical-info');
+
+    StreamBuilder(
+      stream: collectionReference.snapshots(),
+      builder: (ctx, AsyncSnapshot<QuerySnapshot> snapShot) {
+        if (snapShot.connectionState == ConnectionState.waiting)
+          return Text("Waitting");
+        var document = snapShot.data!.docs;
+        return Text("");
+      },
+    );
+    super.initState();
   }
 
   toggleEdit() {
     return (widget.edit)
-        ? Column(
+        ? Row(
             children: [
               TextButton(
                 onPressed: () {
@@ -76,8 +91,6 @@ class _MedicalInfoState extends State<MedicalInfo> {
                     });
                   },
                   child: Text("Hủy")),
-              //   ],
-              // )
             ],
           )
         : TextButton.icon(
@@ -94,17 +107,9 @@ class _MedicalInfoState extends State<MedicalInfo> {
             label: Text("Chỉnh sửa thông tin"));
   }
 
-  // rmv(int index) {
-  //   Provider.of<IllProviders>(context).removeIll(index);
-  //   setState(() {});
-  // }
   refresh() {
     setState(() {});
   }
-
-  // const Blood() {
-  //   return ;
-  // }
 
   String dropdownValue = "AB";
   String dropValue = "+";
@@ -293,7 +298,8 @@ class _MedicalInfoState extends State<MedicalInfo> {
                       Column(
                           children: Provider.of<IllProviders>(context)
                               .userIll
-                              .map((e) => Slidable(
+                              .map(
+                                (e) => Slidable(
                                   key: Key(userIll.indexOf(e).toString()),
                                   endActionPane: (widget.edit)
                                       ? ActionPane(
@@ -310,13 +316,27 @@ class _MedicalInfoState extends State<MedicalInfo> {
                                           ],
                                         )
                                       : null,
-                                  child: IllWidget(
-                                      selected: e, edit: widget.edit)))
+                                  child:
+                                      IllWidget(selected: e, edit: widget.edit),
+                                ),
+                              )
                               .toList()),
                     ],
                   );
                 },
               ),
+              Consumer<IllProviders>(
+                  builder: (context, IllProviders data, child) {
+                return (widget.edit)
+                    ? TextButton(
+                        onPressed: () {
+                          data.addIll("Huyết áp", "Mức nhẹ");
+                          refresh();
+                        },
+                        child: Text("Thêm một bệnh nền"),
+                      )
+                    : Text("");
+              }),
               toggleEdit(),
             ],
           ),

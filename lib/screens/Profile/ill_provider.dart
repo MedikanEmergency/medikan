@@ -11,6 +11,11 @@ class IllProviders extends ChangeNotifier {
     return userIll;
   }
 
+  setIll(List<IllModel> updated) {
+    userIll = updated;
+    notifyListeners();
+  }
+
 // function to add data to list of notes
   void addIll(String ill, String level) {
     IllModel newIll = new IllModel(ill, level);

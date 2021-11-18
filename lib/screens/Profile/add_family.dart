@@ -1,6 +1,12 @@
 // import 'dart:html';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:medikan/components/input-components/input_name.dart';
+import 'package:medikan/components/input-components/input_phone.dart';
+import 'package:medikan/models/auth_info.dart';
 import 'package:medikan/screens/Profile/family_provider.dart';
 import 'package:medikan/screens/Profile/model_person.dart';
 import 'package:medikan/screens/personal_info.dart';
@@ -28,43 +34,33 @@ class Family extends StatefulWidget {
 }
 
 class _FamilyState extends State<Family> {
-  String? _chosenValue = "Khác";
-  String _name = "hgjhj",
-      _phone = "fdgf",
-      _img =
-          "https://wallup.net/wp-content/uploads/2017/11/23/438674-duck-yellow.jpg";
-  // TextEditingController nameController, phoneController;
+  String img_link =
+      "https://wallup.net/wp-content/uploads/2017/11/23/438674-duck-yellow.jpg";
+  TextEditingController _name = TextEditingController(),
+      _phone = TextEditingController(),
+      _img = TextEditingController();
+  FirebaseFirestore user = Get.find<FirebaseFirestore>();
+  FirebaseAuth account = Get.find<FirebaseAuth>();
+  AuthInfo thisUser = Get.find<AuthInfo>();
 
-// File _image;
-
-// Future cameraImage() async {
-//   var image = await ImagePicker.pickImage(
-//     source: ImageSource.camera,
-//     maxHeight: 240.0,
-//     maxWidth: 240.0,
-//   );
-
-//   setState(() {
-//     _image = image;
-//   });
-// }
+  String _chosenValue = 'Cha/mẹ';
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-
+    var isNameError = false;
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: ColorData.secondary,
         actions: [
           IconButton(
-              onPressed: () {},
-              icon: Icon(
-                MyFlutterApp.setting,
-                color: ColorData.onPrimary,
-              ))
-          //TODO sublist for icon
+            onPressed: () {},
+            icon: Icon(
+              MyFlutterApp.setting,
+              color: ColorData.onPrimary,
+            ),
+          ),
         ],
         title: Text(
           "Thêm người thân",
@@ -78,86 +74,27 @@ class _FamilyState extends State<Family> {
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Column(
               children: [
-                Container(
-                  padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Họ và tên",
-                      style: FontStyleData.Title_Bold_20,
-                    ),
-                  ),
-                ),
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                  child: TextFormField(
-                    // controller: nameController,
-                    obscureText: false,
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0x00000000),
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0x00000000),
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                      contentPadding:
-                          EdgeInsetsDirectional.fromSTEB(20, 24, 20, 24),
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Số điện thoại",
-                      style: FontStyleData.Title_Bold_20,
-                    ),
-                  ),
-                ),
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                    child: InputName(
+                      nameController: _name,
+                      isNameError: isNameError,
+                      removeNameWarning: () {
+                        isNameError = !isNameError;
+                      },
+                      errorMsg: "Họ và tên sai cú pháp",
+                    )),
+
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                  child: TextFormField(
-                      // controller: phoneController,
-                      obscureText: false,
-                      decoration: InputDecoration(
-                        hintText: '10 chữ số',
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color(0x00000000),
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color(0x00000000),
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                        contentPadding:
-                            EdgeInsetsDirectional.fromSTEB(20, 24, 20, 24),
-                      ),
-                      style: FontStyleData.Subtitle_light_24.apply(
-                        fontFamily: 'Lexend Deca',
-                        color: Color(0xFF14181B),
-                        // fontSize: 14,
-                        // fontWeightDelta:FontWeight.normal,
-                      )),
-                ),
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                    child: InputPhone(
+                      phoneController: _phone,
+                      isPhoneError: false,
+                      removeWarning: () {
+                        isNameError = !isNameError;
+                      },
+                      errorMessage: "Hãy kiểm tra số điện thoại",
+                    )),
                 Container(
                   padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
                   child: Align(
@@ -195,7 +132,7 @@ class _FamilyState extends State<Family> {
                       );
                     }).toList(),
                     onChanged: (String? value) {
-                      _chosenValue = value;
+                      _chosenValue = value!;
                     },
                   ),
                 ),
@@ -246,15 +183,17 @@ class _FamilyState extends State<Family> {
                   builder: (context, FamilyProviders data, child) {
                     return TextButton(
                       onPressed: () {
-                        data.addMember(
-                            MemberModel("name", "phone", "relate", "pic")
-                            //MemberModel(_name, _phone, _chosenValue!, _img)
-                            );
-                        print(data.getMember);
+                        user
+                            .collection('account/' +
+                                account.currentUser!.uid +
+                                '/family_member')
+                            .add({
+                          "name": _name.text,
+                          "phone": _phone.text,
+                          "img": img_link,
+                          "relation": _chosenValue,
+                        });
                         Navigator.of(context).pop();
-                        // print(data.member);
-                        // push(MaterialPageRoute(
-                        //     builder: (context) => PersonalScreen()));
                       },
                       child: Text("Xác nhận"),
                     );
