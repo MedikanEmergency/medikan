@@ -3,6 +3,8 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:medikan/models/auth_info.dart';
 import 'package:medikan/screens/Onboarding/onboarding_screen.dart';
 import 'package:medikan/screens/authenticate_screens/forgot-password/forgot_password.dart';
 import 'package:medikan/screens/authenticate_screens/forgot-password/new_password.dart';
@@ -27,13 +29,20 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  final _userState = Get.find<AuthInfo>();
   int _selectedPage = 0;
-  final List<Widget> _pages = [
-    SafeArea(child: FirstAid()),
-    SafeArea(child: DoctorScreen()),
-    SafeArea(child: News()),
-    SafeArea(child: PersonalInfo()),
-  ];
+  List<Widget> _pages = [];
+  @override
+  void initState() {
+    _pages = [
+      SafeArea(child: FirstAid()),
+      SafeArea(child: _userState.getDoctor() ? DoctorScreen() : Chat()),
+      SafeArea(child: News()),
+      SafeArea(child: PersonalInfo()),
+    ];
+    super.initState();
+  }
+
   PageController? _pageController = PageController(initialPage: 0);
 
   void _onTapPage(int index) {
