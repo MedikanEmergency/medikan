@@ -3,6 +3,7 @@ import 'package:medikan/models/auth_info.dart';
 import 'package:medikan/screens/Profile/family_provider.dart';
 import 'package:medikan/screens/Profile/model_person.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:medikan/screens/main_screen.dart';
 import 'package:medikan/themes/theme_data.dart';
 import 'package:provider/provider.dart';
 import 'model_person.dart';
@@ -63,11 +64,19 @@ class MemberState extends State<MemberWidget> {
                 child: Container(
                   alignment: Alignment.centerLeft,
                   child: ListTile(
-                    title: Row(children: [
-                      Text(widget.mem.name, style: FontStyleData.Title_Bold_20),
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
                       Text(
-                        " (" + widget.mem.relate + ")",
+                        widget.mem.name,
+                        style: FontStyleData.Title_Bold_20,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        "(" + widget.mem.relate + ")",
                         style: FontStyleData.Mini_Title_Light_16,
+                        overflow: TextOverflow.ellipsis,
                       )
                     ]),
                     subtitle: Text(widget.mem.phone,
@@ -88,7 +97,7 @@ class MemberState extends State<MemberWidget> {
                   icon: const Icon(
                     Icons.delete,
                     color: Colors.black,
-                    size: 36.0,
+                    size: 30.0,
                   )),
             ],
           ),
