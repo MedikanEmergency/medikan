@@ -24,6 +24,45 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: size.height * .1,
+        leadingWidth: size.width,
+        leading: Container(
+          margin: EdgeInsets.symmetric(vertical: size.height * .015),
+          padding: EdgeInsets.only(top: size.height * .01),
+          child: ElevatedButton.icon(
+            icon: Padding(
+              padding: EdgeInsets.only(right: size.width * .01),
+              child: Icon(
+                MyFlutterApp.return_icon,
+                size: 16,
+                color: Colors.black,
+              ),
+            ),
+            label: Text(
+              'Quay về',
+              style: TextStyle(
+                color: ColorData.onPrimary,
+                fontSize: 16,
+                letterSpacing: 0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            onPressed: () => Navigator.pop(context),
+            style: ElevatedButton.styleFrom(
+              elevation: ElevationData.elevated10,
+              primary: ColorData.secondary,
+              shape: new RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.only(
+                topRight: Radius.circular(16),
+                bottomRight: Radius.circular(16),
+              )),
+            ),
+          ),
+        ),
+        backgroundColor: ColorData.background,
+        elevation: 0,
+      ),
       body: SafeArea(
         child: Stack(
           children: [

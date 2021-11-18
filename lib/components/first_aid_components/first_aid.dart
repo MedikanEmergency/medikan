@@ -114,7 +114,7 @@ class _FirstAidsState extends State<FirstAids> {
                   press: () => Navigator.push(
                     context,
                     PageRouteBuilder(
-                      transitionDuration: Duration(seconds: 1),
+                      transitionDuration: Duration(milliseconds: 700),
                       transitionsBuilder: (context, animation, animationTime, child) {
                         animation = CurvedAnimation(
                           parent: animation,

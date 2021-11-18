@@ -171,7 +171,7 @@ class _OnBoardingState extends State<OnBoarding> {
           //   ),
           // ),
           Container(
-            padding: EdgeInsets.all(10),
+            padding: EdgeInsets.only(bottom: size.height * .01),
             child: Center(
               child: SmoothPageIndicator(
                 controller: _controller,
