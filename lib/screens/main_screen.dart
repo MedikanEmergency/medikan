@@ -71,7 +71,7 @@ class _MainScreenState extends State<MainScreen> {
       SafeArea(child: FirstAid()),
       SafeArea(child: _userState.getDoctor() ? DoctorScreen() : Chat()),
       SafeArea(child: News()),
-      SafeArea(child: PersonalScreen()),
+      SafeArea(child: PersonalInfo()),
     ];
     super.initState();
   }

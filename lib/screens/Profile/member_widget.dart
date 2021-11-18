@@ -9,9 +9,10 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 class MemberWidget extends StatefulWidget {
   MemberModel mem;
-  int index;
-  MemberWidget({Key? key, required this.mem, required this.index})
-      : super(key: key);
+  MemberWidget({
+    Key? key,
+    required this.mem,
+  }) : super(key: key);
 
   @override
   MemberState createState() => MemberState();
@@ -66,9 +67,14 @@ class MemberState extends State<MemberWidget> {
                 // flex: 7,
               ),
               IconButton(
-                  onPressed: () {
-                    // Provider.of<FamilyProviders>(context)
-                    //     .removeMember(widget.index);
+                  onPressed: () async {
+                    print(widget.key.toString());
+                    await user
+                        .collection('account/' +
+                            account.currentUser!.uid +
+                            '/family_member')
+                        .doc(widget.key.toString())
+                        .delete();
                     setState(() {});
                   },
                   icon: const Icon(
