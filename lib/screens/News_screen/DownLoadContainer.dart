@@ -19,10 +19,25 @@ class _DownLoadContainerState extends State<DownloadContainer> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ArticleScreen(
-                  article: widget.article,
-                )));
+        Navigator.of(context).push(
+          PageRouteBuilder(
+              transitionDuration: Duration(milliseconds: 700),
+              transitionsBuilder: (context, animation, animationTime, child) {
+                animation =
+                    CurvedAnimation(parent: animation, curve: Curves.ease);
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+              pageBuilder: (context, animation, animationTime) {
+                return ArticleScreen(article: widget.article);
+              }),
+        );
+        // MaterialPageRoute(
+        //   builder: (context) => ArticleScreen(
+        //         article: widget.article,
+        //       )));
       },
       child: Container(
         height: 130,
@@ -54,13 +69,11 @@ class _DownLoadContainerState extends State<DownloadContainer> {
                   image: AssetImage(widget.article.image),
                 ),
               ),
-              
             ),
             SizedBox(
               width: 15,
             ),
             Expanded(
-              
               child: Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: Column(
@@ -79,23 +92,38 @@ class _DownLoadContainerState extends State<DownloadContainer> {
                           ),
                         ),
                         Positioned(
-                          top:0.0,
+                          top: 0.0,
                           right: 0.0,
                           child: new IconButton(
-                          icon: Icon(Icons.delete,color: Colors.grey),
-                          padding: EdgeInsets.zero,
-                          constraints: BoxConstraints(),
-                          onPressed: () {
-                            Download.remove(widget.article);
-                            Navigator.of(context).pop(context);
+                              icon: Icon(Icons.delete, color: Colors.grey),
+                              padding: EdgeInsets.zero,
+                              constraints: BoxConstraints(),
+                              onPressed: () {
+                                Download.remove(widget.article);
+                                Navigator.of(context).pop(context);
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(
-                                    builder: (context) => DownloadPage(),
-                                  ),
+                                  PageRouteBuilder(
+                                      transitionDuration:
+                                          Duration(milliseconds: 700),
+                                      transitionsBuilder: (context, animation,
+                                          animationTime, child) {
+                                        animation = CurvedAnimation(
+                                            parent: animation,
+                                            curve: Curves.ease);
+                                        return FadeTransition(
+                                          opacity: animation,
+                                          child: child,
+                                        );
+                                      },
+                                      pageBuilder:
+                                          (context, animation, animationTime) {
+                                        return DownloadPage();
+                                      }),
+                                  // MaterialPageRoute(
+                                  //   builder: (context) => DownloadPage(),
                                 );
-                          }
-                          ),
+                              }),
                         )
                       ],
                     ),
@@ -129,40 +157,40 @@ class _DownLoadContainerState extends State<DownloadContainer> {
                           ],
                         ),
                         IconButton(
-                            onPressed: () {
-                                // Download.add(widget.article);
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) => DownloadPage(),
-                                //   ),
-                                // );
-                              },
-                              icon: const Icon(
-                                MyFlutterApp.download,
-                                size: 19,
-                                color: ColorData.secondaryVariant,
-                            ),
-                            padding: EdgeInsets.zero,
-                            constraints: BoxConstraints(),
+                          onPressed: () {
+                            // Download.add(widget.article);
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => DownloadPage(),
+                            //   ),
+                            // );
+                          },
+                          icon: const Icon(
+                            MyFlutterApp.download,
+                            size: 19,
+                            color: ColorData.secondaryVariant,
+                          ),
+                          padding: EdgeInsets.zero,
+                          constraints: BoxConstraints(),
                         ),
                         IconButton(
-                            onPressed: () {
-                                // ViewLater.add(widget.article);
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) => ViewlaterPage(),
-                                //   ),
-                                // );
-                              },
-                              icon: const Icon(
-                                MyFlutterApp.clock,
-                                size: 19,
-                                color: ColorData.secondaryVariant,
-                            ),
-                            padding: EdgeInsets.zero,
-                            constraints: BoxConstraints(),
+                          onPressed: () {
+                            // ViewLater.add(widget.article);
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => ViewlaterPage(),
+                            //   ),
+                            // );
+                          },
+                          icon: const Icon(
+                            MyFlutterApp.clock,
+                            size: 19,
+                            color: ColorData.secondaryVariant,
+                          ),
+                          padding: EdgeInsets.zero,
+                          constraints: BoxConstraints(),
                         ),
                       ],
                     ),
