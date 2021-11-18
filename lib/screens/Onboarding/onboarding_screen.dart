@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medikan/screens/First_aid/first_aid_screen.dart';
+import 'package:medikan/screens/authenticate_screens/login.dart';
+import 'package:medikan/screens/authenticate_screens/signup_screen.dart';
 import '../../themes/theme_data.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:medikan/models/onboarding.dart';
@@ -49,7 +51,23 @@ class _OnBoardingState extends State<OnBoarding> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () => Navigator.pushReplacement(
+                        context,
+                        PageRouteBuilder(
+                            transitionDuration: Duration(milliseconds: 700),
+                            transitionsBuilder:
+                                (context, animation, animationTime, child) {
+                              animation = CurvedAnimation(
+                                  parent: animation, curve: Curves.ease);
+                              return FadeTransition(
+                                opacity: animation,
+                                child: child,
+                              );
+                            },
+                            pageBuilder: (context, animation, animationTime) {
+                              return SignUpScreen();
+                            }),
+                      ),
                       child: const Text(
                         'Skip',
                         style: TextStyle(
@@ -116,7 +134,23 @@ class _OnBoardingState extends State<OnBoarding> {
             ),
             child: currentIndex == contents.length - 1
                 ? ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () => Navigator.pushReplacement(
+                      context,
+                      PageRouteBuilder(
+                          transitionDuration: Duration(milliseconds: 700),
+                          transitionsBuilder:
+                              (context, animation, animationTime, child) {
+                            animation = CurvedAnimation(
+                                parent: animation, curve: Curves.ease);
+                            return FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            );
+                          },
+                          pageBuilder: (context, animation, animationTime) {
+                            return SignUpScreen();
+                          }),
+                    ),
                     child: FittedBox(
                       fit: BoxFit.fitWidth,
                       child: Text(
@@ -149,12 +183,31 @@ class _OnBoardingState extends State<OnBoarding> {
                         'Đã có tài khoản ?',
                         style: FontStyleData.Paragraph_Regular_20,
                       ),
-                      Text(
-                        'Đăng nhập',
-                        style: TextStyle(
-                          color: ColorData.clickable,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                      GestureDetector(
+                        onTap: () => Navigator.pushReplacement(
+                          context,
+                          PageRouteBuilder(
+                              transitionDuration: Duration(milliseconds: 700),
+                              transitionsBuilder:
+                                  (context, animation, animationTime, child) {
+                                animation = CurvedAnimation(
+                                    parent: animation, curve: Curves.ease);
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: child,
+                                );
+                              },
+                              pageBuilder: (context, animation, animationTime) {
+                                return LoginScreen();
+                              }),
+                        ),
+                        child: Text(
+                          'Đăng nhập',
+                          style: TextStyle(
+                            color: ColorData.clickable,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],
