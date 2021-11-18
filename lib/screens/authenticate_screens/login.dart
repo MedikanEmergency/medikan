@@ -94,9 +94,22 @@ class _LoginScreenState extends State<LoginScreen> {
           _userState.setPassword(_password.text);
 
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (_) => MainScreen(),
-            ),
+            PageRouteBuilder(
+                transitionDuration: Duration(milliseconds: 700),
+                transitionsBuilder: (context, animation, animationTime, child) {
+                  animation =
+                      CurvedAnimation(parent: animation, curve: Curves.ease);
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                },
+                pageBuilder: (context, animation, animationTime) {
+                  return MainScreen();
+                }),
+            // MaterialPageRoute(
+            //   builder: (_) => MainScreen(),
+            // ),
           );
         }
       } on FirebaseAuthException catch (e) {
@@ -236,8 +249,24 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => SignUpScreen()));
+                        Navigator.of(context).pushReplacement(
+                          PageRouteBuilder(
+                              transitionDuration: Duration(milliseconds: 700),
+                              transitionsBuilder:
+                                  (context, animation, animationTime, child) {
+                                animation = CurvedAnimation(
+                                    parent: animation, curve: Curves.ease);
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: child,
+                                );
+                              },
+                              pageBuilder: (context, animation, animationTime) {
+                                return SignUpScreen();
+                              }),
+                        );
+                        // MaterialPageRoute(
+                        //   builder: (context) => SignUpScreen()));
                       },
                       child: Text(
                         "Đăng kí",

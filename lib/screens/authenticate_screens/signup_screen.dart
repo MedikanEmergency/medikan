@@ -111,11 +111,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
           authState.setPassword(_password.text);
           authState.setName(_name.text);
           Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => OtpScreen(
-                verificationId: verificationId,
-              ),
-            ),
+            PageRouteBuilder(
+                transitionDuration: Duration(milliseconds: 700),
+                transitionsBuilder: (context, animation, animationTime, child) {
+                  animation =
+                      CurvedAnimation(parent: animation, curve: Curves.ease);
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                },
+                pageBuilder: (context, animation, animationTime) {
+                  return OtpScreen(verificationId: verificationId);
+                }),
+            // MaterialPageRoute(
+            //   builder: (_) => OtpScreen(
+            //     verificationId: verificationId,
+            //   ),
+            // ),
           );
         },
         codeAutoRetrievalTimeout: (String verificationId) {},
@@ -258,8 +271,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => LoginScreen()));
+                        Navigator.of(context).pushReplacement(
+                          PageRouteBuilder(
+                              transitionDuration: Duration(milliseconds: 700),
+                              transitionsBuilder:
+                                  (context, animation, animationTime, child) {
+                                animation = CurvedAnimation(
+                                    parent: animation, curve: Curves.ease);
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: child,
+                                );
+                              },
+                              pageBuilder: (context, animation, animationTime) {
+                                return LoginScreen();
+                              }),
+                        );
+                        // MaterialPageRoute(
+                        //   builder: (context) => LoginScreen()));
                       },
                       child: Text(
                         "Đăng nhập",
