@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:medikan/components/input-components/input_medical.dart';
 import 'package:medikan/components/input-components/input_phone.dart';
+import 'package:medikan/icons.dart';
 import 'package:medikan/screens/Profile/model_person.dart';
 import 'package:medikan/themes/theme_data.dart';
 import 'package:provider/provider.dart';

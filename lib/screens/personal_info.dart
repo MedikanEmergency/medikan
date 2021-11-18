@@ -209,7 +209,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                         .map((e) => MemberWidget(
                             mem: MemberModel(
                                 e['name'], e['phone'], e['relation'], e['img']),
-                            key: Key(e.id)))
+                            id: e.id))
                         .toList(),
                   );
                 },
