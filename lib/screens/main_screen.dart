@@ -24,7 +24,7 @@ class _MainScreenState extends State<MainScreen> {
     FirstAid(),
     Chat(),
     News(),
-    PersonalInfo(),
+    PersonalScreen(),
   ];
   PageController? _pageController = PageController(initialPage: 0);
 
