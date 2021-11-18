@@ -89,7 +89,15 @@ class _LoginScreenState extends State<LoginScreen> {
             print(temp);
             _userState.setDoctor(temp == 'true');
           });
-
+          await _store
+              .collection('conversations')
+              .doc('${_auth.currentUser!.uid}')
+              .get()
+              .then((value) {
+            var name = value.data()!['name'];
+            print(name);
+            _userState.setName(name);
+          });
           _userState.setPhone(_phone.text);
           _userState.setPassword(_password.text);
 
