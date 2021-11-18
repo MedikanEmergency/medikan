@@ -43,12 +43,25 @@ class _ForgotPwdScreenState extends State<ForgotPwdScreen> {
     setState(() {});
     if (isValid) {
       Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (ctx) => LoginScreen(
-              // num: _phone.text,
-              // verificationId: "123",
-              ),
-        ),
+        PageRouteBuilder(
+            transitionDuration: Duration(milliseconds: 700),
+            transitionsBuilder: (context, animation, animationTime, child) {
+              animation =
+                  CurvedAnimation(parent: animation, curve: Curves.ease);
+              return FadeTransition(
+                opacity: animation,
+                child: child,
+              );
+            },
+            pageBuilder: (context, animation, animationTime) {
+              return LoginScreen();
+            }),
+        // MaterialPageRoute(
+        //   builder: (ctx) => LoginScreen(
+        //       // num: _phone.text,
+        //       // verificationId: "123",
+        //       ),
+        // ),
       );
     }
   }

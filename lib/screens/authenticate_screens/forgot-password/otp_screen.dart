@@ -101,9 +101,22 @@ class _OtpScreenState extends State<OtpScreen> {
         createAccountDocument(authCredential.user?.uid);
         Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (context) => LoginScreen(),
-          ),
+          PageRouteBuilder(
+              transitionDuration: Duration(milliseconds: 700),
+              transitionsBuilder: (context, animation, animationTime, child) {
+                animation =
+                    CurvedAnimation(parent: animation, curve: Curves.ease);
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+              pageBuilder: (context, animation, animationTime) {
+                return LoginScreen();
+              }),
+          // MaterialPageRoute(
+          //   builder: (context) => LoginScreen(),
+          // ),
         );
       }
     } on FirebaseAuthException catch (e) {
