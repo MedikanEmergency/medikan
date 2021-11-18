@@ -20,9 +20,9 @@ class CountDown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(30),
-      width: width * 0.75,
-      height: width * 0.75,
+      padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
+      width: width * 0.9,
+      height: width * 0.9,
       decoration: BoxDecoration(
         gradient: RadialGradient(
           colors: [
@@ -68,7 +68,7 @@ class CountDown extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(360),
                 ),
-                fixedSize: Size(width * 0.4, height * 0.05),
+                fixedSize: Size(width * 0.6, height * 0.075),
                 elevation: 10),
           )
         ],
