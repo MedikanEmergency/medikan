@@ -19,10 +19,26 @@ class _ForYouContainerState extends State<ForYouContainer> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ArticleScreen(
-                  article: widget.article,
-                )));
+        Navigator.of(context).push(
+          PageRouteBuilder(
+              transitionDuration: Duration(milliseconds: 700),
+              transitionsBuilder: (context, animation, animationTime, child) {
+                animation =
+                    CurvedAnimation(parent: animation, curve: Curves.ease);
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+              pageBuilder: (context, animation, animationTime) {
+                return ArticleScreen(article: widget.article);
+              }),
+          // MaterialPageRoute(
+          //   builder: (context) => ArticleScreen(
+          //     article: widget.article,
+          //   ),
+          // ),
+        );
       },
       child: Container(
         height: 130,
@@ -118,40 +134,40 @@ class _ForYouContainerState extends State<ForYouContainer> {
                           ],
                         ),
                         IconButton(
-                            onPressed: () {
-                                Download.add(widget.article);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => DownloadPage(),
-                                  ),
-                                );
-                              },
-                              icon: const Icon(
-                                MyFlutterApp.download,
-                                size: 19,
-                                color: ColorData.secondaryVariant,
-                            ),
-                            padding: EdgeInsets.zero,
-                            constraints: BoxConstraints(),
+                          onPressed: () {
+                            Download.add(widget.article);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DownloadPage(),
+                              ),
+                            );
+                          },
+                          icon: const Icon(
+                            MyFlutterApp.download,
+                            size: 19,
+                            color: ColorData.secondaryVariant,
+                          ),
+                          padding: EdgeInsets.zero,
+                          constraints: BoxConstraints(),
                         ),
                         IconButton(
-                            onPressed: () {
-                                ViewLater.add(widget.article);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ViewlaterPage(),
-                                  ),
-                                );
-                              },
-                              icon: const Icon(
-                                MyFlutterApp.clock,
-                                size: 19,
-                                color: ColorData.secondaryVariant,
-                            ),
-                            padding: EdgeInsets.zero,
-                            constraints: BoxConstraints(),
+                          onPressed: () {
+                            ViewLater.add(widget.article);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ViewlaterPage(),
+                              ),
+                            );
+                          },
+                          icon: const Icon(
+                            MyFlutterApp.clock,
+                            size: 19,
+                            color: ColorData.secondaryVariant,
+                          ),
+                          padding: EdgeInsets.zero,
+                          constraints: BoxConstraints(),
                         ),
                       ],
                     ),

@@ -19,34 +19,34 @@ class PageViewFA extends StatelessWidget {
           itemBuilder: (context, index) {
             return Stack(
               children: <Widget>[
-                Container(
-                  padding: EdgeInsets.only(top: size.height * .02),
-                  child: ElevatedButton.icon(
-                    icon: Icon(
-                      MyFlutterApp.return_icon,
-                      size: 16,
-                      color: Colors.black,
-                    ),
-                    label: Text(
-                      'Quay về',
-                      style: FontStyleData.Button_bold_27,
-                    ),
-                    onPressed: () => Navigator.pop(context),
-                    style: ElevatedButton.styleFrom(
-                      elevation: 15,
-                      primary: ColorData.secondary,
-                      shape: new RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.only(
-                        topRight: Radius.circular(16),
-                        bottomRight: Radius.circular(16),
-                      )),
-                    ),
-                  ),
-                ),
+                // Container(
+                //   padding: EdgeInsets.only(top: size.height * .02),
+                //   child: ElevatedButton.icon(
+                //     icon: Icon(
+                //       MyFlutterApp.return_icon,
+                //       size: 16,
+                //       color: Colors.black,
+                //     ),
+                //     label: Text(
+                //       'Quay về',
+                //       style: FontStyleData.Button_bold_27,
+                //     ),
+                //     onPressed: () => Navigator.pop(context),
+                //     style: ElevatedButton.styleFrom(
+                //       elevation: 15,
+                //       primary: ColorData.secondary,
+                //       shape: new RoundedRectangleBorder(
+                //           borderRadius: new BorderRadius.only(
+                //         topRight: Radius.circular(16),
+                //         bottomRight: Radius.circular(16),
+                //       )),
+                //     ),
+                //   ),
+                // ),
                 Container(
                   padding: EdgeInsets.only(
-                    top: size.height * .1,
-                    bottom: size.height * .1,
+                    top: size.height * .05,
+                    bottom: size.height * .05,
                   ),
                   child: Align(
                     alignment: Alignment.topCenter,
@@ -60,7 +60,7 @@ class PageViewFA extends StatelessWidget {
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.only(
-                        top: size.height * .17,
+                        top: size.height * .1,
                         bottom: size.height * .05,
                       ),
                       child: Align(
