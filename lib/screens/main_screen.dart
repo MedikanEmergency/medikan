@@ -32,7 +32,7 @@ class _MainScreenState extends State<MainScreen> {
     SafeArea(child: FirstAid()),
     SafeArea(child: DoctorScreen()),
     SafeArea(child: News()),
-    SafeArea(child: PersonalInfo()),
+    SafeArea(child: PersonalScreen()),
   ];
   PageController? _pageController = PageController(initialPage: 0);
 
