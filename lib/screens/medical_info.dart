@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:medikan/components/input-components/input_medical.dart';
+import 'package:medikan/components/input-components/input_phone.dart';
 import 'package:medikan/screens/Profile/model_person.dart';
 import 'package:medikan/themes/theme_data.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +29,7 @@ class MedicalScreen extends StatelessWidget {
 
 class MedicalInfo extends StatefulWidget {
   bool edit;
-  MedicalInfo({Key? key, this.edit = false}) : super(key: key);
+  MedicalInfo({Key? key, this.edit = true}) : super(key: key);
 
   @override
   _MedicalInfoState createState() => _MedicalInfoState();
@@ -111,12 +113,21 @@ class _MedicalInfoState extends State<MedicalInfo> {
     setState(() {});
   }
 
+  List<TextEditingController> _medicalController = [
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+  ];
+
   String dropdownValue = "AB";
   String dropValue = "+";
   List<int> idx = [0, 1, 2, 3, 4, 5];
   List<String> value = ["", "", "", "", "", ""];
   List<String> header = [
-    "Chiều cao (m)",
+    "Chiều cao (cm)",
     "Cân nặng (kg)",
     "Huyết áp (mmHg)",
     "Nhịp tim",
@@ -134,151 +145,190 @@ class _MedicalInfoState extends State<MedicalInfo> {
           scrollDirection: Axis.vertical,
           child: Column(
             children: [
-              Row(
+              Stack(
                 children: [
-                  Column(children: [
-                    Align(
-                      heightFactor: 3,
-                      alignment: Alignment.topLeft,
+                  Align(
+                    heightFactor: 3,
+                    alignment: Alignment.topLeft,
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: height * .015),
+                      padding: EdgeInsets.only(top: height * .01),
                       child: ElevatedButton.icon(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                          // Navigator.of(context).push(MaterialPageRoute(
-                          //     builder: (context) => PersonalScreen()));
-                        },
-                        icon: Icon(Icons.reset_tv_rounded),
-                        label: Text("Quay về"),
+                        icon: Padding(
+                          padding: EdgeInsets.only(right: width * .01),
+                          child: Icon(
+                            MyFlutterApp.return_icon,
+                            size: 16,
+                            color: Colors.black,
+                          ),
+                        ),
+                        label: Text(
+                          'Quay về',
+                          style: TextStyle(
+                            color: ColorData.onPrimary,
+                            fontSize: 16,
+                            letterSpacing: 0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        onPressed: () => Navigator.pop(context),
+                        style: ElevatedButton.styleFrom(
+                          elevation: ElevationData.elevated10,
+                          primary: ColorData.secondary,
+                          shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.only(
+                            topRight: Radius.circular(16),
+                            bottomRight: Radius.circular(16),
+                          )),
+                        ),
                       ),
                     ),
-                  ]),
-                  Column(children: [
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        user_img,
-                      ),
-                      radius: 50.0,
+                    // child: ElevatedButton.icon(
+                    //   onPressed: () {
+                    //     Navigator.of(context).pop();
+                    //     // Navigator.of(context).push(MaterialPageRoute(
+                    //     //     builder: (context) => PersonalScreen()));
+                    //   },
+                    //   icon: Icon(Icons.reset_tv_rounded),
+                    //   label: Text("Quay về"),
+                    // ),
+                  ),
+                  Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(top: height * .03),
+                      child: Column(children: [
+                        CircleAvatar(
+                          backgroundImage: NetworkImage(
+                            user_img,
+                          ),
+                          radius: 70.0,
+                        ),
+                        Text(
+                          "Võ Hồng Phúc",
+                          style: FontStyleData.H3_bold_36,
+                        ),
+                        Text("0919813156",
+                            style: FontStyleData.Subtitle_light_24),
+                      ]),
                     ),
-                    Text(
-                      "Võ Hồng Phúc",
-                      style: FontStyleData.H3_bold_36,
-                    ),
-                    Text("0919813156", style: FontStyleData.Subtitle_light_24),
-                  ]),
+                  ),
                   //Expanded(flex: 2, child: Container()),
                 ],
               ),
               GridView.count(
                   physics: NeverScrollableScrollPhysics(),
                   crossAxisCount: 2,
-                  crossAxisSpacing: 20,
+                  crossAxisSpacing: 15,
                   mainAxisSpacing: 10.0,
                   padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                   childAspectRatio: (MediaQuery.of(context).size.width * 0.9) /
-                      (MediaQuery.of(context).size.height * 0.9 / 4), //4
+                      (MediaQuery.of(context).size.height * 0.9 / 5), //4
                   shrinkWrap: true,
                   children: idx
-                      .map((index) => (index != 4)
-                          ? Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(width: 1, color: Colors.red),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10.0),
-                                ),
-                              ),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    header[index],
-                                    style: FontStyleData.Paragraph_Regular_20,
-                                    textAlign: TextAlign.left,
+                      .map((index) => (index < 4)
+                          ? InputMedical(
+                              phoneController: _medicalController[index],
+                              isPhoneError: false,
+                              errorMessage: "",
+                              removeWarning: () {},
+                              label: header[index],
+                              inputType: 'number',
+                              enabled: widget.edit,
+                            )
+                          : (index == 5)
+                              ? InputMedical(
+                                  phoneController: _medicalController[index],
+                                  isPhoneError: false,
+                                  errorMessage: "",
+                                  removeWarning: () {},
+                                  label: header[index],
+                                  inputType: 'text',
+                                  enabled: widget.edit,
+                                )
+                              : Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      width: 0.5,
+                                      color: ColorData.onPrimary,
+                                    ),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(5.0),
+                                    ),
                                   ),
-                                  TextField(
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                      ),
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                      ),
-                                      enabled: widget.edit,
-                                      onChanged: (newvalue) => setState(() {
-                                            value[index] = newvalue;
-                                          }))
-                                ],
-                              ))
-                          : Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(width: 1, color: Colors.red),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10.0),
-                                ),
-                              ),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    "Nhóm máu:",
-                                    style: FontStyleData.Paragraph_Regular_20,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                                  child: Column(
                                     children: [
-                                      DropdownButton<String>(
-                                        value: dropdownValue,
-                                        iconSize: 24,
-                                        elevation: 16,
-                                        style: const TextStyle(
-                                            color: Colors.deepPurple),
-                                        underline: Container(
-                                          height: 2,
-                                          color: Colors.deepPurpleAccent,
+                                      Padding(
+                                        padding:
+                                            EdgeInsets.only(top: height * .005),
+                                        child: Text(
+                                          "Nhóm máu:",
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.normal,
+                                          ),
                                         ),
-                                        onChanged: (widget.edit)
-                                            ? (String? newValue) {
-                                                setState(() {
-                                                  dropdownValue = newValue!;
-                                                });
-                                              }
-                                            : null,
-                                        items: <String>['A', 'B', 'AB', 'O']
-                                            .map<DropdownMenuItem<String>>(
-                                                (String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(value),
-                                          );
-                                        }).toList(),
                                       ),
-                                      DropdownButton<String>(
-                                        value: dropValue,
-                                        iconSize: 24,
-                                        elevation: 16,
-                                        style: const TextStyle(
-                                            color: Colors.deepPurple),
-                                        underline: Container(
-                                          height: 2,
-                                          color: Colors.deepPurpleAccent,
-                                        ),
-                                        onChanged: (widget.edit)
-                                            ? (String? newValue) {
-                                                setState(() {
-                                                  dropValue = newValue!;
-                                                });
-                                              }
-                                            : null,
-                                        items: <String>['+', '-', ' ']
-                                            .map<DropdownMenuItem<String>>(
-                                                (String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(value),
-                                          );
-                                        }).toList(),
-                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          DropdownButton<String>(
+                                            value: dropdownValue,
+                                            iconSize: 24,
+                                            elevation: 16,
+                                            style: const TextStyle(
+                                                color: Colors.deepPurple),
+                                            underline: Container(
+                                              height: 2,
+                                              color: Colors.deepPurpleAccent,
+                                            ),
+                                            onChanged: (widget.edit)
+                                                ? (String? newValue) {
+                                                    setState(() {
+                                                      dropdownValue = newValue!;
+                                                    });
+                                                  }
+                                                : null,
+                                            items: <String>['A', 'B', 'AB', 'O']
+                                                .map<DropdownMenuItem<String>>(
+                                                    (String value) {
+                                              return DropdownMenuItem<String>(
+                                                value: value,
+                                                child: Text(value),
+                                              );
+                                            }).toList(),
+                                          ),
+                                          DropdownButton<String>(
+                                            value: dropValue,
+                                            iconSize: 24,
+                                            elevation: 16,
+                                            style: const TextStyle(
+                                                color: Colors.deepPurple),
+                                            underline: Container(
+                                              height: 2,
+                                              color: Colors.deepPurpleAccent,
+                                            ),
+                                            onChanged: (widget.edit)
+                                                ? (String? newValue) {
+                                                    setState(() {
+                                                      dropValue = newValue!;
+                                                    });
+                                                  }
+                                                : null,
+                                            items: <String>['+', '-', ' ']
+                                                .map<DropdownMenuItem<String>>(
+                                                    (String value) {
+                                              return DropdownMenuItem<String>(
+                                                value: value,
+                                                child: Text(value),
+                                              );
+                                            }).toList(),
+                                          ),
+                                        ],
+                                      )
                                     ],
-                                  )
-                                ],
-                              ),
-                            ))
+                                  ),
+                                ))
                       .toList()),
               Consumer<IllProviders>(
                 builder: (context, IllProviders data, child) {

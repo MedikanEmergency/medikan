@@ -57,7 +57,10 @@ class MessageTile extends StatelessWidget {
           onTap: () => {
             readMessage(id),
             Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
-              return ChattingScreen();
+              return ChattingScreen(
+                idMess: id,
+                name: name,
+              );
             }))
           },
         ),

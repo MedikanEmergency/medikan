@@ -65,9 +65,22 @@ class _NewPasswordState extends State<NewPassword> {
   void done() {
     if (validatePassword()) {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (_) => LoginScreen(),
-        ),
+        PageRouteBuilder(
+            transitionDuration: Duration(milliseconds: 700),
+            transitionsBuilder: (context, animation, animationTime, child) {
+              animation =
+                  CurvedAnimation(parent: animation, curve: Curves.ease);
+              return FadeTransition(
+                opacity: animation,
+                child: child,
+              );
+            },
+            pageBuilder: (context, animation, animationTime) {
+              return LoginScreen();
+            }),
+        // MaterialPageRoute(
+        //   builder: (_) => LoginScreen(),
+        // ),
       );
     } else {
       setState(() {});
