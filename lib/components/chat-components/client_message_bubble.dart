@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:medikan/models/auth_info.dart';
 import 'package:medikan/themes/theme_data.dart';
 
 class ClientMessageBubble extends StatelessWidget {
+  AuthInfo state = Get.find<AuthInfo>();
   final List<String> messageStreak;
   List<Widget> _bubbleList = [];
   ClientMessageBubble({required this.messageStreak}) {
@@ -99,7 +102,9 @@ class ClientMessageBubble extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(right: 5),
             child: CircleAvatar(
-              backgroundImage: AssetImage("assets/images/psycho_op.jpg"),
+              backgroundImage: state.getDoctor()
+                  ? AssetImage("assets/images/patient.png")
+                  : AssetImage("assets/images/doctor.png"),
             ),
           ),
           Expanded(

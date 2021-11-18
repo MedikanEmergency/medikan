@@ -138,9 +138,25 @@ class _ForYouContainerState extends State<ForYouContainer> {
                             Download.add(widget.article);
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                builder: (context) => DownloadPage(),
-                              ),
+                              PageRouteBuilder(
+                                  transitionDuration:
+                                      Duration(milliseconds: 700),
+                                  transitionsBuilder: (context, animation,
+                                      animationTime, child) {
+                                    animation = CurvedAnimation(
+                                        parent: animation, curve: Curves.ease);
+                                    return FadeTransition(
+                                      opacity: animation,
+                                      child: child,
+                                    );
+                                  },
+                                  pageBuilder:
+                                      (context, animation, animationTime) {
+                                    return DownloadPage();
+                                  }),
+                              // MaterialPageRoute(
+                              //   builder: (context) => DownloadPage(),
+                              // ),
                             );
                           },
                           icon: const Icon(
@@ -156,9 +172,25 @@ class _ForYouContainerState extends State<ForYouContainer> {
                             ViewLater.add(widget.article);
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                builder: (context) => ViewlaterPage(),
-                              ),
+                              PageRouteBuilder(
+                                  transitionDuration:
+                                      Duration(milliseconds: 700),
+                                  transitionsBuilder: (context, animation,
+                                      animationTime, child) {
+                                    animation = CurvedAnimation(
+                                        parent: animation, curve: Curves.ease);
+                                    return FadeTransition(
+                                      opacity: animation,
+                                      child: child,
+                                    );
+                                  },
+                                  pageBuilder:
+                                      (context, animation, animationTime) {
+                                    return ViewlaterPage();
+                                  }),
+                              // MaterialPageRoute(
+                              //   builder: (context) => ViewlaterPage(),
+                              // ),
                             );
                           },
                           icon: const Icon(

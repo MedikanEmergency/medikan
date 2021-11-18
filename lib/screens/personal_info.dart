@@ -91,42 +91,59 @@ class _PersonalInfoState extends State<PersonalInfo> {
               Padding(
                 padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
                 child: Container(
-                  height: 100,
+                  width: width * .95,
+                  height: height * .15,
                   decoration: BoxDecoration(
-                    color: ColorData.primary,
                     borderRadius: new BorderRadius.circular(20.0),
                   ),
-                  child: Row(
-                    children: [
-                      Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: CircleAvatar(
-                            backgroundImage: NetworkImage(
-                              user_img,
-                            ),
-                            radius: 50.0,
-                          ),
+                  child: Card(
+                    color: ColorData.primaryVariant,
+                    shadowColor: Colors.black,
+                    elevation: ElevationData.elevated10,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0)),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: height * .015,
                         ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          alignment: Alignment.centerLeft,
-                          child: ListTile(
-                            title: Text(
+                        CircleAvatar(
+                          backgroundImage: NetworkImage(
+                            user_img,
+                          ),
+                          radius: height * .06,
+                        ),
+                        SizedBox(
+                          width: height * .015,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
                               "Võ Hồng Phúc",
+                              style: TextStyle(
+                                  color: ColorData.background,
+                                  fontSize: 30,
+                                  letterSpacing: 0,
+                                  fontWeight: FontWeight.bold),
                             ),
-                            subtitle: Text("0919813176"),
-                          ),
-                          decoration: BoxDecoration(
-
-                              // boxShadow: BoxShadow({blurRadius: 2.5}),
-                              //TODO: đổ bóng
+                            SizedBox(
+                              height: height * .01,
+                            ),
+                            Text(
+                              "0919813176",
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: ColorData.background,
+                                fontWeight: FontWeight.normal,
+                                letterSpacing: 0,
                               ),
+                            ),
+                          ],
                         ),
-                        flex: 8,
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -142,10 +159,15 @@ class _PersonalInfoState extends State<PersonalInfo> {
                     alignment: Alignment.centerLeft,
                     child: Container(
                       // width: width * 0.3,
+                      padding: EdgeInsets.only(right: width * .02),
                       child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Text("Xem hồ sơ"),
+                            Padding(
+                              padding: EdgeInsets.only(right: width * .01),
+                              child: Text("Xem hồ sơ"),
+                            ),
                             Container(
                               child: Icon(
                                 MyFlutterApp.goto,

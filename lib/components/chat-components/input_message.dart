@@ -30,13 +30,15 @@ class InputMessage extends StatelessWidget {
       'time': time,
       'is_doctor': userState.getDoctor(),
     });
-    firestore.collection('conversations').doc('${auth.currentUser!.uid}').set(
-      {
-        'latest_message_time': time,
-        'latest_message': messageController.text.trim(),
-      },
-      SetOptions(merge: true),
-    );
+    if (!userState.getDoctor()) {
+      firestore.collection('conversations').doc('${auth.currentUser!.uid}').set(
+        {
+          'latest_message_time': time,
+          'latest_message': messageController.text.trim(),
+        },
+        SetOptions(merge: true),
+      );
+    }
     messageController.clear();
   }
 
