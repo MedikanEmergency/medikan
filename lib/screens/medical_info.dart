@@ -1,70 +1,90 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:medikan/components/input-components/input_medical.dart';
 import 'package:medikan/components/input-components/input_phone.dart';
+import 'package:medikan/icons.dart';
 import 'package:medikan/screens/Profile/model_person.dart';
 import 'package:medikan/themes/theme_data.dart';
-import 'package:medikan/icons.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
-import './personal_info.dart';
 import 'Profile/model_person.dart';
 import 'Profile/ill_widget.dart';
-import 'Profile/ill_provider.dart';
 
-class MedicalScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider<IllProviders>(
-      create: (_) {
-        return IllProviders();
-      },
-      child: MedicalInfo(),
-    );
-  }
-}
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
+import 'package:medikan/models/auth_info.dart';
 
 class MedicalInfo extends StatefulWidget {
   bool edit;
-  MedicalInfo({Key? key, this.edit = true}) : super(key: key);
+  MedicalInfo({Key? key, this.edit = false}) : super(key: key);
 
   @override
   _MedicalInfoState createState() => _MedicalInfoState();
 }
 
 class _MedicalInfoState extends State<MedicalInfo> {
-  // @override
-  // State<StatefulWidget> createState() {
-  //   // TODO: implement createState
-  //   throw UnimplementedError();
-  // }
-  List<IllModel> userIll = [
-    IllModel("Huyết áp", "Mức nhẹ"),
-    IllModel("Huyết áp", "Mức nhẹ")
-  ];
+  List<IllModel> userIll = [];
   final user_img =
       "https://wallup.net/wp-content/uploads/2017/11/23/438674-duck-yellow.jpg";
-  toCard() {
-    return userIll
-        .map((e) => IllWidget(selected: e, edit: widget.edit))
-        .toList();
-  }
+
+  FirebaseAuth _auth = Get.find<FirebaseAuth>();
+  FirebaseFirestore _store = Get.find<FirebaseFirestore>();
+  AuthInfo _state = Get.find<AuthInfo>();
+  var collectionReference;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final videosState = Provider.of<IllProviders>(context);
-    userIll = videosState.userIll;
+  void initState() {
+    initData();
+  }
+
+  void initData() async {
+    List<TextEditingController> _medical = [];
+    collectionReference = await _store
+        .collection('account/' + _auth.currentUser!.uid + '/medical-info')
+        .doc('med')
+        .get()
+        .then((value) {
+      _medical.add(TextEditingController(text: value.data()!['height']));
+      _medical.add(TextEditingController(text: value.data()!['weight']));
+      _medical.add(TextEditingController(text: value.data()!['blood_pr']));
+      _medical.add(TextEditingController(text: value.data()!['heartbeat']));
+      _medical.add(TextEditingController());
+      _medical.add(TextEditingController(text: value.data()!['med_his']));
+      setState(() {
+        _medicalController = _medical;
+      });
+    });
+    collectionReference = await _store
+        .collection(
+            'account/' + _auth.currentUser!.uid + '/medical-info/med/disease')
+        .get()
+        .then((value) {
+      setState(() {
+        userIll = value.docs
+            .map((e) => IllModel(e['name'], e['level'], e.id))
+            .toList();
+      });
+    });
   }
 
   toggleEdit() {
     return (widget.edit)
-        ? Column(
+        ? Row(
             children: [
               TextButton(
                 onPressed: () {
+                  _store
+                      .collection(
+                          'account/' + _auth.currentUser!.uid + '/medical-info')
+                      .doc('med')
+                      .set({
+                    "height": _medicalController[0].text,
+                    "weight": _medicalController[1].text,
+                    "blood_pr": _medicalController[2].text,
+                    "heartbeat": _medicalController[3].text,
+                    "blood_type": dropdownValue + dropValue,
+                    "med_his": _medicalController[5].text,
+                  }, SetOptions(merge: true));
                   setState(() {
                     widget.edit = !widget.edit;
                   });
@@ -78,8 +98,6 @@ class _MedicalInfoState extends State<MedicalInfo> {
                     });
                   },
                   child: Text("Hủy")),
-              //   ],
-              // )
             ],
           )
         : TextButton.icon(
@@ -96,17 +114,9 @@ class _MedicalInfoState extends State<MedicalInfo> {
             label: Text("Chỉnh sửa thông tin"));
   }
 
-  // rmv(int index) {
-  //   Provider.of<IllProviders>(context).removeIll(index);
-  //   setState(() {});
-  // }
   refresh() {
     setState(() {});
   }
-
-  // const Blood() {
-  //   return ;
-  // }
 
   List<TextEditingController> _medicalController = [
     TextEditingController(),
@@ -120,7 +130,6 @@ class _MedicalInfoState extends State<MedicalInfo> {
   String dropdownValue = "AB";
   String dropValue = "+";
   List<int> idx = [0, 1, 2, 3, 4, 5];
-  List<String> value = ["", "", "", "", "", ""];
   List<String> header = [
     "Chiều cao (cm)",
     "Cân nặng (kg)",
@@ -178,15 +187,6 @@ class _MedicalInfoState extends State<MedicalInfo> {
                         ),
                       ),
                     ),
-                    // child: ElevatedButton.icon(
-                    //   onPressed: () {
-                    //     Navigator.of(context).pop();
-                    //     // Navigator.of(context).push(MaterialPageRoute(
-                    //     //     builder: (context) => PersonalScreen()));
-                    //   },
-                    //   icon: Icon(Icons.reset_tv_rounded),
-                    //   label: Text("Quay về"),
-                    // ),
                   ),
                   Center(
                     child: Padding(
@@ -199,15 +199,14 @@ class _MedicalInfoState extends State<MedicalInfo> {
                           radius: 70.0,
                         ),
                         Text(
-                          "Võ Hồng Phúc",
+                          _state.getName(),
                           style: FontStyleData.H3_bold_36,
                         ),
-                        Text("0919813156",
+                        Text(_state.getPhone(),
                             style: FontStyleData.Subtitle_light_24),
                       ]),
                     ),
                   ),
-                  //Expanded(flex: 2, child: Container()),
                 ],
               ),
               GridView.count(
@@ -217,7 +216,7 @@ class _MedicalInfoState extends State<MedicalInfo> {
                   mainAxisSpacing: 10.0,
                   padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                   childAspectRatio: (MediaQuery.of(context).size.width * 0.9) /
-                      (MediaQuery.of(context).size.height * 0.9 / 5), //4
+                      (MediaQuery.of(context).size.height * 0.9 / 4), //TODO 5
                   shrinkWrap: true,
                   children: idx
                       .map((index) => (index < 4)
@@ -258,7 +257,8 @@ class _MedicalInfoState extends State<MedicalInfo> {
                                         child: Text(
                                           "Nhóm máu:",
                                           style: TextStyle(
-                                            fontSize: 18,
+                                            //TODO resize
+                                            fontSize: 12, //18,
                                             fontWeight: FontWeight.normal,
                                           ),
                                         ),
@@ -325,48 +325,66 @@ class _MedicalInfoState extends State<MedicalInfo> {
                                   ),
                                 ))
                       .toList()),
-              Consumer<IllProviders>(
-                builder: (context, IllProviders data, child) {
-                  return Row(
-                    children: [
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
-                          child: Icon(
-                            Icons.add_alert_outlined,
-                            color: ColorData.sos,
-                            size: 36,
-                          ),
-                        ),
+              Row(
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
+                      child: Icon(
+                        Icons.add_alert_outlined,
+                        color: ColorData.sos,
+                        size: 36,
                       ),
-                      Column(
-                          children: Provider.of<IllProviders>(context)
-                              .userIll
-                              .map((e) => Slidable(
-                                  key: Key(userIll.indexOf(e).toString()),
-                                  endActionPane: (widget.edit)
-                                      ? ActionPane(
-                                          motion: const ScrollMotion(),
-                                          extentRatio: 0.25,
-                                          children: [
-                                            IconButton(
-                                                onPressed: () {
-                                                  data.removeIll(
-                                                      userIll.indexOf(e));
-                                                  refresh();
-                                                },
-                                                icon: Icon(Icons.delete)),
-                                          ],
-                                        )
-                                      : null,
-                                  child: IllWidget(
-                                      selected: e, edit: widget.edit)))
-                              .toList()),
-                    ],
-                  );
-                },
+                    ),
+                  ),
+                  Column(
+                      children: userIll
+                          .map(
+                            (e) => Slidable(
+                              key: Key(e.ill + e.level),
+                              endActionPane: (widget.edit)
+                                  ? ActionPane(
+                                      motion: const ScrollMotion(),
+                                      extentRatio: 0.25,
+                                      children: [
+                                        IconButton(
+                                            onPressed: () {
+                                              _store
+                                                  .collection('account/' +
+                                                      _auth.currentUser!.uid +
+                                                      '/medical-info/med/disease')
+                                                  .doc(e.id)
+                                                  .delete();
+                                              refresh();
+                                            },
+                                            icon: Icon(Icons.delete)),
+                                      ],
+                                    )
+                                  : null,
+                              child: IllWidget(selected: e, edit: widget.edit),
+                            ),
+                          )
+                          .toList()),
+                ],
               ),
+              (widget.edit)
+                  ? TextButton(
+                      onPressed: () {
+                        //TODO add firebase
+                        _store
+                            .collection('account/' +
+                                _auth.currentUser!.uid +
+                                '/medical-info/med/disease')
+                            .add({"name": "Khác", "level": "Mức nhẹ"});
+                        setState(() {
+                          userIll.add(IllModel("Khác", "Mức nhẹ", "KHAC!"));
+                        });
+                        refresh();
+                      },
+                      child: Text("Thêm một bệnh nền"),
+                    )
+                  : Text(""),
               toggleEdit(),
             ],
           ),

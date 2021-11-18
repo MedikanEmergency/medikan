@@ -1,27 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:medikan/models/auth_info.dart';
 import 'package:medikan/screens/Profile/add_family.dart';
 import 'package:medikan/screens/Profile/member_widget.dart';
 import 'package:medikan/screens/Profile/model_person.dart';
 import 'package:medikan/screens/medical_info.dart';
 import 'package:medikan/themes/theme_data.dart';
 import 'package:medikan/icons.dart';
-import 'package:provider/provider.dart';
 import './medical_info.dart';
 import 'Profile/family_provider.dart';
 import 'authenticate_screens/login.dart';
-
-class PersonalScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return //MultiProvider(providers: [
-        ChangeNotifierProvider<FamilyProviders>(
-      create: (_) {
-        return FamilyProviders();
-      },
-      child: PersonalInfo(),
-    );
-  }
-}
 
 class PersonalInfo extends StatefulWidget {
   bool edit;
@@ -32,12 +22,23 @@ class PersonalInfo extends StatefulWidget {
 }
 
 class _PersonalInfoState extends State<PersonalInfo> {
-  // @override
-  // State<StatefulWidget> createState() {
-  //   // TODO: implement createState
-  //   throw UnimplementedError();
-  // }
-  // List<MemberModel>? mem;
+  FirebaseFirestore _auth = Get.find<FirebaseFirestore>();
+  FirebaseAuth account = Get.find<FirebaseAuth>();
+  AuthInfo _state = Get.find<AuthInfo>();
+
+  List<MemberModel> family = [];
+  var collectionReference;
+  Future<void> _signOut() async {
+    await account.signOut();
+  }
+
+  @override
+  void initState() {
+    collectionReference = _auth
+        .collection('account/' + account.currentUser!.uid + '/family_member')
+        .orderBy('name');
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +50,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
     final user_img =
         "https://wallup.net/wp-content/uploads/2017/11/23/438674-duck-yellow.jpg";
     // setState(() {});
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorData.secondary,
@@ -69,8 +71,10 @@ class _PersonalInfoState extends State<PersonalInfo> {
                     PopupMenuItem(
                       child: TextButton(
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => LoginScreen()));
+                          _signOut();
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => LoginScreen()));
                         },
                         child: Text("Đăng xuất"),
                       ),
@@ -121,7 +125,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "Võ Hồng Phúc",
+                              _state.getName(),
                               style: TextStyle(
                                   color: ColorData.background,
                                   fontSize: 30,
@@ -132,7 +136,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                               height: height * .01,
                             ),
                             Text(
-                              "0919813176",
+                              _state.getPhone(),
                               style: TextStyle(
                                 fontSize: 18,
                                 color: ColorData.background,
@@ -152,8 +156,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => MedicalScreen()));
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => MedicalInfo()));
                   },
                   child: Align(
                     alignment: Alignment.centerLeft,
@@ -161,7 +165,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                       // width: width * 0.3,
                       padding: EdgeInsets.only(right: width * .02),
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Padding(
@@ -193,16 +197,23 @@ class _PersonalInfoState extends State<PersonalInfo> {
                   ),
                 ),
               ),
-              Consumer<FamilyProviders>(
-                builder: (context, FamilyProviders data, child) {
-                  final mem = data.getMember;
+              StreamBuilder(
+                stream: collectionReference.snapshots(),
+                builder: (ctx, AsyncSnapshot<QuerySnapshot> snapShot) {
+                  if (snapShot.connectionState == ConnectionState.waiting)
+                    return Text("Waitting");
+                  var document = snapShot.data!.docs;
                   return Column(
-                      children: mem
-                          .map((e) =>
-                              MemberWidget(mem: e, index: mem.indexOf(e)))
-                          .toList());
+                    children: document
+                        .map((e) => MemberWidget(
+                            mem: MemberModel(
+                                e['name'], e['phone'], e['relation'], e['img']),
+                            id: e.id))
+                        .toList(),
+                  );
                 },
               ),
+
               ElevatedButton.icon(
                 label: Text(
                   "Thêm người thân",
@@ -220,7 +231,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 ),
                 style: ElevatedButton.styleFrom(
                   primary: Colors.white,
-                  shape: new RoundedRectangleBorder(
+                  shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(20.0),
                   ),
                 ),

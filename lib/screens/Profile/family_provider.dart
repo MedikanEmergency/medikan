@@ -1,5 +1,15 @@
+import 'package:medikan/models/auth_info.dart';
+
 import 'model_person.dart';
 import 'package:flutter/cupertino.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
+
+FirebaseFirestore user = Get.find<FirebaseFirestore>();
+FirebaseAuth account = Get.find<FirebaseAuth>();
+AuthInfo thisUser = Get.find<AuthInfo>();
 
 class FamilyProviders extends ChangeNotifier {
   //Notes List
@@ -10,6 +20,22 @@ class FamilyProviders extends ChangeNotifier {
         "https://wallup.net/wp-content/uploads/2017/11/23/438674-duck-yellow.jpg"),
   ];
   List<MemberModel> get getMember {
+    return member;
+  }
+
+  FamilyProviders() {
+    getMem();
+  }
+
+  Future<List<MemberModel>> getMem() async {
+    await user
+        .collection('account/' + account.currentUser!.uid + '/family_member')
+        .get()
+        .then((value) => {
+              value.docs.map((person) => print(person))
+              //name:person['name'], phone:person['phone'],relate:person['relation'],pic:person['img']
+              //)//.toList() //;
+            });
     return member;
   }
 

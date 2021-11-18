@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medikan/models/auth_info.dart';
 import 'package:medikan/screens/Profile/family_provider.dart';
 import 'package:medikan/screens/Profile/model_person.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,17 +8,27 @@ import 'package:provider/provider.dart';
 import 'model_person.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
+
 class MemberWidget extends StatefulWidget {
   MemberModel mem;
-  int index;
-  MemberWidget({Key? key, required this.mem, required this.index})
-      : super(key: key);
+  String id;
+  MemberWidget({
+    Key? key,
+    required this.mem,
+    required this.id,
+  }) : super(key: key);
 
   @override
   MemberState createState() => MemberState();
 }
 
 class MemberState extends State<MemberWidget> {
+  FirebaseFirestore user = Get.find<FirebaseFirestore>();
+  FirebaseAuth account = Get.find<FirebaseAuth>();
+  AuthInfo thisUser = Get.find<AuthInfo>();
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -66,10 +77,13 @@ class MemberState extends State<MemberWidget> {
                 // flex: 7,
               ),
               IconButton(
-                  onPressed: () {
-                    // Provider.of<FamilyProviders>(context)
-                    //     .removeMember(widget.index);
-                    setState(() {});
+                  onPressed: () async {
+                    await user
+                        .collection('account/' +
+                            account.currentUser!.uid +
+                            '/family_member')
+                        .doc(widget.id)
+                        .delete();
                   },
                   icon: const Icon(
                     Icons.delete,
