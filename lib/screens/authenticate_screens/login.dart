@@ -12,6 +12,8 @@ import 'package:medikan/themes/theme_data.dart';
 import 'package:medikan/icons.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
+import 'signup_screen.dart';
+
 class LoginScreen extends StatefulWidget {
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -224,24 +226,29 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: height * 0.02,
                 ),
                 //Chưa có tk, dki
+
                 Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        "Chưa có tài khoản? ",
-                        style: TextStyle(fontSize: 16),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "Chưa có tài khoản? ",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => SignUpScreen()));
+                      },
+                      child: Text(
+                        "Đăng kí",
+                        style: TextStyle(
+                            color: ColorData.clickable,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16),
                       ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: Text(
-                          "Đăng kí",
-                          style: TextStyle(
-                              color: ColorData.clickable,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16),
-                        ),
-                      )
-                    ]),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),

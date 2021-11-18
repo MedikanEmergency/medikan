@@ -249,18 +249,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 10),
-                child: Center(
-                  child: RichText(
-                      text: TextSpan(
-                          style: FontStyleData.Paragraph_Regular_20,
-                          children: [
-                        TextSpan(text: "Đã có tài khoản? "),
-                        TextSpan(
-                            text: "Đăng nhập",
-                            style: TextStyle(
-                                color: ColorData.clickable,
-                                fontWeight: FontWeight.bold))
-                      ])),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Đã có tài khoản? ",
+                      style: FontStyleData.Paragraph_Regular_20,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => LoginScreen()));
+                      },
+                      child: Text(
+                        "Đăng nhập",
+                        style: TextStyle(
+                            color: ColorData.clickable,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
