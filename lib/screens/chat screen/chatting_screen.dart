@@ -6,12 +6,16 @@ import 'package:medikan/components/chat-components/client_message_bubble.dart';
 import 'package:medikan/components/chat-components/input_message.dart';
 import 'package:medikan/components/chat-components/message_list.dart';
 import 'package:medikan/components/chat-components/my_message_bubble.dart';
+import 'package:medikan/models/auth_info.dart';
 import 'package:medikan/models/msg_streak.dart';
 import 'package:medikan/themes/theme_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:cloud_firestore';
 
 class ChattingScreen extends StatefulWidget {
+  var idMess = null;
+  var name = null;
+  ChattingScreen({this.idMess, this.name});
   @override
   State<ChattingScreen> createState() => _ChattingScreenState();
 }
@@ -27,40 +31,64 @@ class _ChattingScreenState extends State<ChattingScreen> {
   // }
   FirebaseAuth firebaseAuth = Get.find<FirebaseAuth>();
   FirebaseFirestore firestore = Get.find<FirebaseFirestore>();
-  var appBar = AppBar(
-    title: Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Container(
-          margin: EdgeInsets.only(right: 5),
-          child: CircleAvatar(
-            backgroundImage: AssetImage("assets/images/psycho_op.jpg"),
-          ),
-        ),
-        Text(
-          "Bác sĩ",
-          style: FontStyleData.Title_Bold_20,
-        )
-      ],
-    ),
-    iconTheme: IconThemeData(color: ColorData.onPrimary),
-    backgroundColor: ColorData.secondary,
-  );
+  AuthInfo state = Get.find<AuthInfo>();
+
+  // var appBar = AppBar(
+  //   title: Row(
+  //     mainAxisAlignment: MainAxisAlignment.start,
+  //     children: [
+  //       Container(
+  //         margin: EdgeInsets.only(right: 5),
+  //         child: CircleAvatar(
+  //           backgroundImage: AssetImage("assets/images/psycho_op.jpg"),
+  //         ),
+  //       ),
+  //       Text(
+  //         widget.name == null ? "Bác sĩ" : widget.name,
+  //         style: FontStyleData.Title_Bold_20,
+  //       )
+  //     ],
+  //   ),
+  //   iconTheme: IconThemeData(color: ColorData.onPrimary),
+  //   backgroundColor: ColorData.secondary,
+  // );
 
   @override
   Widget build(BuildContext context) {
+    final id =
+        widget.idMess == null ? firebaseAuth.currentUser!.uid : widget.idMess;
     return Scaffold(
-      appBar: appBar,
+      appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              margin: EdgeInsets.only(right: 5),
+              child: CircleAvatar(
+                backgroundImage: state.getDoctor()
+                    ? AssetImage("assets/images/patient.png")
+                    : AssetImage("assets/images/doctor.png"),
+              ),
+            ),
+            Text(
+              widget.name == null ? "Bác sĩ" : widget.name,
+              style: FontStyleData.Title_Bold_20,
+            )
+          ],
+        ),
+        iconTheme: IconThemeData(color: ColorData.onPrimary),
+        backgroundColor: ColorData.secondary,
+      ),
       body: Container(
         child: Column(
           children: [
             Expanded(
               child: MessageList(
-                link: 'conversations/${firebaseAuth.currentUser?.uid}/messages',
+                link: 'conversations/${id}/messages',
               ),
             ),
             InputMessage(
-              link: 'conversations/${firebaseAuth.currentUser?.uid}/messages',
+              link: 'conversations/${id}/messages',
             ),
           ],
         ),

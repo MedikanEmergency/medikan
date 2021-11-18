@@ -41,7 +41,7 @@ class MessageList extends StatelessWidget {
         return ListView.builder(
           reverse: true,
           itemBuilder: (ctx, index) {
-            if (msgStreakList[index].isDoctor == _state.getDoctor()) {
+            if (msgStreakList[index].isDoctor != _state.getDoctor()) {
               return Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,

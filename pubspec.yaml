@@ -95,6 +95,8 @@ flutter:
       - assets/image_news/bao_thanhnien.png
       - assets/image_news/Vn_Express.png
       - assets/image_news/VTC.png
+      - assets/images/doctor.png
+      - assets/images/patient.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
