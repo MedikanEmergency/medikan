@@ -24,6 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   String _phoneError = "";
   String _passwordError = "";
+  bool isSuccess = false;
 
   final _auth = Get.find<FirebaseAuth>();
   var _userState = null;
@@ -70,27 +71,32 @@ class _LoginScreenState extends State<LoginScreen> {
             .then(
           (value) {
             print(_auth.currentUser?.uid);
-
-            dialog.hide();
-            // check if this is doctor
-            _store
-                .collection('account')
-                .doc('${_auth.currentUser!.uid}')
-                .get()
-                .then((value) {
-              var temp = value.data()!['is_doctor'].toString();
-              _userState.setDoctor(temp == 'true');
-            });
-            _userState.setPhone(_phone.text);
-            _userState.setPassword(_password.text);
-
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (_) => MainScreen(),
-              ),
-            );
+            isSuccess = true;
           },
         );
+        if (isSuccess) {
+          dialog.hide();
+
+          // check if this is doctor
+          await _store
+              .collection('account')
+              .doc('${_auth.currentUser!.uid}')
+              .get()
+              .then((value) {
+            var temp = value.data()!['is_doctor'].toString();
+            print(temp);
+            _userState.setDoctor(temp == 'true');
+          });
+
+          _userState.setPhone(_phone.text);
+          _userState.setPassword(_password.text);
+
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (_) => MainScreen(),
+            ),
+          );
+        }
       } on FirebaseAuthException catch (e) {
         if (dialog.isShowing()) dialog.hide();
         ScaffoldMessenger.of(context).showSnackBar(

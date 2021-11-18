@@ -2,12 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:medikan/icons.dart';
+import 'package:medikan/models/auth_info.dart';
 import 'package:medikan/themes/theme_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class InputMessage extends StatelessWidget {
   FirebaseFirestore firestore = Get.find<FirebaseFirestore>();
   FirebaseAuth auth = Get.find<FirebaseAuth>();
+  AuthInfo userState = Get.find<AuthInfo>();
   var height, width;
   final fractor = 0.06;
   final link;
@@ -26,15 +28,14 @@ class InputMessage extends StatelessWidget {
     firestore.collection(link).add({
       'text': messageController.text.trim(),
       'time': time,
-      'is_doctor': false,
+      'is_doctor': userState.getDoctor(),
     });
-    firestore
-        .collection('conversations')
-        .doc('${auth.currentUser!.uid}')
-        .update(
+    firestore.collection('conversations').doc('${auth.currentUser!.uid}').set(
       {
-        'modified_time': time,
+        'latest_message_time': time,
+        'latest_message': messageController.text.trim(),
       },
+      SetOptions(merge: true),
     );
     messageController.clear();
   }

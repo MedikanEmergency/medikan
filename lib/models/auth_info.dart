@@ -4,6 +4,24 @@ class AuthInfo extends GetxController {
   var password = "".obs;
   var phone = "".obs;
   var is_doctor = false.obs;
+  var chatTime = 0.obs;
+  var name = "".obs;
+
+  String getName() {
+    return name.value;
+  }
+
+  void setName(name) {
+    this.name.value = name;
+  }
+
+  void setChatTime(chatTime) {
+    this.chatTime.value = chatTime;
+  }
+
+  int getChatTime() {
+    return chatTime.value;
+  }
 
   void setPassword(password) {
     this.password.value = password;

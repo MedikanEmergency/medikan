@@ -2,6 +2,8 @@
 
 import 'dart:ffi';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:medikan/models/auth_info.dart';
@@ -30,10 +32,41 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final _userState = Get.find<AuthInfo>();
+  final _firestore = Get.find<FirebaseFirestore>();
+  final _auth = Get.find<FirebaseAuth>();
+  int chatTime = 0;
   int _selectedPage = 0;
   List<Widget> _pages = [];
+
+  void checkChatTime() async {
+    await _firestore
+        .collection('conversations')
+        .doc('${_auth.currentUser!.uid}')
+        .get()
+        .then(
+      (value) {
+        chatTime = value.data()!['chat_time'];
+
+        var modified =
+            DateTime.parse(value.data()!['modified_time'].toDate().toString());
+        bool isOneDayPassed =
+            DateTime.now().subtract(Duration(days: 1)).compareTo(modified) >= 0;
+
+        if (chatTime == 0 && isOneDayPassed) {
+          _firestore
+              .collection('conversations')
+              .doc('${_auth.currentUser!.uid}')
+              .set({'chat_time': 3}, SetOptions(merge: true));
+          chatTime = 3;
+        }
+        _userState.setChatTime(chatTime);
+      },
+    );
+  }
+
   @override
   void initState() {
+    checkChatTime();
     _pages = [
       SafeArea(child: FirstAid()),
       SafeArea(child: _userState.getDoctor() ? DoctorScreen() : Chat()),

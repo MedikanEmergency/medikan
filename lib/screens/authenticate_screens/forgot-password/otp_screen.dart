@@ -68,6 +68,7 @@ class _OtpScreenState extends State<OtpScreen> {
   void createAccountDocument(uid) {
     widget.firebaseStore.collection('account').doc(uid).set(
       {
+        'is_doctor': false,
         'password': widget._password,
       },
     );
@@ -75,6 +76,17 @@ class _OtpScreenState extends State<OtpScreen> {
         .collection('account')
         .doc(uid)
         .collection('medical-info');
+    widget.firebaseStore.collection('conversations').doc(uid).set(
+      {
+        'chat_time': 3,
+        'modified_time': Timestamp.now(),
+        'latest_message_time': Timestamp.now(),
+        'latest_message': "",
+        'is_read': true,
+        'id': uid,
+        'name': widget.authState.getName(),
+      },
+    );
   }
 
   void next() async {
