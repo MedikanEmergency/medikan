@@ -74,18 +74,23 @@ class _OtpScreenState extends State<OtpScreen> {
     );
     widget.firebaseStore
         .collection('account/' + uid + '/medical-info')
-        .doc()
+        .doc('med')
         .set({
       'height': 160,
       'weight': 53,
       'blood_pr': 120,
       'blood_type': 'O+',
       'heart_beat': 100,
-      'ill': [
-        {'name': 'Huyết áp', 'level': 'Mức nhẹ'},
-        {'name': 'Tim mạch', 'level': 'Mức trung bình'}
-      ]
+      'med_his': ' ',
     });
+    widget.firebaseStore
+        .collection('account/' + uid + '/medical-info/med/disease')
+        .doc()
+        .set({
+      'name': 'Khác',
+      'level': 'Mức nhẹ',
+    });
+
     widget.firebaseStore.collection('conversations').doc(uid).set(
       {
         'chat_time': 3,

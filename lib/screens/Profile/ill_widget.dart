@@ -61,6 +61,7 @@ class IllState extends State<IllWidget> {
                       'Huyết áp',
                       'Tiểu đường',
                       'Tim mạch',
+                      'Khác',
                     ].map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,

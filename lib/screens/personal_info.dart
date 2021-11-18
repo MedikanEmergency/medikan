@@ -9,7 +9,6 @@ import 'package:medikan/screens/Profile/model_person.dart';
 import 'package:medikan/screens/medical_info.dart';
 import 'package:medikan/themes/theme_data.dart';
 import 'package:medikan/icons.dart';
-import 'package:provider/provider.dart';
 import './medical_info.dart';
 import 'Profile/family_provider.dart';
 import 'authenticate_screens/login.dart';
@@ -30,7 +29,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
   List<MemberModel> family = [];
   var collectionReference;
   Future<void> _signOut() async {
-    await FirebaseAuth.instance.signOut();
+    await account.signOut();
   }
 
   @override
@@ -157,8 +156,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => MedicalScreen()));
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => MedicalInfo()));
                   },
                   child: Align(
                     alignment: Alignment.centerLeft,

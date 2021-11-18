@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 class IllProviders extends ChangeNotifier {
   //Notes List
   List<IllModel> userIll = [
-    IllModel("Huyết áp", "Mức nhẹ"),
-    IllModel("Béo phì", "Mức nhẹ")
+    IllModel("Huyết áp", "Mức nhẹ", "KLK"),
+    IllModel("Béo phì", "Mức nhẹ", "KJJJ"),
   ];
   List<IllModel> get getIll {
     return userIll;
@@ -18,7 +18,7 @@ class IllProviders extends ChangeNotifier {
 
 // function to add data to list of notes
   void addIll(String ill, String level) {
-    IllModel newIll = new IllModel(ill, level);
+    IllModel newIll = new IllModel(ill, level, "HDHDH");
     userIll.add(newIll);
     notifyListeners();
   }

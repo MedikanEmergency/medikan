@@ -1,7 +1,8 @@
 class IllModel {
   String ill;
   String level;
-  IllModel(this.ill, this.level);
+  String id;
+  IllModel(this.ill, this.level, this.id);
 }
 
 class MemberModel {

@@ -24,11 +24,13 @@ class InputMedical extends StatelessWidget {
   Widget build(BuildContext context) {
     return Form(
       child: TextFormField(
+        textAlign: TextAlign.center,
         enabled: enabled,
         controller: phoneController,
         onTap: () => removeWarning(),
         maxLength: 10,
-        keyboardType: inputType == 'number' ? TextInputType.number : TextInputType.text,
+        keyboardType:
+            inputType == 'number' ? TextInputType.number : TextInputType.text,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 30, horizontal: 10),
           counterText: "",
