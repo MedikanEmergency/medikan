@@ -8,6 +8,7 @@ import 'package:medikan/icons.dart';
 import 'package:provider/provider.dart';
 import './medical_info.dart';
 import 'Profile/family_provider.dart';
+import 'authenticate_screens/login.dart';
 
 class PersonalScreen extends StatelessWidget {
   @override
@@ -59,11 +60,20 @@ class _PersonalInfoState extends State<PersonalInfo> {
               ),
               itemBuilder: (context) => [
                     PopupMenuItem(
-                      child: Text("First"),
+                      child: TextButton(
+                        onPressed: () {},
+                        child: Text("Đổi mật khẩu"),
+                      ),
                       value: 1,
                     ),
                     PopupMenuItem(
-                      child: Text("Second"),
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => LoginScreen()));
+                        },
+                        child: Text("Đăng xuất"),
+                      ),
                       value: 2,
                     )
                   ])
@@ -109,7 +119,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
                             subtitle: Text("0919813176"),
                           ),
                           decoration: BoxDecoration(
-                              // boxShadow: BoxShadow,
+
+                              // boxShadow: BoxShadow({blurRadius: 2.5}),
                               //TODO: đổ bóng
                               ),
                         ),
