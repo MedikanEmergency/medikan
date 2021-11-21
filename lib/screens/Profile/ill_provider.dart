@@ -1,4 +1,4 @@
-import 'model_person.dart';
+import '../../models/model_person.dart';
 import 'package:flutter/cupertino.dart';
 
 class IllProviders extends ChangeNotifier {

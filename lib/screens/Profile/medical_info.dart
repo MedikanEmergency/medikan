@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:medikan/components/input-components/input_medical.dart';
 import 'package:medikan/components/input-components/input_phone.dart';
+import 'package:medikan/components/medical_components/blood_type_component.dart';
 import 'package:medikan/icons.dart';
-import 'package:medikan/screens/Profile/model_person.dart';
+import 'package:medikan/models/model_person.dart';
 import 'package:medikan/themes/theme_data.dart';
 import 'package:flutter/cupertino.dart';
-import 'Profile/model_person.dart';
-import 'Profile/ill_widget.dart';
+import '../../models/model_person.dart';
+import '../../components/medical_components/ill_widget.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -70,6 +71,7 @@ class _MedicalInfoState extends State<MedicalInfo> {
   toggleEdit() {
     return (widget.edit)
         ? Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               TextButton(
                 onPressed: () {
@@ -239,90 +241,10 @@ class _MedicalInfoState extends State<MedicalInfo> {
                                   inputType: 'text',
                                   enabled: widget.edit,
                                 )
-                              : Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      width: 0.5,
-                                      color: ColorData.onPrimary,
-                                    ),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
-                                    ),
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            EdgeInsets.only(top: height * .005),
-                                        child: Text(
-                                          "Nhóm máu:",
-                                          style: TextStyle(
-                                            //TODO resize
-                                            fontSize: 12, //18,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          DropdownButton<String>(
-                                            value: dropdownValue,
-                                            iconSize: 24,
-                                            elevation: 16,
-                                            style: const TextStyle(
-                                                color: Colors.deepPurple),
-                                            underline: Container(
-                                              height: 2,
-                                              color: Colors.deepPurpleAccent,
-                                            ),
-                                            onChanged: (widget.edit)
-                                                ? (String? newValue) {
-                                                    setState(() {
-                                                      dropdownValue = newValue!;
-                                                    });
-                                                  }
-                                                : null,
-                                            items: <String>['A', 'B', 'AB', 'O']
-                                                .map<DropdownMenuItem<String>>(
-                                                    (String value) {
-                                              return DropdownMenuItem<String>(
-                                                value: value,
-                                                child: Text(value),
-                                              );
-                                            }).toList(),
-                                          ),
-                                          DropdownButton<String>(
-                                            value: dropValue,
-                                            iconSize: 24,
-                                            elevation: 16,
-                                            style: const TextStyle(
-                                                color: Colors.deepPurple),
-                                            underline: Container(
-                                              height: 2,
-                                              color: Colors.deepPurpleAccent,
-                                            ),
-                                            onChanged: (widget.edit)
-                                                ? (String? newValue) {
-                                                    setState(() {
-                                                      dropValue = newValue!;
-                                                    });
-                                                  }
-                                                : null,
-                                            items: <String>['+', '-', ' ']
-                                                .map<DropdownMenuItem<String>>(
-                                                    (String value) {
-                                              return DropdownMenuItem<String>(
-                                                value: value,
-                                                child: Text(value),
-                                              );
-                                            }).toList(),
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
+                              : BloodType(
+                                  blood0: dropdownValue,
+                                  blood1: dropValue,
+                                  edit: widget.edit,
                                 ))
                       .toList()),
               Row(

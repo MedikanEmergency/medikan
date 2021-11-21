@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:medikan/models/auth_info.dart';
 import 'package:medikan/screens/Profile/add_family.dart';
-import 'package:medikan/screens/Profile/member_widget.dart';
-import 'package:medikan/screens/Profile/model_person.dart';
-import 'package:medikan/screens/medical_info.dart';
+import 'package:medikan/components/medical_components/member_widget.dart';
+import 'package:medikan/models/model_person.dart';
+import 'package:medikan/screens/Profile/medical_info.dart';
 import 'package:medikan/themes/theme_data.dart';
 import 'package:medikan/icons.dart';
-import './medical_info.dart';
+import 'Profile/medical_info.dart';
 import 'Profile/family_provider.dart';
 import 'authenticate_screens/login.dart';
 
@@ -221,8 +221,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 ),
                 onPressed: () => {
                   //do something
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => AddFamilyScreen()))
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => Family()))
                 },
                 icon: Icon(
                   Icons.add,

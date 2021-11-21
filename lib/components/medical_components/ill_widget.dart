@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:medikan/screens/Profile/model_person.dart';
+import 'package:medikan/models/model_person.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:medikan/themes/theme_data.dart';
-import 'model_person.dart';
+import '../../models/model_person.dart';
 
 import 'package:flutter_slidable/flutter_slidable.dart';
 

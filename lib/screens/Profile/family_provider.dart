@@ -1,6 +1,6 @@
 import 'package:medikan/models/auth_info.dart';
 
-import 'model_person.dart';
+import '../../models/model_person.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
