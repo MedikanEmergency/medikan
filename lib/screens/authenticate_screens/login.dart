@@ -86,8 +86,9 @@ class _LoginScreenState extends State<LoginScreen> {
               .get()
               .then((value) {
             var temp = value.data()!['is_doctor'].toString();
-            print(temp);
             _userState.setDoctor(temp == 'true');
+            _userState.setImg(value.data()!['img']);
+            print(_userState.getImg());
           });
           await _store
               .collection('conversations')

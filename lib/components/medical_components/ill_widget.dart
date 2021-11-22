@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:medikan/components/input-components/input_name.dart';
 import 'package:medikan/models/model_person.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:medikan/themes/input_theme.dart';
+import 'package:medikan/screens/Profile/medical_data.dart';
 import 'package:medikan/themes/theme_data.dart';
 import '../../models/model_person.dart';
-
-import 'package:flutter_slidable/flutter_slidable.dart';
 
 class IllWidget extends StatefulWidget {
   IllModel? selected;
@@ -17,14 +18,18 @@ class IllWidget extends StatefulWidget {
 }
 
 class IllState extends State<IllWidget> {
+  TextEditingController except = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width * 0.8;
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.8,
+        width: width,
+        padding: EdgeInsets.all(5.0),
         decoration: BoxDecoration(
           // boxShadow: ,
+
           border: Border.all(color: Colors.black, width: 2),
           borderRadius: BorderRadius.circular(20),
         ),
@@ -37,18 +42,14 @@ class IllState extends State<IllWidget> {
                   "Tên bệnh lý:",
                   style: FontStyleData.Paragraph_Regular_20,
                 ),
-                Align(
-                  alignment: Alignment.centerRight,
+                Container(
+                  width: width * 0.6,
                   child: DropdownButton<String>(
                     value: widget.selected!.ill,
                     // icon: const Icon(Icons.down),
                     iconSize: 24,
                     elevation: 16,
                     style: const TextStyle(color: Colors.deepPurple),
-                    // underline: Container(
-                    //   height: 2,
-                    //   color: Colors.deepPurpleAccent,
-                    // ),
                     onChanged: !widget.edit
                         ? null
                         : (String? newValue) {
@@ -56,16 +57,19 @@ class IllState extends State<IllWidget> {
                               widget.selected!.ill = newValue!;
                             });
                           },
-                    items: <String>[
-                      'Béo phì',
-                      'Huyết áp',
-                      'Tiểu đường',
-                      'Tim mạch',
-                      'Khác',
-                    ].map<DropdownMenuItem<String>>((String value) {
+                    menuMaxHeight: 200,
+                    isExpanded: true,
+                    alignment: Alignment.centerRight,
+
+                    borderRadius: BorderRadius.circular(20),
+                    items:
+                        disease.map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 50),
+                          child: Text(value),
+                        ),
                       );
                     }).toList(),
                   ),
@@ -79,31 +83,45 @@ class IllState extends State<IllWidget> {
                   "Tình trạng:",
                   style: FontStyleData.Paragraph_Regular_20,
                 ),
-                DropdownButton<String>(
-                  // icon: const Icon(Icons.arrow_downward),
-                  iconSize: 24,
-                  elevation: 16,
-                  style: const TextStyle(color: Colors.deepPurple),
-                  // underline: Container(
-                  //   height: 2,
-                  //   color: Colors.deepPurpleAccent,
-                  // ),
+                Container(
+                  width: width * 0.6,
+                  child: DropdownButton<String>(
+                    // icon: const Icon(Icons.arrow_downward),
+                    iconSize: 24,
+                    elevation: 16,
+                    style: const TextStyle(color: Colors.deepPurple),
+                    // underline: Container(
+                    //   height: 2,
+                    //   color: Colors.deepPurpleAccent,
+                    // ),
 
-                  value: widget.selected!.level,
-                  items: <String>['Mức nhẹ', 'Mức trung bình', 'Mức nguy hiểm']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: !widget.edit
-                      ? null
-                      : (String? newValue) {
-                          setState(() {
-                            widget.selected!.level = newValue!;
-                          });
-                        },
+                    menuMaxHeight: 200,
+                    isExpanded: true,
+
+                    borderRadius: BorderRadius.circular(20),
+
+                    value: widget.selected!.level,
+                    items: <String>[
+                      'Mức nhẹ',
+                      'Mức trung bình',
+                      'Mức nguy hiểm'
+                    ].map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 50),
+                          child: Text(value),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: !widget.edit
+                        ? null
+                        : (String? newValue) {
+                            setState(() {
+                              widget.selected!.level = newValue!;
+                            });
+                          },
+                  ),
                 ),
               ],
             ),

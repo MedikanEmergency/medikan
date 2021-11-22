@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:medikan/components/img_component/add_img_component.dart';
 import 'package:medikan/components/input-components/input_medical.dart';
-import 'package:medikan/components/input-components/input_phone.dart';
 import 'package:medikan/components/medical_components/blood_type_component.dart';
 import 'package:medikan/icons.dart';
 import 'package:medikan/models/model_person.dart';
+import 'package:medikan/screens/Profile/medical_data.dart';
 import 'package:medikan/themes/theme_data.dart';
 import 'package:flutter/cupertino.dart';
 import '../../models/model_person.dart';
@@ -25,12 +26,11 @@ class MedicalInfo extends StatefulWidget {
 
 class _MedicalInfoState extends State<MedicalInfo> {
   List<IllModel> userIll = [];
-  final user_img =
-      "https://wallup.net/wp-content/uploads/2017/11/23/438674-duck-yellow.jpg";
-
   FirebaseAuth _auth = Get.find<FirebaseAuth>();
   FirebaseFirestore _store = Get.find<FirebaseFirestore>();
-  AuthInfo _state = Get.find<AuthInfo>();
+  final AuthInfo _state = Get.find<AuthInfo>();
+  UpImg caller = UpImg();
+  final default_img = "https://cdn-icons-png.flaticon.com/512/3011/3011270.png";
   var collectionReference;
 
   @override
@@ -39,27 +39,26 @@ class _MedicalInfoState extends State<MedicalInfo> {
   }
 
   void initData() async {
+    setState(() {
+      user_img = _state.getImg();
+      path = 'account/' + _auth.currentUser!.uid + '/medical-info';
+    });
     List<TextEditingController> _medical = [];
-    collectionReference = await _store
-        .collection('account/' + _auth.currentUser!.uid + '/medical-info')
-        .doc('med')
-        .get()
-        .then((value) {
+    collectionReference =
+        await _store.collection(path).doc('med').get().then((value) {
       _medical.add(TextEditingController(text: value.data()!['height']));
       _medical.add(TextEditingController(text: value.data()!['weight']));
       _medical.add(TextEditingController(text: value.data()!['blood_pr']));
       _medical.add(TextEditingController(text: value.data()!['heartbeat']));
       _medical.add(TextEditingController());
       _medical.add(TextEditingController(text: value.data()!['med_his']));
+      setBlood(value.data()!['blood_type'].toString());
       setState(() {
         _medicalController = _medical;
       });
     });
-    collectionReference = await _store
-        .collection(
-            'account/' + _auth.currentUser!.uid + '/medical-info/med/disease')
-        .get()
-        .then((value) {
+    collectionReference =
+        await _store.collection(path + '/med/disease').get().then((value) {
       setState(() {
         userIll = value.docs
             .map((e) => IllModel(e['name'], e['level'], e.id))
@@ -75,39 +74,24 @@ class _MedicalInfoState extends State<MedicalInfo> {
             children: [
               TextButton(
                 onPressed: () {
-                  _store
-                      .collection(
-                          'account/' + _auth.currentUser!.uid + '/medical-info')
-                      .doc('med')
-                      .set({
-                    "height": _medicalController[0].text,
-                    "weight": _medicalController[1].text,
-                    "blood_pr": _medicalController[2].text,
-                    "heartbeat": _medicalController[3].text,
-                    "blood_type": dropdownValue + dropValue,
-                    "med_his": _medicalController[5].text,
-                  }, SetOptions(merge: true));
-                  setState(() {
-                    widget.edit = !widget.edit;
-                  });
+                  confirmUpdate();
+                  toggleEditButton();
                 },
                 child: Text("Xác nhận"),
               ),
               TextButton(
                   onPressed: () {
+                    // toggleEdit(;
                     setState(() {
-                      widget.edit = !widget.edit;
+                      widget.edit = false;
                     });
+                    initData();
                   },
                   child: Text("Hủy")),
             ],
           )
         : TextButton.icon(
-            onPressed: () {
-              setState(() {
-                widget.edit = !widget.edit;
-              });
-            },
+            onPressed: toggleEditButton,
             icon: Icon(
               Icons.delete,
               color: Colors.black,
@@ -116,8 +100,18 @@ class _MedicalInfoState extends State<MedicalInfo> {
             label: Text("Chỉnh sửa thông tin"));
   }
 
-  refresh() {
-    setState(() {});
+  addIllButton() {
+    return (widget.edit)
+        ? TextButton(
+            onPressed: () {
+              //TODO add firebase
+              userIll
+                  .add(IllModel("Khác", "Mức nhẹ", userIll.length.toString()));
+              setState(() {});
+            },
+            child: Text("Thêm một bệnh nền"),
+          )
+        : Text("");
   }
 
   List<TextEditingController> _medicalController = [
@@ -128,22 +122,17 @@ class _MedicalInfoState extends State<MedicalInfo> {
     TextEditingController(),
     TextEditingController(),
   ];
+  late String path;
+  String user_img = "";
+  String? dropdownValue, dropValue;
 
-  String dropdownValue = "AB";
-  String dropValue = "+";
-  List<int> idx = [0, 1, 2, 3, 4, 5];
-  List<String> header = [
-    "Chiều cao (cm)",
-    "Cân nặng (kg)",
-    "Huyết áp (mmHg)",
-    "Nhịp tim",
-    "",
-    "Tiền sử dị ứng"
-  ];
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+
+    const defaultImg =
+        "https://cdn-icons-png.flaticon.com/512/3011/3011270.png";
 
     return Scaffold(
       body: SafeArea(
@@ -195,10 +184,27 @@ class _MedicalInfoState extends State<MedicalInfo> {
                       padding: EdgeInsets.only(top: height * .03),
                       child: Column(children: [
                         CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            user_img,
-                          ),
                           radius: 70.0,
+                          backgroundImage: NetworkImage(
+                            (user_img != "") ? user_img : defaultImg,
+                          ),
+                          child: Align(
+                            widthFactor: 0,
+                            heightFactor: 0,
+                            alignment: Alignment.bottomRight,
+                            child: IconButton(
+                                onPressed: (widget.edit)
+                                    ? () => {
+                                          caller
+                                              .uploadImage('/user')
+                                              .then((value) => setState(() {
+                                                    user_img = value;
+                                                  }))
+                                        }
+                                    : null,
+                                icon: Icon(Icons.change_circle_outlined),
+                                color: Colors.red),
+                          ),
                         ),
                         Text(
                           _state.getName(),
@@ -264,7 +270,7 @@ class _MedicalInfoState extends State<MedicalInfo> {
                       children: userIll
                           .map(
                             (e) => Slidable(
-                              key: Key(e.ill + e.level),
+                              key: Key(e.id!),
                               endActionPane: (widget.edit)
                                   ? ActionPane(
                                       motion: const ScrollMotion(),
@@ -272,13 +278,8 @@ class _MedicalInfoState extends State<MedicalInfo> {
                                       children: [
                                         IconButton(
                                             onPressed: () {
-                                              _store
-                                                  .collection('account/' +
-                                                      _auth.currentUser!.uid +
-                                                      '/medical-info/med/disease')
-                                                  .doc(e.id)
-                                                  .delete();
-                                              refresh();
+                                              userIll.remove(e);
+                                              setState(() {});
                                             },
                                             icon: Icon(Icons.delete)),
                                       ],
@@ -290,28 +291,60 @@ class _MedicalInfoState extends State<MedicalInfo> {
                           .toList()),
                 ],
               ),
-              (widget.edit)
-                  ? TextButton(
-                      onPressed: () {
-                        //TODO add firebase
-                        _store
-                            .collection('account/' +
-                                _auth.currentUser!.uid +
-                                '/medical-info/med/disease')
-                            .add({"name": "Khác", "level": "Mức nhẹ"});
-                        setState(() {
-                          userIll.add(IllModel("Khác", "Mức nhẹ", "KHAC!"));
-                        });
-                        refresh();
-                      },
-                      child: Text("Thêm một bệnh nền"),
-                    )
-                  : Text(""),
+              addIllButton(),
               toggleEdit(),
             ],
           ),
         ),
       ),
     );
+  }
+
+  setBlood(blood) {
+    var sign = (blood.length == 3) ? 2 : 1;
+    setState(() {
+      dropValue = blood[sign];
+      dropdownValue = blood[0] + ((sign == 2) ? blood[1] : "");
+    });
+  }
+
+  confirmUpdate() {
+    _store
+        .doc('account/' + _auth.currentUser!.uid)
+        .set({"img": user_img}, SetOptions(merge: true));
+    _state.setImg(user_img);
+    updateProfile();
+    UpdateIll();
+  }
+
+  updateProfile() {
+    _store.collection(path).doc('med').set({
+      "height": _medicalController[0].text,
+      "weight": _medicalController[1].text,
+      "blood_pr": _medicalController[2].text,
+      "heartbeat": _medicalController[3].text,
+      "blood_type": dropdownValue! + dropValue!,
+      "med_his": _medicalController[5].text,
+    }, SetOptions(merge: true));
+  }
+
+  UpdateIll() async {
+    await _store
+        .collection(path + '/med/disease')
+        .get()
+        .then((value) => value.docs.forEach((element) {
+              _store.collection(path + '/med/disease').doc(element.id).delete();
+            }));
+    userIll.forEach((element) {
+      _store
+          .doc(path + '/med/disease/' + element.ill!)
+          .set({"name": element.ill, "level": element.level});
+    });
+  }
+
+  toggleEditButton() {
+    setState(() {
+      widget.edit = !widget.edit;
+    });
   }
 }

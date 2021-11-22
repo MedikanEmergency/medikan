@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medikan/screens/Profile/medical_data.dart';
 import 'package:medikan/themes/theme_data.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -51,8 +52,7 @@ class BloodType extends StatelessWidget {
                         blood0 = newValue!;
                       }
                     : null,
-                items: <String>['A', 'B', 'AB', 'O']
-                    .map<DropdownMenuItem<String>>((String value) {
+                items: bloodName.map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),
@@ -73,8 +73,7 @@ class BloodType extends StatelessWidget {
                         blood1 = newValue!;
                       }
                     : null,
-                items: <String>['+', '-', ' ']
-                    .map<DropdownMenuItem<String>>((String value) {
+                items: bloodSign.map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),

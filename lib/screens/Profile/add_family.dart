@@ -1,6 +1,7 @@
 // import 'dart:html';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:medikan/components/img_component/add_img_component.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'package:image_picker/image_picker.dart';
@@ -38,53 +39,21 @@ class _FamilyState extends State<Family> {
   FirebaseFirestore user = Get.find<FirebaseFirestore>();
   FirebaseAuth account = Get.find<FirebaseAuth>();
   AuthInfo thisUser = Get.find<AuthInfo>();
-
+  UpImg caller = new UpImg();
   String imgLink = "";
+  String path = '';
   TextEditingController _name = TextEditingController(),
       _phone = TextEditingController(),
       _img = TextEditingController();
 
   String _chosenValue = 'Cha/mẹ';
 
-  uploadImage() async {
-    //Check permission
-    final _picker = ImagePicker();
-    final _storage = FirebaseStorage.instance;
-    XFile image;
-    await Permission.photos.request();
-    var permissionStatus = await Permission.photos.status;
-    if (permissionStatus.isGranted) {
-      //select
-      image = (await _picker.pickImage(source: ImageSource.gallery))!;
-      var file = File(image.path);
-      if (image != null) {
-//Upload
-        var snapshot = await _storage
-            .ref('')
-            .child('family/image')
-            .putFile(file)
-            .whenComplete(() => null);
-
-        var downloadUrl = await snapshot.ref.getDownloadURL();
-        setState(() {
-          imgLink = downloadUrl;
-        });
-      } else {
-        print('Cancel picking!');
-      }
-    } else {
-      print('Grant Permissions and try again');
-    }
-    //select img
-
-    //Upload
-  }
-
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     var isNameError = false;
+    path = 'account/' + account.currentUser!.uid + '/family_member';
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -216,7 +185,13 @@ class _FamilyState extends State<Family> {
                           color: Color(0xFF95A1AC),
                           size: 20,
                         ),
-                        onPressed: () => uploadImage(),
+                        onPressed: () => {
+                          caller
+                              .uploadImage('/family')
+                              .then((value) => setState(() {
+                                    imgLink = value;
+                                  }))
+                        },
                       ),
                     ),
                   ],
@@ -226,11 +201,7 @@ class _FamilyState extends State<Family> {
                 //     return
                 TextButton(
                   onPressed: () {
-                    user
-                        .collection('account/' +
-                            account.currentUser!.uid +
-                            '/family_member')
-                        .add({
+                    user.collection(path).add({
                       "name": _name.text,
                       "phone": _phone.text,
                       "img": imgLink,

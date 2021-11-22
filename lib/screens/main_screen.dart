@@ -1,27 +1,18 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:ffi';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:medikan/models/auth_info.dart';
-import 'package:medikan/screens/Onboarding/onboarding_screen.dart';
-import 'package:medikan/screens/authenticate_screens/forgot-password/forgot_password.dart';
-import 'package:medikan/screens/authenticate_screens/forgot-password/new_password.dart';
-import 'package:medikan/screens/authenticate_screens/forgot-password/otp_screen.dart';
 import 'package:medikan/screens/chat%20screen/doctor_screen.dart';
-import 'package:medikan/screens/authenticate_screens/signup_screen.dart';
-import 'package:medikan/screens/sos_screen.dart';
 import 'package:medikan/themes/theme_data.dart';
 import 'package:medikan/components/sos_components/sos_button.dart';
 import 'package:medikan/icons.dart';
 import 'package:medikan/screens/chat%20screen/chat_screen.dart';
 import 'package:medikan/screens/First_aid/first_aid_screen.dart';
 import 'package:medikan/screens/News_screen/news_screen.dart';
-import 'package:medikan/screens/personal_info.dart';
-import 'package:medikan/screens/authenticate_screens/login.dart';
+import 'package:medikan/screens/Profile/personal_info.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
