@@ -259,11 +259,16 @@ class _MedicalInfoState extends State<MedicalInfo> {
                     alignment: Alignment.topLeft,
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
-                      child: Icon(
-                        Icons.add_alert_outlined,
-                        color: ColorData.sos,
-                        size: 36,
-                      ),
+                      child: Icon(MyFlutterApp.information_sign),
+
+                      // Icon(
+                      //   icon:MyFlutterApp.information_sign,) ,
+                      // MyFlutterApp.information_sign,
+                      // Icon(
+                      //   // Icons.add_alert_outlined,
+                      //   // color: ColorData.sos,
+                      //   // size: 36,
+                      // ),
                     ),
                   ),
                   Column(
