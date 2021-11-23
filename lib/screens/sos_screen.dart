@@ -2,7 +2,10 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geocode/geocode.dart';
+import 'package:geocode/geocode.dart';
 import 'package:get/get.dart';
+import 'package:location/location.dart';
 import 'package:medikan/models/auth_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sms/flutter_sms.dart';
@@ -34,6 +37,7 @@ class _SosScreenState extends State<SosScreen> {
     // TODO: implement initState
     path = 'account/' + account.currentUser!.uid + '/family_member';
     getFamily();
+    getLoc();
     super.initState();
     startTimer();
   }
@@ -58,27 +62,41 @@ class _SosScreenState extends State<SosScreen> {
             }));
   }
 
-  //LOCATION
-// Location location = new Location();
+  getLoc() async {
+    // LOCATION
+    Location location = new Location();
 
-// bool _serviceEnabled;
-// PermissionStatus _permissionGranted;
+    bool _serviceEnabled = await location.serviceEnabled();
+    PermissionStatus _permissionGranted;
 
-// _serviceEnabled = await location.serviceEnabled();
-// if (!_serviceEnabled) {
-//  _serviceEnabled = await location.requestService();
-//  if (!_serviceEnabled) {
-//    return null;
-//  }
-// }
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return null;
+      }
+    }
 
-// _permissionGranted = await location.hasPermission();
-// if (_permissionGranted == PermissionStatus.denied) {
-//  _permissionGranted = await location.requestPermission();
-//  if (_permissionGranted != PermissionStatus.granted) {
-//    return null;
-//  }
-// }
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return null;
+      }
+    }
+    LocationData _locationData;
+    _locationData = await location.getLocation();
+
+    setState(() {
+      loc = _locationData;
+    });
+    GeoCode geoCode = GeoCode();
+    var address = await geoCode.reverseGeocoding(
+        latitude: _locationData.latitude!, longitude: _locationData.longitude!);
+    setState(() {
+      yourAddress =
+          "${address.streetNumber}, ${address.streetAddress}, ${address.city}";
+    });
+  }
 
 //GEOLOCATOR
   // getAddr() async {
@@ -134,8 +152,9 @@ class _SosScreenState extends State<SosScreen> {
   //   setState(() {});
   // }
 
-  String Address = 'Vị trí chưa xác định';
+  String yourAddress = 'Vị trí chưa xác định';
   List<String> addresses = []; //["0987654321", "0987654322", "0987654323"]
+  late LocationData loc;
   @override
   Widget build(BuildContext context) {
     var height =
@@ -146,14 +165,16 @@ class _SosScreenState extends State<SosScreen> {
         if (_second == 0) {
           timer?.cancel();
           // do something to send S.O.S message
-          print(addresses);
+          print(yourAddress);
+          print(loc.latitude!);
+          print(loc.longitude!);
           SmsSender sender = SmsSender();
           List<SmsMessage> messages = [];
           for (var i = 0; i < addresses.length; i++) {
             messages.add(SmsMessage(
                 addresses[i],
                 'Tôi đang gặp nguy cấp tại' +
-                    Address +
+                    yourAddress +
                     '. Hãy tìm cách liên lạc với tôi.'));
             messages[i].onStateChanged.listen((state) {
               if (state == SmsMessageState.Sent) {

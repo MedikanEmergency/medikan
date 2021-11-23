@@ -51,7 +51,11 @@ dependencies:
 
   progress_dialog: ^1.2.4
   get: ^4.3.8
-
+  
+  # geocoding: ^2.0.1
+  # geolocator: ^7.0.0
+  location: ^4.2.0
+  geocode: ^1.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
