@@ -47,6 +47,13 @@ class _ChatState extends State<Chat> {
     final screen_height = MediaQuery.of(context).size.height;
     final screen_width = MediaQuery.of(context).size.width;
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: ColorData.secondary,
+        title: Text(
+          "Nhắn tin cùng bác sĩ",
+          style: FontStyleData.H1_bold_36,
+        ),
+      ),
       body: Center(
         child: Container(
           decoration: BoxDecoration(

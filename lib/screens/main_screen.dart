@@ -22,7 +22,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  final _userState = Get.find<AuthInfo>();
+  var _userState;
   final _firestore = Get.find<FirebaseFirestore>();
   final _auth = Get.find<FirebaseAuth>();
   int chatTime = 0;
@@ -55,14 +55,56 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
+  void initInfo() async {
+    try {
+      _userState = Get.find<AuthInfo>();
+    } catch (e) {
+      _userState = Get.put(AuthInfo());
+      _userState.setPhone(_auth.currentUser!.phoneNumber.toString());
+      await _firestore
+          .collection('conversations')
+          .doc('${_auth.currentUser!.uid}')
+          .get()
+          .then((value) {
+        var name = value.data()!['name'];
+        print(name);
+        _userState.setName(name);
+      });
+      await _firestore
+          .collection('account')
+          .doc('${_auth.currentUser!.uid}')
+          .get()
+          .then((value) {
+        var temp = value.data()!['is_doctor'].toString();
+        _userState.setDoctor(temp == 'true');
+        _userState.setImg(value.data()!['img']);
+        _userState.setPassword(value.data()!['password']);
+        print(_userState.getImg());
+      });
+    }
+  }
+
   @override
   void initState() {
+    initInfo();
     checkChatTime();
     _pages = [
-      SafeArea(child: FirstAid()),
-      SafeArea(child: _userState.getDoctor() ? DoctorScreen() : Chat()),
-      SafeArea(child: News()),
-      SafeArea(child: PersonalInfo()),
+      SafeArea(
+        child: FirstAid(),
+        bottom: false,
+      ),
+      SafeArea(
+        child: _userState.getDoctor() ? DoctorScreen() : Chat(),
+        bottom: false,
+      ),
+      SafeArea(
+        child: News(),
+        bottom: false,
+      ),
+      SafeArea(
+        child: PersonalInfo(),
+        bottom: false,
+      ),
     ];
     super.initState();
   }
@@ -79,38 +121,92 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       floatingActionButton: SOS(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: ColorData.onPrimary),
-        ),
-        child: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(MyFlutterApp.medical_kit),
-              label: "Sơ cấp cứu",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(MyFlutterApp.social_distancing),
-              label: "Hỏi bác sĩ",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(MyFlutterApp.medical_file),
-              label: "Mẹo và tin tức",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(MyFlutterApp.nurse),
-              label: "Tài khoản",
-            ),
-          ],
-          unselectedItemColor: ColorData.inactive.withOpacity(0.5),
-          selectedItemColor: ColorData.primary,
-          showSelectedLabels: true,
-          showUnselectedLabels: false,
-          currentIndex: _selectedPage,
-          onTap: _onTapPage,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        notchMargin: 7.5,
+        // color: ColorData.background,
+        elevation: 10,
+        shape: CircularNotchedRectangle(),
+        child: Container(
+          height: 60,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                iconSize: 30.0,
+                // padding: EdgeInsets.only(left: 28.0),
+                icon: Icon(
+                  MyFlutterApp.medical_kit,
+                  color: _selectedPage == 0
+                      ? ColorData.primary
+                      : ColorData.inactive,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _pageController!.animateToPage(0,
+                        duration: Duration(milliseconds: 500),
+                        curve: Curves.ease);
+                  });
+                },
+              ),
+              IconButton(
+                iconSize: 30.0,
+                // padding: EdgeInsets.only(right: 28.0),
+                icon: Icon(
+                  MyFlutterApp.social_distancing,
+                  color: _selectedPage == 1
+                      ? ColorData.primary
+                      : ColorData.inactive,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _pageController!.animateToPage(1,
+                        duration: Duration(milliseconds: 500),
+                        curve: Curves.ease);
+                  });
+                },
+              ),
+              SizedBox(
+                width: 75,
+              ),
+              IconButton(
+                iconSize: 30.0,
+                // padding: EdgeInsets.only(left: 28.0),
+                icon: Icon(
+                  MyFlutterApp.medical_file,
+                  color: _selectedPage == 2
+                      ? ColorData.primary
+                      : ColorData.inactive,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _pageController!.animateToPage(2,
+                        duration: Duration(milliseconds: 500),
+                        curve: Curves.ease);
+                  });
+                },
+              ),
+              IconButton(
+                iconSize: 30.0,
+                // padding: EdgeInsets.only(right: 28.0),
+                icon: Icon(
+                  MyFlutterApp.nurse,
+                  color: _selectedPage == 3
+                      ? ColorData.primary
+                      : ColorData.inactive,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _pageController!.animateToPage(3,
+                        duration: Duration(milliseconds: 500),
+                        curve: Curves.ease);
+                  });
+                },
+              )
+            ],
+          ),
         ),
       ),
       body: PageView(
@@ -118,6 +214,7 @@ class _MainScreenState extends State<MainScreen> {
         onPageChanged: (index) {
           setState(() {
             _selectedPage = index;
+            print(_selectedPage);
           });
         },
         controller: _pageController,
