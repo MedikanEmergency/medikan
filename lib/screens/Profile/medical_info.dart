@@ -71,23 +71,44 @@ class _MedicalInfoState extends State<MedicalInfo> {
     return (widget.edit)
         ? Row(
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisSize: MainAxisSize.max,
             children: [
-              TextButton(
-                onPressed: () {
+              ElevatedButton(
+                onPressed: () => () {
                   confirmUpdate();
                   toggleEditButton();
                 },
                 child: Text("Xác nhận"),
+                style: ElevatedButton.styleFrom(
+                  primary: ColorData.primary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
               ),
-              TextButton(
-                  onPressed: () {
-                    // toggleEdit(;
-                    setState(() {
-                      widget.edit = false;
-                    });
-                    initData();
-                  },
-                  child: Text("Hủy")),
+              ElevatedButton(
+                onPressed: () => () {
+                  // toggleEdit(;
+                  setState(() {
+                    widget.edit = false;
+                  });
+                  initData();
+                },
+                child: Text(
+                  "Hủy",
+                  style: TextStyle(color: ColorData.primary),
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: ColorData.surface,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      side: BorderSide(
+                        color: ColorData.primary,
+                        width: 2,
+                      )),
+                ),
+              ),
             ],
           )
         : TextButton.icon(
@@ -109,7 +130,14 @@ class _MedicalInfoState extends State<MedicalInfo> {
                   .add(IllModel("Khác", "Mức nhẹ", userIll.length.toString()));
               setState(() {});
             },
-            child: Text("Thêm một bệnh nền"),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.add),
+                Text("Thêm một bệnh nền"),
+              ],
+            ),
           )
         : Text("");
   }
@@ -183,28 +211,32 @@ class _MedicalInfoState extends State<MedicalInfo> {
                     child: Padding(
                       padding: EdgeInsets.only(top: height * .03),
                       child: Column(children: [
-                        CircleAvatar(
-                          radius: 70.0,
-                          backgroundImage: NetworkImage(
-                            (user_img != "") ? user_img : defaultImg,
-                          ),
-                          child: Align(
-                            widthFactor: 0,
-                            heightFactor: 0,
-                            alignment: Alignment.bottomRight,
-                            child: IconButton(
-                                onPressed: (widget.edit)
-                                    ? () => {
-                                          caller
-                                              .uploadImage('/user')
-                                              .then((value) => setState(() {
-                                                    user_img = value;
-                                                  }))
-                                        }
-                                    : null,
-                                icon: Icon(Icons.change_circle_outlined),
-                                color: Colors.red),
-                          ),
+                        Stack(
+                          children: [
+                            CircleAvatar(
+                              radius: 70.0,
+                              backgroundImage: NetworkImage(
+                                (user_img != "") ? user_img : defaultImg,
+                              ),
+                            ),
+                            Positioned(
+                              child: widget.edit
+                                  ? IconButton(
+                                      splashRadius: 10,
+                                      onPressed: () => {
+                                            caller
+                                                .uploadImage('/user')
+                                                .then((value) => setState(() {
+                                                      user_img = value;
+                                                    }))
+                                          },
+                                      icon: Icon(Icons.change_circle_outlined),
+                                      color: Colors.red)
+                                  : Container(),
+                              bottom: -7,
+                              right: -7,
+                            )
+                          ],
                         ),
                         Text(
                           _state.getName(),
@@ -254,23 +286,9 @@ class _MedicalInfoState extends State<MedicalInfo> {
                                 ))
                       .toList()),
               Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
-                      child: Icon(MyFlutterApp.information_sign),
-
-                      // Icon(
-                      //   icon:MyFlutterApp.information_sign,) ,
-                      // MyFlutterApp.information_sign,
-                      // Icon(
-                      //   // Icons.add_alert_outlined,
-                      //   // color: ColorData.sos,
-                      //   // size: 36,
-                      // ),
-                    ),
-                  ),
                   Column(
                       children: userIll
                           .map(
