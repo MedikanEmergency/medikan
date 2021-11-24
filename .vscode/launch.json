@@ -9,7 +9,6 @@
             "name": "medikan",
             "request": "launch",
             "type": "dart",
-            "args": ["--no-sound-null-safety"],
         },
         {
             "name": "medikan (profile mode)",

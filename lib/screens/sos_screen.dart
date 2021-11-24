@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geocode/geocode.dart';
-import 'package:geocode/geocode.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
 import 'package:medikan/models/auth_info.dart';
@@ -57,6 +56,8 @@ class _SosScreenState extends State<SosScreen> {
               var newaddr = addresses;
               newaddr.add(element.data()['phone'].toString());
               setState(() {
+                print(newaddr);
+                print(addresses);
                 addresses = newaddr;
               });
             }));
@@ -89,13 +90,13 @@ class _SosScreenState extends State<SosScreen> {
     setState(() {
       loc = _locationData;
     });
-    GeoCode geoCode = GeoCode();
-    var address = await geoCode.reverseGeocoding(
-        latitude: _locationData.latitude!, longitude: _locationData.longitude!);
-    setState(() {
-      yourAddress =
-          "${address.streetNumber}, ${address.streetAddress}, ${address.city}";
-    });
+    // GeoCode geoCode = GeoCode();
+    // var address = await geoCode.reverseGeocoding(
+    //     latitude: _locationData.latitude!, longitude: _locationData.longitude!);
+    // setState(() {
+    //   yourAddress =
+    //       "${address.streetNumber}, ${address.streetAddress}, ${address.city}";
+    // });
   }
 
 //GEOLOCATOR
@@ -165,25 +166,28 @@ class _SosScreenState extends State<SosScreen> {
         if (_second == 0) {
           timer?.cancel();
           // do something to send S.O.S message
-          print(yourAddress);
+          // print(yourAddress);
           print(loc.latitude!);
           print(loc.longitude!);
+          print(addresses);
           SmsSender sender = SmsSender();
-          List<SmsMessage> messages = [];
           for (var i = 0; i < addresses.length; i++) {
-            messages.add(SmsMessage(
-                addresses[i],
-                'Tôi đang gặp nguy cấp tại' +
-                    yourAddress +
-                    '. Hãy tìm cách liên lạc với tôi.'));
-            messages[i].onStateChanged.listen((state) {
+            final msg = "Tôi đang gặp nguy cấp tại " +
+                loc.latitude.toString() +
+                ", " +
+                loc.longitude.toString() +
+                " . Hãy giúp tôi";
+
+            SmsMessage tmp = SmsMessage(addresses[i], msg);
+
+            tmp.onStateChanged.listen((state) {
               if (state == SmsMessageState.Sent) {
                 print("SMS is sent!");
               } else if (state == SmsMessageState.Delivered) {
                 print("SMS is delivered!");
               }
             });
-            sender.sendSms(messages[i]);
+            sender.sendSms(tmp);
           }
         }
       },
