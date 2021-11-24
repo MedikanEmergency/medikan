@@ -56,6 +56,30 @@ dependencies:
   # geolocator: ^7.0.0
   location: ^4.2.0
   geocode: ^1.0.1
+  #Mong là bị conflict
+  image_picker: ^0.8.4+4
+  firebase_storage: ^10.1.0
+
+
+
+
+
+
+# chọn đúng bản 8.0.1 cho permission
+
+
+
+
+
+#tạo conflict
+#ahodsijoladsa
+
+
+#
+
+
+  permission_handler: ^8.0.1
+#Hãy bị conflict đi
 dev_dependencies:
   flutter_test:
     sdk: flutter
