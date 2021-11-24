@@ -172,11 +172,10 @@ class _SosScreenState extends State<SosScreen> {
           print(addresses);
           SmsSender sender = SmsSender();
           for (var i = 0; i < addresses.length; i++) {
-            final msg = "Tôi đang gặp nguy cấp tại " +
+            final msg = "Tôi đang gặp nguy hiểm, hãy tới tọa độ " +
                 loc.latitude.toString() +
                 ", " +
-                loc.longitude.toString() +
-                " . Hãy giúp tôi";
+                loc.longitude.toString();
 
             SmsMessage tmp = SmsMessage(addresses[i], msg);
 
