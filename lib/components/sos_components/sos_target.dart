@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medikan/themes/theme_data.dart';
 
 class SosTarget extends StatelessWidget {
   const SosTarget({
@@ -14,7 +15,7 @@ class SosTarget extends StatelessWidget {
       height: 100,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        color: Colors.blueAccent,
+        color: ColorData.secondary,
       ),
     );
   }
