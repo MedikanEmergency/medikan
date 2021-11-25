@@ -48,8 +48,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     final user_img = _state.getImg();
-    final default_img =
-        "https://cdn-icons-png.flaticon.com/512/168/168726.png";
+    final default_img = "https://cdn-icons-png.flaticon.com/512/168/168726.png";
     // setState(() {});
 
     return Scaffold(
@@ -68,7 +67,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                           Navigator.of(context)
                               .popUntil((route) => route.isFirst);
                           Navigator.of(context) //.removeRouteBelow(anchorRoute)
-                              .pushReplacement(
+                              .push(
                             PageRouteBuilder(
                                 transitionDuration: Duration(milliseconds: 700),
                                 transitionsBuilder:
@@ -202,8 +201,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
               Padding(
                 padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
+                  onTap: () async {
+                    await Navigator.of(context).push(
                       PageRouteBuilder(
                           transitionDuration: Duration(milliseconds: 700),
                           transitionsBuilder:
@@ -220,6 +219,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                           }),
                       //MaterialPageRoute(builder: (context) => MedicalInfo())
                     );
+                    setState(() {});
                   },
                   child: Align(
                     alignment: Alignment.centerLeft,
@@ -313,6 +313,10 @@ class _PersonalInfoState extends State<PersonalInfo> {
                   ),
                 ),
               ),
+              SizedBox(
+                width: width,
+                height: height * 0.1,
+              )
             ],
           ),
         ),
