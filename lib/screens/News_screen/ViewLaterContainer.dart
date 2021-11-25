@@ -92,40 +92,40 @@ class _ViewLaterContainerState extends State<ViewlaterContainer> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Positioned(
-                          top: 0.0,
-                          right: 0.0,
-                          child: new IconButton(
-                              icon: Icon(Icons.delete, color: Colors.grey),
-                              padding: EdgeInsets.zero,
-                              constraints: BoxConstraints(),
-                              onPressed: () {
-                                ViewLater.remove(widget.article);
-                                Navigator.of(context).pop(context);
-                                Navigator.push(
-                                  context,
-                                  PageRouteBuilder(
-                                      transitionDuration:
-                                          Duration(milliseconds: 700),
-                                      transitionsBuilder: (context, animation,
-                                          animationTime, child) {
-                                        animation = CurvedAnimation(
-                                            parent: animation,
-                                            curve: Curves.ease);
-                                        return FadeTransition(
-                                          opacity: animation,
-                                          child: child,
-                                        );
-                                      },
-                                      pageBuilder:
-                                          (context, animation, animationTime) {
-                                        return ViewlaterPage();
-                                      }),
-                                  // MaterialPageRoute(
-                                  //   builder: (context) => ViewlaterPage(),
-                                  // ),
-                                );
-                              }),
+                        Column(
+                          children: [
+                            new IconButton(
+                                icon: Icon(Icons.delete, color: Colors.grey),
+                                padding: EdgeInsets.zero,
+                                constraints: BoxConstraints(),
+                                onPressed: () {
+                                  ViewLater.remove(widget.article);
+                                  Navigator.of(context).pop(context);
+                                  Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                        transitionDuration:
+                                            Duration(milliseconds: 700),
+                                        transitionsBuilder: (context, animation,
+                                            animationTime, child) {
+                                          animation = CurvedAnimation(
+                                              parent: animation,
+                                              curve: Curves.ease);
+                                          return FadeTransition(
+                                            opacity: animation,
+                                            child: child,
+                                          );
+                                        },
+                                        pageBuilder: (context, animation,
+                                            animationTime) {
+                                          return ViewlaterPage();
+                                        }),
+                                    // MaterialPageRoute(
+                                    //   builder: (context) => ViewlaterPage(),
+                                    // ),
+                                  );
+                                }),
+                          ],
                         )
                       ],
                     ),
