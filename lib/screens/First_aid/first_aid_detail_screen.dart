@@ -50,7 +50,7 @@ class _DetailScreenState extends State<DetailScreen> {
             ),
             onPressed: () => Navigator.pop(context),
             style: ElevatedButton.styleFrom(
-              elevation: ElevationData.elevated10,
+              elevation: ElevationData.elevated0,
               primary: ColorData.secondary,
               shape: new RoundedRectangleBorder(
                   borderRadius: new BorderRadius.only(
@@ -60,7 +60,7 @@ class _DetailScreenState extends State<DetailScreen> {
             ),
           ),
         ),
-        backgroundColor: ColorData.background,
+        backgroundColor: Color(0xFFFAFAFA),
         elevation: 0,
       ),
       body: SafeArea(

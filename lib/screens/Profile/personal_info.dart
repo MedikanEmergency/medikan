@@ -4,14 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:medikan/models/auth_info.dart';
 import 'package:medikan/screens/Profile/add_family.dart';
-import 'package:medikan/screens/Profile/member_widget.dart';
-import 'package:medikan/screens/Profile/model_person.dart';
-import 'package:medikan/screens/medical_info.dart';
+import 'package:medikan/components/medical_components/member_widget.dart';
+import 'package:medikan/models/model_person.dart';
+import 'package:medikan/screens/Profile/medical_info.dart';
 import 'package:medikan/themes/theme_data.dart';
 import 'package:medikan/icons.dart';
-import './medical_info.dart';
-import 'Profile/family_provider.dart';
-import 'authenticate_screens/login.dart';
+import 'medical_info.dart';
+import '../authenticate_screens/login.dart';
 
 class PersonalInfo extends StatefulWidget {
   bool edit;
@@ -47,8 +46,9 @@ class _PersonalInfoState extends State<PersonalInfo> {
     // context.watch<Foo>.value;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    final user_img =
-        "https://wallup.net/wp-content/uploads/2017/11/23/438674-duck-yellow.jpg";
+    final user_img = _state.getImg();
+    final default_img =
+        "https://cdn-icons-png.flaticon.com/512/3011/3011270.png";
     // setState(() {});
 
     return Scaffold(
@@ -72,8 +72,12 @@ class _PersonalInfoState extends State<PersonalInfo> {
                       child: TextButton(
                         onPressed: () {
                           _signOut();
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
+                          // Navigator.of(context).remo(
+                          //     MaterialPageRoute(
+                          //         builder: (context) => LoginScreen()),
+                          //     (MaterialP => false);
+                          Navigator.of(context) //.removeRouteBelow(anchorRoute)
+                              .pushReplacement(MaterialPageRoute(
                                   builder: (context) => LoginScreen()));
                         },
                         child: Text("Đăng xuất"),
@@ -113,7 +117,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                         ),
                         CircleAvatar(
                           backgroundImage: NetworkImage(
-                            user_img,
+                            (user_img != "") ? user_img : default_img,
                           ),
                           radius: height * .06,
                         ),
@@ -221,8 +225,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 ),
                 onPressed: () => {
                   //do something
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => AddFamilyScreen()))
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => Family()))
                 },
                 icon: Icon(
                   Icons.add,

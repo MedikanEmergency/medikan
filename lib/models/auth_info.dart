@@ -6,7 +6,7 @@ class AuthInfo extends GetxController {
   var is_doctor = false.obs;
   var chatTime = 0.obs;
   var name = "".obs;
-
+  var img = "".obs;
   String getName() {
     return name.value;
   }
@@ -36,14 +36,22 @@ class AuthInfo extends GetxController {
   }
 
   bool getDoctor() {
-    return this.is_doctor.value;
+    return is_doctor.value;
   }
 
   String getPhone() {
-    return this.phone.value;
+    return phone.value;
   }
 
   String getPassword() {
-    return this.password.value;
+    return password.value;
+  }
+
+  String getImg() {
+    return img.value;
+  }
+
+  void setImg(img) {
+    this.img.value = img;
   }
 }

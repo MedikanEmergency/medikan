@@ -42,6 +42,13 @@ Future<void> main() async {
   }
   Get.put(FirebaseAuth.instance);
   Get.put(FirebaseFirestore.instance);
+  FirebaseAuth.instance.authStateChanges().listen((User? user) {
+    if (user == null) {
+      print('User is currently signed out!');
+    } else {
+      print('User is signed in!');
+    }
+  });
 
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -66,8 +73,10 @@ class Medikan extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: initScreen == 0 || initScreen == null ? 'onBoard' : 'home',
       routes: {
-        'home': (context) => LoginScreen(),
-        'onBoard': (context) => OnBoarding(),
+        'home': (context) => FirebaseAuth.instance.currentUser == null
+            ? SafeArea(child: LoginScreen())
+            : MainScreen(),
+        'onBoard': (context) => SafeArea(child: OnBoarding()),
       },
     );
   }

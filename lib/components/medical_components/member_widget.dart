@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:medikan/models/auth_info.dart';
-import 'package:medikan/screens/Profile/family_provider.dart';
-import 'package:medikan/screens/Profile/model_person.dart';
+import 'package:medikan/models/model_person.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:medikan/screens/main_screen.dart';
 import 'package:medikan/themes/theme_data.dart';
-import 'package:provider/provider.dart';
-import 'model_person.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
+import '../../models/model_person.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -65,20 +61,20 @@ class MemberState extends State<MemberWidget> {
                   alignment: Alignment.centerLeft,
                   child: ListTile(
                     title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                      Text(
-                        widget.mem.name,
-                        style: FontStyleData.Title_Bold_20,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                        "(" + widget.mem.relate + ")",
-                        style: FontStyleData.Mini_Title_Light_16,
-                        overflow: TextOverflow.ellipsis,
-                      )
-                    ]),
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(
+                            widget.mem.name,
+                            style: FontStyleData.Title_Bold_20,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            "(" + widget.mem.relate + ")",
+                            style: FontStyleData.Mini_Title_Light_16,
+                            overflow: TextOverflow.ellipsis,
+                          )
+                        ]),
                     subtitle: Text(widget.mem.phone,
                         style: FontStyleData.Paragraph_Regular_20),
                   ),
