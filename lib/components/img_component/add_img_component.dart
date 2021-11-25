@@ -16,9 +16,9 @@ class UpImg {
     if (permissionStatus.isGranted) {
       //select
       XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-      var file = File(image!.path);
       if (image != null) {
 //Upload
+        var file = File(image.path);
         var snapshot = await _storage
             .ref()
             .child(firebasePath + image.name)
@@ -26,9 +26,11 @@ class UpImg {
             .whenComplete(() => null);
 
         var downloadUrl = await snapshot.ref.getDownloadURL();
+        print(downloadUrl);
         return downloadUrl;
       } else {
         print('Cancel picking!');
+        return "";
       }
     } else {
       print('Grant Permissions and try again');

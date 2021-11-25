@@ -70,6 +70,7 @@ class _OtpScreenState extends State<OtpScreen> {
       {
         'is_doctor': false,
         'password': widget._password,
+        'img': "",
       },
     );
     widget.firebaseStore

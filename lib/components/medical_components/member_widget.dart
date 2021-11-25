@@ -48,7 +48,9 @@ class MemberState extends State<MemberWidget> {
                 padding: const EdgeInsets.all(5.0),
                 child: ClipRRect(
                   child: Image.network(
-                    widget.mem.pic,
+                    (widget.mem.pic == "")
+                        ? widget.mem.pic
+                        : "https://cdn-icons-png.flaticon.com/512/3011/3011270.png",
                     fit: BoxFit.fill,
                     width: width * 0.18,
                     height: width * 0.18,

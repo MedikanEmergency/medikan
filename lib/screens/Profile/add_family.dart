@@ -2,6 +2,7 @@
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:medikan/components/img_component/add_img_component.dart';
+import 'package:medikan/screens/Profile/medical_data.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'package:image_picker/image_picker.dart';
@@ -122,15 +123,8 @@ class _FamilyState extends State<Family> {
                     borderRadius: BorderRadius.circular(15),
                     isExpanded: true,
                     value: _chosenValue, // this is the magic
-                    items: <String>[
-                      'Ông/bà',
-                      'Cha/mẹ',
-                      'Vợ/chồng',
-                      'Anh/Chị',
-                      'Con/Cháu',
-                      'Họ hàng',
-                      'Khác'
-                    ].map<DropdownMenuItem<String>>((String value) {
+                    items:
+                        relation.map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value),
@@ -153,24 +147,20 @@ class _FamilyState extends State<Family> {
                 ),
                 Row(
                   children: [
-                    (imgLink != "")
-                        ? Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: ClipRRect(
-                              child: Image.network(
-                                imgLink,
-                                fit: BoxFit.fill,
-                                width: width * 0.4,
-                                height: width * 0.4,
-                              ),
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                          )
-                        : Text("INout"
-                            // Placeholder(
-                            //     fallbackHeight: 200,
-                            //     fallbackWidth: double.infinity,
-                            ),
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: ClipRRect(
+                        child: Image.network(
+                          (imgLink != "")
+                              ? imgLink
+                              : "https://cdn-icons-png.flaticon.com/512/3011/3011270.png",
+                          fit: BoxFit.fill,
+                          width: width * 0.4,
+                          height: width * 0.4,
+                        ),
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                    ),
                     SizedBox(
                       height: 20,
                     ),
@@ -178,19 +168,17 @@ class _FamilyState extends State<Family> {
                       alignment: Alignment.centerLeft,
                       child: IconButton(
                         icon: Icon(
-                          // passwordLoginVisibility
-                          //     ? Icons.visibility_outlined
-                          //     :
                           Icons.upload_rounded,
                           color: Color(0xFF95A1AC),
                           size: 20,
                         ),
                         onPressed: () => {
-                          caller
-                              .uploadImage('/family')
-                              .then((value) => setState(() {
+                          caller.uploadImage('/family').then((value) => {
+                                if (value != "")
+                                  setState(() {
                                     imgLink = value;
-                                  }))
+                                  })
+                              })
                         },
                       ),
                     ),
