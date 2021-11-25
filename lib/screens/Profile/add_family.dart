@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:medikan/components/img_component/add_img_component.dart';
 import 'package:permission_handler/permission_handler.dart';
-
+import 'package:medikan/components/authen_components/done_button.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -58,15 +58,9 @@ class _FamilyState extends State<Family> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: ColorData.secondary,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              MyFlutterApp.setting,
-              color: ColorData.onPrimary,
-            ),
-          ),
-        ],
+        iconTheme: IconThemeData(
+          color: ColorData.onPrimary,
+        ),
         title: Text(
           "Thêm người thân",
           style: FontStyleData.H1_bold_36,
@@ -209,7 +203,20 @@ class _FamilyState extends State<Family> {
                     });
                     Navigator.of(context).pop();
                   },
-                  child: Text("Xác nhận"),
+                  child: ElevatedButton(
+                    onPressed: () => () {},
+                    child: Text("Xác nhận", style: TextStyle(fontSize: 18),),
+                    style: ElevatedButton.styleFrom(
+                      primary: ColorData.primary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      fixedSize: Size(
+                        width * 0.3,
+                        height * 0.07,
+                      ),
+                    ),
+                  ),
                   //   );
                   // },
                 ),

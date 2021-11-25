@@ -76,9 +76,28 @@ class _PersonalInfoState extends State<PersonalInfo> {
                           //     MaterialPageRoute(
                           //         builder: (context) => LoginScreen()),
                           //     (MaterialP => false);
+                          Navigator.of(context)
+                              .popUntil((route) => route.isFirst);
                           Navigator.of(context) //.removeRouteBelow(anchorRoute)
-                              .pushReplacement(MaterialPageRoute(
-                                  builder: (context) => LoginScreen()));
+                              .pushReplacement(
+                            PageRouteBuilder(
+                                transitionDuration: Duration(milliseconds: 700),
+                                transitionsBuilder:
+                                    (context, animation, animationTime, child) {
+                                  animation = CurvedAnimation(
+                                      parent: animation, curve: Curves.ease);
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: child,
+                                  );
+                                },
+                                pageBuilder:
+                                    (context, animation, animationTime) {
+                                  return LoginScreen();
+                                }),
+                            // MaterialPageRoute(
+                            //   builder: (context) => LoginScreen())
+                          );
                         },
                         child: Text("Đăng xuất"),
                       ),
@@ -161,7 +180,22 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 child: GestureDetector(
                   onTap: () {
                     Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => MedicalInfo()));
+                      PageRouteBuilder(
+                          transitionDuration: Duration(milliseconds: 700),
+                          transitionsBuilder:
+                              (context, animation, animationTime, child) {
+                            animation = CurvedAnimation(
+                                parent: animation, curve: Curves.ease);
+                            return FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            );
+                          },
+                          pageBuilder: (context, animation, animationTime) {
+                            return MedicalInfo();
+                          }),
+                      //MaterialPageRoute(builder: (context) => MedicalInfo())
+                    );
                   },
                   child: Align(
                     alignment: Alignment.centerLeft,
@@ -225,8 +259,23 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 ),
                 onPressed: () => {
                   //do something
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => Family()))
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                        transitionDuration: Duration(milliseconds: 700),
+                        transitionsBuilder:
+                            (context, animation, animationTime, child) {
+                          animation = CurvedAnimation(
+                              parent: animation, curve: Curves.ease);
+                          return FadeTransition(
+                            opacity: animation,
+                            child: child,
+                          );
+                        },
+                        pageBuilder: (context, animation, animationTime) {
+                          return Family();
+                        }),
+                    //MaterialPageRoute(builder: (context) => Family())
+                  )
                 },
                 icon: Icon(
                   Icons.add,
