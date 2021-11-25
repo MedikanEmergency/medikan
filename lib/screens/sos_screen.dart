@@ -141,7 +141,7 @@ class _SosScreenState extends State<SosScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SosTarget(
-                target: "*Tin nhắn S.O.S sẽ chứa kinh độ và vĩ độ",
+                target: "*Tin nhắn S.O.S sẽ chứa kinh độ và vĩ độ hiện tại của bạn",
               ),
             ],
           ),
