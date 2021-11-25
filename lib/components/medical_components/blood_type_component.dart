@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:medikan/screens/Profile/medical_data.dart';
+import 'package:medikan/screens/Profile/medical_info.dart';
 import 'package:medikan/themes/theme_data.dart';
 import 'package:flutter/cupertino.dart';
 
-class BloodType extends StatelessWidget {
-  String? blood0;
-  String? blood1;
+class BloodType extends StatefulWidget {
+  String blood0;
+  String blood1;
   bool edit;
-  BloodType({this.blood0, this.blood1, this.edit = false});
+  BloodType({required this.blood0, required this.blood1, this.edit = false});
+  _BloodTypeState createState() => _BloodTypeState();
+}
+
+class _BloodTypeState extends State<BloodType> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -27,13 +32,15 @@ class BloodType extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           DropdownButton<String>(
-            value: blood0,
+            value: widget.blood0,
             iconSize: 24,
             elevation: 16,
             style: const TextStyle(color: Colors.deepPurple),
-            onChanged: (edit)
+            onChanged: (widget.edit)
                 ? (String? newValue) {
-                    blood0 = newValue!;
+                    setState(() {
+                      widget.blood0 = newValue!;
+                    });
                   }
                 : null,
             items: bloodName.map<DropdownMenuItem<String>>((String value) {
@@ -44,13 +51,15 @@ class BloodType extends StatelessWidget {
             }).toList(),
           ),
           DropdownButton<String>(
-            value: blood1,
+            value: widget.blood1,
             iconSize: 24,
             elevation: 16,
             style: const TextStyle(color: Colors.deepPurple),
-            onChanged: (edit)
+            onChanged: (widget.edit)
                 ? (String? newValue) {
-                    blood1 = newValue!;
+                    setState(() {
+                      widget.blood1 = newValue!;
+                    });
                   }
                 : null,
             items: bloodSign.map<DropdownMenuItem<String>>((String value) {

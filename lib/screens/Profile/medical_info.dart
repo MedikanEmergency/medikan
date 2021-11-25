@@ -152,7 +152,7 @@ class _MedicalInfoState extends State<MedicalInfo> {
   ];
   late String path;
   String user_img = "";
-  String? dropdownValue, dropValue;
+  late String dropdownValue, dropValue;
 
   @override
   Widget build(BuildContext context) {
@@ -349,7 +349,7 @@ class _MedicalInfoState extends State<MedicalInfo> {
       "weight": _medicalController[1].text,
       "blood_pr": _medicalController[2].text,
       "heartbeat": _medicalController[3].text,
-      "blood_type": dropdownValue! + dropValue!,
+      "blood_type": dropdownValue + dropValue,
       "med_his": _medicalController[5].text,
     }, SetOptions(merge: true));
   }
