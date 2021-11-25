@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:medikan/screens/Onboarding/onboarding_screen.dart';
@@ -8,6 +9,7 @@ import 'package:medikan/screens/authenticate_screens/login.dart';
 import 'package:medikan/screens/authenticate_screens/signup_screen.dart';
 import 'package:medikan/screens/main_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 int? initScreen;
@@ -27,6 +29,26 @@ int? initScreen;
 //   Get.put(FirebaseFirestore.instance);
 //   runApp(Medikan());
 // }
+Future<void> getPermissions() async {
+  Map<Permission, PermissionStatus> statuses = await [
+    Permission.location,
+    Permission.storage,
+    // Permission.contacts,
+    Permission.mediaLibrary,
+    Permission.phone,
+    Permission.sms,
+  ].request();
+
+  var loc = await Permission.location.status;
+  var store = await Permission.storage.status;
+  var media = await Permission.mediaLibrary.status;
+  var phone = await Permission.phone.status;
+  var sms = await Permission.sms.status;
+
+  if ((loc.isDenied || phone.isDenied || sms.isDenied)) {
+    SystemNavigator.pop();
+  }
+}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,12 +56,14 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+
   try {
     await Firebase.initializeApp();
     print("\n\n\nsuccess\n\n\n");
   } catch (e) {
     print("\n\n\nfailed\n\n\n");
   }
+  await getPermissions();
   Get.put(FirebaseAuth.instance);
   Get.put(FirebaseFirestore.instance);
   FirebaseAuth.instance.authStateChanges().listen((User? user) {

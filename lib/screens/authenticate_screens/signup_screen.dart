@@ -265,10 +265,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      "Đã có tài khoản? ",
-                      style: FontStyleData.Paragraph_Regular_20,
-                    ),
+                    Text("Đã có tài khoản? ",
+                        style: TextStyle(
+                            color: ColorData.onPrimary,
+                            fontSize: 18,
+                            letterSpacing: 0,
+                            fontWeight: FontWeight.w400)),
                     TextButton(
                       onPressed: () {
                         Navigator.of(context).pushReplacement(
@@ -294,7 +296,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         "Đăng nhập",
                         style: TextStyle(
                             color: ColorData.clickable,
-                            fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18),
                       ),
                     ),
                   ],
