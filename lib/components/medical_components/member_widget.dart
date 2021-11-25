@@ -29,7 +29,7 @@ class MemberState extends State<MemberWidget> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    // final height = MediaQuery.of(context).size.height;
+
     return SafeArea(
       child: Container(
         padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
