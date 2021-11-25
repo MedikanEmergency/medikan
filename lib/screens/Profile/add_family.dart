@@ -181,7 +181,7 @@ class _FamilyState extends State<Family> {
                 // Consumer<FamilyProviders>(
                 //   builder: (context, FamilyProviders data, child) {
                 //     return
-                TextButton(
+                ElevatedButton(
                   onPressed: () {
                     user.collection(path).add({
                       "name": _name.text,
@@ -191,23 +191,23 @@ class _FamilyState extends State<Family> {
                     });
                     Navigator.of(context).pop();
                   },
-                  child: ElevatedButton(
-                    onPressed: () => () {},
-                    child: Text("Xác nhận", style: TextStyle(fontSize: 18),),
-                    style: ElevatedButton.styleFrom(
-                      primary: ColorData.primary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      fixedSize: Size(
-                        width * 0.3,
-                        height * 0.07,
-                      ),
+                  child: Text(
+                    "Xác nhận",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: ColorData.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    fixedSize: Size(
+                      width * 0.3,
+                      height * 0.07,
                     ),
                   ),
-                  //   );
-                  // },
                 ),
+                //   );
+                // },
               ],
             ),
           ),

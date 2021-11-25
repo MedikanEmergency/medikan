@@ -34,8 +34,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
   @override
   void initState() {
     collectionReference = _auth
-        .collection('account/' + account.currentUser!.uid + '/family_member')
-        .orderBy('name');
+        .collection('account/' + account.currentUser!.uid + '/family_member');
     super.initState();
   }
 
