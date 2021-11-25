@@ -80,6 +80,11 @@ class _NewPasswordState extends State<NewPassword> {
             'password': _pwdController.text,
           },
         );
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Đổi mật khẩu thành công!"),
+          ),
+        );
         Navigator.of(context).popUntil((route) => route.isFirst);
         Navigator.of(context).pushReplacement(
           PageRouteBuilder(
@@ -93,7 +98,7 @@ class _NewPasswordState extends State<NewPassword> {
                 );
               },
               pageBuilder: (context, animation, animationTime) {
-                return MainScreen();
+                return widget.isForgot ? LoginScreen() : MainScreen();
               }),
         );
       });
