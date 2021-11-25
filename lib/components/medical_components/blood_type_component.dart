@@ -5,8 +5,10 @@ import 'package:medikan/themes/theme_data.dart';
 import 'package:flutter/cupertino.dart';
 
 class BloodType extends StatefulWidget {
-  String blood0;
-  String blood1;
+  // String blood0;
+  // String blood1;
+  TextEditingController blood0 = TextEditingController();
+  TextEditingController blood1 = TextEditingController();
   bool edit;
   BloodType({required this.blood0, required this.blood1, this.edit = false});
   _BloodTypeState createState() => _BloodTypeState();
@@ -32,14 +34,14 @@ class _BloodTypeState extends State<BloodType> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           DropdownButton<String>(
-            value: widget.blood0,
+            value: widget.blood0.text,
             iconSize: 24,
             elevation: 16,
             style: const TextStyle(color: Colors.deepPurple),
             onChanged: (widget.edit)
                 ? (String? newValue) {
                     setState(() {
-                      widget.blood0 = newValue!;
+                      widget.blood0.text = newValue!;
                     });
                   }
                 : null,
@@ -51,14 +53,14 @@ class _BloodTypeState extends State<BloodType> {
             }).toList(),
           ),
           DropdownButton<String>(
-            value: widget.blood1,
+            value: widget.blood1.text,
             iconSize: 24,
             elevation: 16,
             style: const TextStyle(color: Colors.deepPurple),
             onChanged: (widget.edit)
                 ? (String? newValue) {
                     setState(() {
-                      widget.blood1 = newValue!;
+                      widget.blood1.text = newValue!;
                     });
                   }
                 : null,
