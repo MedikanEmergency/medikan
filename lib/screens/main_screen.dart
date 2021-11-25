@@ -22,7 +22,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  var _userState;
+  var _userState = Get.find<AuthInfo>();
   final _firestore = Get.find<FirebaseFirestore>();
   final _auth = Get.find<FirebaseAuth>();
   int chatTime = 0;
@@ -55,38 +55,7 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  void initInfo() async {
-    try {
-      _userState = Get.find<AuthInfo>();
-    } catch (e) {
-      _userState = Get.put(AuthInfo());
-      _userState.setPhone(_auth.currentUser!.phoneNumber.toString());
-      await _firestore
-          .collection('conversations')
-          .doc('${_auth.currentUser!.uid}')
-          .get()
-          .then((value) {
-        var name = value.data()!['name'];
-        print(name);
-        _userState.setName(name);
-      });
-      await _firestore
-          .collection('account')
-          .doc('${_auth.currentUser!.uid}')
-          .get()
-          .then((value) {
-        var temp = value.data()!['is_doctor'].toString();
-        _userState.setDoctor(temp == 'true');
-        _userState.setImg(value.data()!['img']);
-        _userState.setPassword(value.data()!['password']);
-        print(_userState.getImg());
-      });
-    }
-  }
-
-  @override
-  void initState() {
-    initInfo();
+  void init() async {
     checkChatTime();
     _pages = [
       SafeArea(
@@ -106,6 +75,11 @@ class _MainScreenState extends State<MainScreen> {
         bottom: false,
       ),
     ];
+  }
+
+  @override
+  void initState() {
+    init();
     super.initState();
   }
 
