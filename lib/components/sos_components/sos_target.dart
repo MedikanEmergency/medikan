@@ -10,9 +10,17 @@ class SosTarget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Center(child: Text(target)),
-      width: 150,
-      height: 100,
+      child: Center(
+        child: Text(
+          target,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 20, color: ColorData.sos, fontWeight: FontWeight.bold),
+        ),
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      width: MediaQuery.of(context).size.width * 0.8,
+      height: MediaQuery.of(context).size.height * 0.1,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         color: ColorData.secondary,

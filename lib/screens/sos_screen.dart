@@ -141,13 +141,7 @@ class _SosScreenState extends State<SosScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SosTarget(
-                target: "Bệnh viện",
-              ),
-              SizedBox(
-                width: width * 0.1,
-              ),
-              SosTarget(
-                target: "Người thân",
+                target: "*Tin nhắn S.O.S sẽ chứa kinh độ và vĩ độ",
               ),
             ],
           ),
