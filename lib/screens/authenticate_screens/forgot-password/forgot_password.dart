@@ -1,9 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:medikan/components/authen_components/cancel_button.dart';
 import 'package:medikan/components/authen_components/done_button.dart';
+import 'package:medikan/screens/authenticate_screens/forgot-password/otp_forgot.dart';
 import 'package:medikan/screens/authenticate_screens/forgot-password/otp_screen.dart';
 import 'package:medikan/screens/authenticate_screens/login.dart';
 import 'package:medikan/themes/theme_data.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 class ForgotPwdScreen extends StatefulWidget {
   @override
@@ -12,6 +16,7 @@ class ForgotPwdScreen extends StatefulWidget {
 
 class _ForgotPwdScreenState extends State<ForgotPwdScreen> {
   TextEditingController _phone = TextEditingController();
+  FirebaseAuth _auth = FirebaseAuth.instance;
 
   bool _isPhoneError = false;
 
@@ -29,7 +34,7 @@ class _ForgotPwdScreenState extends State<ForgotPwdScreen> {
     Navigator.of(context).pop();
   }
 
-  void validatePhone() {
+  void validatePhone() async {
     bool isValid = true;
     RegExp regExp = RegExp(
         r"^(0|\+84)(\s|\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\d)(\s|\.)?(\d{3})(\s|\.)?(\d{3})$");
@@ -41,28 +46,66 @@ class _ForgotPwdScreenState extends State<ForgotPwdScreen> {
     }
 
     setState(() {});
+    var phoneTmp = _phone.text.replaceRange(0, 1, "+84");
+    ProgressDialog progressDialog = ProgressDialog(context);
+    progressDialog.style(
+      message: "Vui lòng chờ",
+    );
     if (isValid) {
-      Navigator.of(context).push(
-        PageRouteBuilder(
-            transitionDuration: Duration(milliseconds: 700),
-            transitionsBuilder: (context, animation, animationTime, child) {
-              animation =
-                  CurvedAnimation(parent: animation, curve: Curves.ease);
-              return FadeTransition(
-                opacity: animation,
-                child: child,
-              );
-            },
-            pageBuilder: (context, animation, animationTime) {
-              return LoginScreen();
-            }),
-        // MaterialPageRoute(
-        //   builder: (ctx) => LoginScreen(
-        //       // num: _phone.text,
-        //       // verificationId: "123",
-        //       ),
-        // ),
-      );
+      progressDialog.show();
+      try {
+        await _auth.verifyPhoneNumber(
+          timeout: Duration(minutes: 2),
+          phoneNumber: phoneTmp,
+          verificationCompleted:
+              (PhoneAuthCredential phoneAuthCredential) async {
+            print("Helloooooo");
+            // firebaseAuth.signInWithCredential(phoneAuthCredential);
+          },
+          verificationFailed: (FirebaseAuthException authException) async {
+            print("\n\n\nFailed\n\n");
+            print(authException.message);
+            progressDialog.hide();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  "Đăng ký thất bại, vui lòng thử lại sau",
+                  style: TextStyle(color: ColorData.background),
+                ),
+                backgroundColor: ColorData.primaryVariant,
+              ),
+            );
+          },
+          codeSent: (String verificationId, int? resendToken) {
+            print("check for code ${resendToken}}");
+            progressDialog.hide();
+            Navigator.of(context).popUntil((route) => route.isFirst);
+            Navigator.of(context).pushReplacement(
+              PageRouteBuilder(
+                  transitionDuration: Duration(milliseconds: 700),
+                  transitionsBuilder:
+                      (context, animation, animationTime, child) {
+                    animation =
+                        CurvedAnimation(parent: animation, curve: Curves.ease);
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                  pageBuilder: (context, animation, animationTime) {
+                    return OtpForgotScreen(
+                      verificationId: verificationId,
+                      phone: _phone.text,
+                    );
+                  }),
+            );
+          },
+          codeAutoRetrievalTimeout: (String verificationId) {},
+        );
+      } on FirebaseAuthException catch (e) {
+        print("\n\n\n\nsomething wrong\n\n\n");
+        print(e.message);
+      }
     }
   }
 

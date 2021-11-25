@@ -75,7 +75,7 @@ class _MedicalInfoState extends State<MedicalInfo> {
             mainAxisSize: MainAxisSize.max,
             children: [
               ElevatedButton(
-                onPressed: () => () {
+                onPressed: () {
                   confirmUpdate();
                   toggleEditButton();
                 },
@@ -88,7 +88,7 @@ class _MedicalInfoState extends State<MedicalInfo> {
                 ),
               ),
               ElevatedButton(
-                onPressed: () => () {
+                onPressed: () {
                   // toggleEdit(;
                   setState(() {
                     widget.edit = false;

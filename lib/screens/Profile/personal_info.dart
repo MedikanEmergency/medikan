@@ -7,6 +7,8 @@ import 'package:medikan/screens/Profile/add_family.dart';
 import 'package:medikan/components/medical_components/member_widget.dart';
 import 'package:medikan/models/model_person.dart';
 import 'package:medikan/screens/Profile/medical_info.dart';
+import 'package:medikan/screens/authenticate_screens/forgot-password/forgot_password.dart';
+import 'package:medikan/screens/authenticate_screens/forgot-password/new_password.dart';
 import 'package:medikan/themes/theme_data.dart';
 import 'package:medikan/icons.dart';
 import 'medical_info.dart';
@@ -34,8 +36,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
   @override
   void initState() {
     collectionReference = _auth
-        .collection('account/' + account.currentUser!.uid + '/family_member')
-        .orderBy('name');
+        .collection('account/' + account.currentUser!.uid + '/family_member');
     super.initState();
   }
 
@@ -63,7 +64,30 @@ class _PersonalInfoState extends State<PersonalInfo> {
               itemBuilder: (context) => [
                     PopupMenuItem(
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context)
+                              .popUntil((route) => route.isFirst);
+                          Navigator.of(context) //.removeRouteBelow(anchorRoute)
+                              .pushReplacement(
+                            PageRouteBuilder(
+                                transitionDuration: Duration(milliseconds: 700),
+                                transitionsBuilder:
+                                    (context, animation, animationTime, child) {
+                                  animation = CurvedAnimation(
+                                      parent: animation, curve: Curves.ease);
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: child,
+                                  );
+                                },
+                                pageBuilder:
+                                    (context, animation, animationTime) {
+                                  return NewPassword(isForgot: false);
+                                }),
+                            // MaterialPageRoute(
+                            //   builder: (context) => LoginScreen())
+                          );
+                        },
                         child: Text("Đổi mật khẩu"),
                       ),
                       value: 1,
@@ -76,9 +100,28 @@ class _PersonalInfoState extends State<PersonalInfo> {
                           //     MaterialPageRoute(
                           //         builder: (context) => LoginScreen()),
                           //     (MaterialP => false);
+                          Navigator.of(context)
+                              .popUntil((route) => route.isFirst);
                           Navigator.of(context) //.removeRouteBelow(anchorRoute)
-                              .pushReplacement(MaterialPageRoute(
-                                  builder: (context) => LoginScreen()));
+                              .pushReplacement(
+                            PageRouteBuilder(
+                                transitionDuration: Duration(milliseconds: 700),
+                                transitionsBuilder:
+                                    (context, animation, animationTime, child) {
+                                  animation = CurvedAnimation(
+                                      parent: animation, curve: Curves.ease);
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: child,
+                                  );
+                                },
+                                pageBuilder:
+                                    (context, animation, animationTime) {
+                                  return LoginScreen();
+                                }),
+                            // MaterialPageRoute(
+                            //   builder: (context) => LoginScreen())
+                          );
                         },
                         child: Text("Đăng xuất"),
                       ),
@@ -161,7 +204,22 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 child: GestureDetector(
                   onTap: () {
                     Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => MedicalInfo()));
+                      PageRouteBuilder(
+                          transitionDuration: Duration(milliseconds: 700),
+                          transitionsBuilder:
+                              (context, animation, animationTime, child) {
+                            animation = CurvedAnimation(
+                                parent: animation, curve: Curves.ease);
+                            return FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            );
+                          },
+                          pageBuilder: (context, animation, animationTime) {
+                            return MedicalInfo();
+                          }),
+                      //MaterialPageRoute(builder: (context) => MedicalInfo())
+                    );
                   },
                   child: Align(
                     alignment: Alignment.centerLeft,
@@ -225,8 +283,23 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 ),
                 onPressed: () => {
                   //do something
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => Family()))
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                        transitionDuration: Duration(milliseconds: 700),
+                        transitionsBuilder:
+                            (context, animation, animationTime, child) {
+                          animation = CurvedAnimation(
+                              parent: animation, curve: Curves.ease);
+                          return FadeTransition(
+                            opacity: animation,
+                            child: child,
+                          );
+                        },
+                        pageBuilder: (context, animation, animationTime) {
+                          return Family();
+                        }),
+                    //MaterialPageRoute(builder: (context) => Family())
+                  )
                 },
                 icon: Icon(
                   Icons.add,

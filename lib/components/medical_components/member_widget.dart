@@ -36,9 +36,18 @@ class MemberState extends State<MemberWidget> {
         // width: MediaQuery.of(context).size.width - 20,
         // height: 50,
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20.0),
-        ),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5), //color of shadow
+                spreadRadius: 5, //spread radius
+                blurRadius: 7, // blur radius
+                offset: Offset(0, 2), // changes position of shadow
+                //first paramerter of offset is left-right
+                //second parameter is top to down
+              ),
+            ]),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5),
           child: Row(

@@ -4,7 +4,6 @@ import 'package:medikan/screens/News_screen/article_screen.dart';
 import 'package:medikan/themes/theme_data.dart';
 import 'package:medikan/icons.dart';
 import 'package:medikan/screens/News_screen/viewlater_screen.dart';
-import 'package:medikan/screens/News_screen/download_screen.dart';
 
 class ViewlaterContainer extends StatefulWidget {
   final Article article;
@@ -139,7 +138,7 @@ class _ViewLaterContainerState extends State<ViewlaterContainer> {
                       ),
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Row(
                           mainAxisSize: MainAxisSize.min,
@@ -158,42 +157,6 @@ class _ViewLaterContainerState extends State<ViewlaterContainer> {
                               color: ColorData.secondaryVariant,
                             ),
                           ],
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            // Download.add(widget.article);
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => DownloadPage(),
-                            //   ),
-                            // );
-                          },
-                          icon: const Icon(
-                            MyFlutterApp.download,
-                            size: 19,
-                            color: ColorData.secondaryVariant,
-                          ),
-                          padding: EdgeInsets.zero,
-                          constraints: BoxConstraints(),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            // ViewLater.add(widget.article);
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => ViewlaterPage(),
-                            //   ),
-                            // );
-                          },
-                          icon: const Icon(
-                            MyFlutterApp.clock,
-                            size: 19,
-                            color: ColorData.secondaryVariant,
-                          ),
-                          padding: EdgeInsets.zero,
-                          constraints: BoxConstraints(),
                         ),
                       ],
                     ),

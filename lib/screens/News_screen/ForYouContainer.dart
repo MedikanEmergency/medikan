@@ -4,7 +4,6 @@ import 'package:medikan/screens/News_screen/article_screen.dart';
 import 'package:medikan/themes/theme_data.dart';
 import 'package:medikan/icons.dart';
 import 'package:medikan/screens/News_screen/viewlater_screen.dart';
-import 'package:medikan/screens/News_screen/download_screen.dart';
 
 class ForYouContainer extends StatefulWidget {
   final Article article;
@@ -113,7 +112,7 @@ class _ForYouContainerState extends State<ForYouContainer> {
                       ),
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Row(
                           mainAxisSize: MainAxisSize.min,
@@ -132,40 +131,6 @@ class _ForYouContainerState extends State<ForYouContainer> {
                               color: ColorData.secondaryVariant,
                             ),
                           ],
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            Download.add(widget.article);
-                            Navigator.push(
-                              context,
-                              PageRouteBuilder(
-                                  transitionDuration:
-                                      Duration(milliseconds: 700),
-                                  transitionsBuilder: (context, animation,
-                                      animationTime, child) {
-                                    animation = CurvedAnimation(
-                                        parent: animation, curve: Curves.ease);
-                                    return FadeTransition(
-                                      opacity: animation,
-                                      child: child,
-                                    );
-                                  },
-                                  pageBuilder:
-                                      (context, animation, animationTime) {
-                                    return DownloadPage();
-                                  }),
-                              // MaterialPageRoute(
-                              //   builder: (context) => DownloadPage(),
-                              // ),
-                            );
-                          },
-                          icon: const Icon(
-                            MyFlutterApp.download,
-                            size: 19,
-                            color: ColorData.secondaryVariant,
-                          ),
-                          padding: EdgeInsets.zero,
-                          constraints: BoxConstraints(),
                         ),
                         IconButton(
                           onPressed: () {
