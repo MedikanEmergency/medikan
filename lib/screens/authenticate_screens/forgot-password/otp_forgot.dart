@@ -10,12 +10,14 @@ import 'package:medikan/components/authen_components/done_button.dart';
 import 'package:medikan/components/input-components/input_otp.dart';
 import 'package:medikan/components/authen_components/resent_text.dart';
 import 'package:medikan/models/auth_info.dart';
+import 'package:medikan/screens/authenticate_screens/forgot-password/new_password.dart';
 import 'package:medikan/screens/authenticate_screens/login.dart';
 import 'package:medikan/screens/authenticate_screens/signup_screen.dart';
 import 'package:medikan/themes/theme_data.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
-class OtpScreen extends StatefulWidget {
+class OtpForgotScreen extends StatefulWidget {
   FirebaseAuth firebaseAuth = Get.find<FirebaseAuth>();
   FirebaseFirestore firebaseStore = Get.find<FirebaseFirestore>();
   final authState = Get.find<AuthInfo>();
@@ -23,17 +25,16 @@ class OtpScreen extends StatefulWidget {
   String verificationId;
   String _phoneNum = "";
   String _password = "";
-  OtpScreen({required this.verificationId}) {
+  OtpForgotScreen({required this.verificationId, required phone}) {
     // get saved phone and password
-    _phoneNum = authState.phone.toString();
-    _password = authState.password.toString();
+    _phoneNum = phone;
   }
 
   @override
-  State<OtpScreen> createState() => _OtpScreenState();
+  State<OtpForgotScreen> createState() => _OtpForgotScreenState();
 }
 
-class _OtpScreenState extends State<OtpScreen> {
+class _OtpForgotScreenState extends State<OtpForgotScreen> {
   Timer? timer;
   final TextEditingController _controller = TextEditingController();
   int _second = 10;
@@ -58,54 +59,12 @@ class _OtpScreenState extends State<OtpScreen> {
     Navigator.of(context).pop();
   }
 
-  void createPhonePassword() {
-    var email = widget._phoneNum + "@gmail.com";
-    final credential =
-        EmailAuthProvider.credential(email: email, password: widget._password);
-    widget.firebaseAuth.currentUser?.linkWithCredential(credential);
-  }
-
-  void createAccountDocument(uid) {
-    widget.firebaseStore.collection('account').doc(uid).set(
-      {
-        'is_doctor': false,
-        'password': widget._password,
-        'img': "",
-      },
-    );
-    widget.firebaseStore
-        .collection('account/' + uid + '/medical-info')
-        .doc('med')
-        .set({
-      'height': 160,
-      'weight': 53,
-      'blood_pr': 120,
-      'blood_type': 'O+',
-      'heart_beat': 100,
-      'med_his': ' ',
-    });
-    widget.firebaseStore
-        .collection('account/' + uid + '/medical-info/med/disease')
-        .doc()
-        .set({
-      'name': 'Khác',
-      'level': 'Mức nhẹ',
-    });
-
-    widget.firebaseStore.collection('conversations').doc(uid).set(
-      {
-        'chat_time': 3,
-        'modified_time': Timestamp.now(),
-        'latest_message_time': Timestamp.now(),
-        'latest_message': "",
-        'is_read': true,
-        'id': uid,
-        'name': widget.authState.getName(),
-      },
-    );
-  }
-
   void next() async {
+    ProgressDialog progressDialog = ProgressDialog(context);
+    progressDialog.style(
+      message: "Vui lòng chờ",
+    );
+    progressDialog.show();
     PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
         verificationId: widget.verificationId, smsCode: _controller.text);
     try {
@@ -113,8 +72,7 @@ class _OtpScreenState extends State<OtpScreen> {
           await widget.firebaseAuth.signInWithCredential(phoneAuthCredential);
 
       if (authCredential.user != null) {
-        createPhonePassword();
-        createAccountDocument(authCredential.user?.uid);
+        progressDialog.hide();
         Navigator.of(context).popUntil((route) => route.isFirst);
         Navigator.pushReplacement(
           context,
@@ -129,7 +87,9 @@ class _OtpScreenState extends State<OtpScreen> {
                 );
               },
               pageBuilder: (context, animation, animationTime) {
-                return LoginScreen();
+                return NewPassword(
+                  isForgot: true,
+                );
               }),
           // MaterialPageRoute(
           //   builder: (context) => LoginScreen(),
@@ -137,6 +97,7 @@ class _OtpScreenState extends State<OtpScreen> {
         );
       }
     } on FirebaseAuthException catch (e) {
+      progressDialog.hide();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text("Xác nhận thất bại, vui lòng kiểm tra lại OTP"),

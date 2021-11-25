@@ -7,6 +7,7 @@ import 'package:medikan/components/authen_components/done_button.dart';
 import 'package:medikan/components/input-components/input_phone.dart';
 import 'package:medikan/components/input-components/input_pwd.dart';
 import 'package:medikan/models/auth_info.dart';
+import 'package:medikan/screens/authenticate_screens/forgot-password/forgot_password.dart';
 import 'package:medikan/screens/main_screen.dart';
 import 'package:medikan/themes/theme_data.dart';
 import 'package:medikan/icons.dart';
@@ -223,7 +224,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => ForgotPwdScreen())),
                       child: Text(
                         "Quên mật khẩu?",
                         style: TextStyle(
