@@ -30,7 +30,7 @@ class _MedicalInfoState extends State<MedicalInfo> {
   FirebaseFirestore _store = Get.find<FirebaseFirestore>();
   final AuthInfo _state = Get.find<AuthInfo>();
   UpImg caller = UpImg();
-  final default_img = "https://cdn-icons-png.flaticon.com/512/3011/3011270.png";
+  final default_img = "https://cdn-icons-png.flaticon.com/512/168/168726.png";
   var collectionReference;
 
   @override
@@ -152,7 +152,8 @@ class _MedicalInfoState extends State<MedicalInfo> {
   ];
   late String path;
   String user_img = "";
-  late TextEditingController dropdownValue, dropValue;
+  TextEditingController dropdownValue = TextEditingController(text: "A");
+  TextEditingController dropValue = TextEditingController(text: "+");
 
   @override
   Widget build(BuildContext context) {

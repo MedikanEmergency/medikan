@@ -59,7 +59,7 @@ class MemberState extends State<MemberWidget> {
                   child: Image.network(
                     (widget.mem.pic != "")
                         ? widget.mem.pic
-                        : "https://cdn-icons-png.flaticon.com/512/3011/3011270.png",
+                        : "https://cdn-icons-png.flaticon.com/512/168/168726.png",
                     fit: BoxFit.fill,
                     width: width * 0.18,
                     height: width * 0.18,

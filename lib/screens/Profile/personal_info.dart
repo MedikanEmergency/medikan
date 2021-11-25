@@ -49,7 +49,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
     final height = MediaQuery.of(context).size.height;
     final user_img = _state.getImg();
     final default_img =
-        "https://cdn-icons-png.flaticon.com/512/3011/3011270.png";
+        "https://cdn-icons-png.flaticon.com/512/168/168726.png";
     // setState(() {});
 
     return Scaffold(
