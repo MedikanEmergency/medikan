@@ -22,3 +22,12 @@ List<String> header = [
   "",
   "Tiền sử dị ứng"
 ];
+List<String> relation = [
+  'Ông/bà',
+  'Cha/mẹ',
+  'Vợ/chồng',
+  'Anh/Chị',
+  'Con/Cháu',
+  'Họ hàng',
+  'Khác'
+];
