@@ -6,6 +6,7 @@ import 'package:medikan/components/medical_components/blood_type_component.dart'
 import 'package:medikan/icons.dart';
 import 'package:medikan/models/model_person.dart';
 import 'package:medikan/screens/Profile/medical_data.dart';
+import 'package:medikan/screens/Profile/personal_info.dart';
 import 'package:medikan/themes/theme_data.dart';
 import 'package:flutter/cupertino.dart';
 import '../../models/model_person.dart';
@@ -195,7 +196,29 @@ class _MedicalInfoState extends State<MedicalInfo> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          Navigator.of(context) //.removeRouteBelow(anchorRoute)
+                              .pushReplacement(
+                            PageRouteBuilder(
+                                transitionDuration: Duration(milliseconds: 700),
+                                transitionsBuilder:
+                                    (context, animation, animationTime, child) {
+                                  animation = CurvedAnimation(
+                                      parent: animation, curve: Curves.ease);
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: child,
+                                  );
+                                },
+                                pageBuilder:
+                                    (context, animation, animationTime) {
+                                  return PersonalInfo();
+                                }),
+                            // MaterialPageRoute(
+                            //   builder: (context) => LoginScreen())
+                          );
+                        },
                         style: ElevatedButton.styleFrom(
                           elevation: ElevationData.elevated10,
                           primary: ColorData.secondary,
