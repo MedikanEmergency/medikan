@@ -12,6 +12,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'models/auth_info.dart';
+
 int? initScreen;
 // void main() async {
 //   WidgetsFlutterBinding.ensureInitialized();
@@ -50,6 +52,33 @@ Future<void> getPermissions() async {
   }
 }
 
+Future<void> initInfo() async {
+  var _userState = Get.put(AuthInfo());
+  var _auth = Get.find<FirebaseAuth>();
+  var _firestore = Get.find<FirebaseFirestore>();
+  _userState.setPhone(_auth.currentUser!.phoneNumber.toString());
+  await _firestore
+      .collection('account')
+      .doc('${_auth.currentUser!.uid}')
+      .get()
+      .then((value) {
+    var temp = value.data()!['is_doctor'].toString();
+    print(temp);
+    _userState.setDoctor(temp == 'true');
+    _userState.setImg(value.data()!['img']);
+    _userState.setPassword(value.data()!['password']);
+  });
+  await _firestore
+      .collection('conversations')
+      .doc('${_auth.currentUser!.uid}')
+      .get()
+      .then((value) {
+    var name = value.data()!['name'];
+    print(name);
+    _userState.setName(name);
+  });
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
@@ -73,6 +102,10 @@ Future<void> main() async {
       print('User is signed in!');
     }
   });
+
+  if (FirebaseAuth.instance.currentUser != null) {
+    await initInfo();
+  }
 
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences preferences = await SharedPreferences.getInstance();
