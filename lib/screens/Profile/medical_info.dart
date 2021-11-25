@@ -226,9 +226,12 @@ class _MedicalInfoState extends State<MedicalInfo> {
                                       onPressed: () => {
                                             caller
                                                 .uploadImage('/user')
-                                                .then((value) => setState(() {
-                                                      user_img = value;
-                                                    }))
+                                                .then((value) => {
+                                                      if (value != "")
+                                                        setState(() {
+                                                          user_img = value;
+                                                        })
+                                                    })
                                           },
                                       icon: Icon(Icons.change_circle_outlined),
                                       color: Colors.red)
