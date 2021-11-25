@@ -112,14 +112,7 @@ class _MedicalInfoState extends State<MedicalInfo> {
               ),
             ],
           )
-        : TextButton.icon(
-            onPressed: toggleEditButton,
-            icon: Icon(
-              Icons.delete,
-              color: Colors.black,
-              size: 36.0,
-            ),
-            label: Text("Chỉnh sửa thông tin"));
+        : Container(height: 50);
   }
 
   addIllButton() {
@@ -165,6 +158,19 @@ class _MedicalInfoState extends State<MedicalInfo> {
         "https://cdn-icons-png.flaticon.com/512/3011/3011270.png";
 
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: (!widget.edit)
+          ? FloatingActionButton.extended(
+              backgroundColor: ColorData.primary,
+              onPressed: toggleEditButton,
+              icon: Icon(
+                Icons.edit,
+                color: Colors.white,
+                size: 36.0,
+              ),
+              label: Text("Chỉnh sửa"),
+            )
+          : null,
       body: SafeArea(
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
@@ -196,28 +202,13 @@ class _MedicalInfoState extends State<MedicalInfo> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        onPressed: () {
+                        onPressed: () async {
                           Navigator.of(context).pop();
-                          Navigator.of(context) //.removeRouteBelow(anchorRoute)
-                              .pushReplacement(
-                            PageRouteBuilder(
-                                transitionDuration: Duration(milliseconds: 700),
-                                transitionsBuilder:
-                                    (context, animation, animationTime, child) {
-                                  animation = CurvedAnimation(
-                                      parent: animation, curve: Curves.ease);
-                                  return FadeTransition(
-                                    opacity: animation,
-                                    child: child,
-                                  );
-                                },
-                                pageBuilder:
-                                    (context, animation, animationTime) {
-                                  return PersonalInfo();
-                                }),
-                            // MaterialPageRoute(
-                            //   builder: (context) => LoginScreen())
-                          );
+                          // await Navigator.of(
+                          //         context) //.removeRouteBelow(anchorRoute)
+                          //     .push(MaterialPageRoute(
+                          //         builder: (context) => PersonalInfo()));
+                          // setState(() {});
                         },
                         style: ElevatedButton.styleFrom(
                           elevation: ElevationData.elevated10,
@@ -368,8 +359,8 @@ class _MedicalInfoState extends State<MedicalInfo> {
     UpdateIll();
   }
 
-  updateProfile() {
-    _store.collection(path).doc('med').set({
+  updateProfile() async {
+    await _store.collection(path).doc('med').set({
       "height": _medicalController[0].text,
       "weight": _medicalController[1].text,
       "blood_pr": _medicalController[2].text,

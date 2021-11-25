@@ -67,7 +67,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                           Navigator.of(context)
                               .popUntil((route) => route.isFirst);
                           Navigator.of(context) //.removeRouteBelow(anchorRoute)
-                              .pushReplacement(
+                              .push(
                             PageRouteBuilder(
                                 transitionDuration: Duration(milliseconds: 700),
                                 transitionsBuilder:
@@ -204,8 +204,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
               Padding(
                 padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
+                  onTap: () async {
+                    await Navigator.of(context).push(
                       PageRouteBuilder(
                           transitionDuration: Duration(milliseconds: 700),
                           transitionsBuilder:
@@ -222,6 +222,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                           }),
                       //MaterialPageRoute(builder: (context) => MedicalInfo())
                     );
+                    setState(() {});
                   },
                   child: Align(
                     alignment: Alignment.centerLeft,
@@ -315,6 +316,10 @@ class _PersonalInfoState extends State<PersonalInfo> {
                   ),
                 ),
               ),
+              SizedBox(
+                width: width,
+                height: height * 0.1,
+              )
             ],
           ),
         ),

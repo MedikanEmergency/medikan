@@ -48,66 +48,63 @@ class MemberState extends State<MemberWidget> {
                 //second parameter is top to down
               ),
             ]),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 5),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: ClipRRect(
-                  child: Image.network(
-                    (widget.mem.pic != "")
-                        ? widget.mem.pic
-                        : "https://cdn-icons-png.flaticon.com/512/168/168726.png",
-                    fit: BoxFit.fill,
-                    width: width * 0.18,
-                    height: width * 0.18,
-                  ),
-                  borderRadius: BorderRadius.circular(15.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: ClipRRect(
+                child: Image.network(
+                  (widget.mem.pic != "")
+                      ? widget.mem.pic
+                      : "https://cdn-icons-png.flaticon.com/512/168/168726.png",
+                  fit: BoxFit.fill,
+                  width: width * 0.18,
+                  height: width * 0.18,
+                ),
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                alignment: Alignment.centerLeft,
+                child: ListTile(
+                  title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          widget.mem.name,
+                          style: FontStyleData.Title_Bold_20,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          "(" + widget.mem.relate + ")",
+                          style: FontStyleData.Mini_Title_Light_16,
+                          overflow: TextOverflow.ellipsis,
+                        )
+                      ]),
+                  subtitle: Text(widget.mem.phone,
+                      style: FontStyleData.Paragraph_Regular_20),
                 ),
               ),
-              Expanded(
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  child: ListTile(
-                    title: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(
-                            widget.mem.name,
-                            style: FontStyleData.Title_Bold_20,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Text(
-                            "(" + widget.mem.relate + ")",
-                            style: FontStyleData.Mini_Title_Light_16,
-                            overflow: TextOverflow.ellipsis,
-                          )
-                        ]),
-                    subtitle: Text(widget.mem.phone,
-                        style: FontStyleData.Paragraph_Regular_20),
-                  ),
-                ),
-                // flex: 7,
-              ),
-              IconButton(
-                  onPressed: () async {
-                    await user
-                        .collection('account/' +
-                            account.currentUser!.uid +
-                            '/family_member')
-                        .doc(widget.id)
-                        .delete();
-                  },
-                  icon: const Icon(
-                    Icons.delete,
-                    color: Colors.black,
-                    size: 30.0,
-                  )),
-            ],
-          ),
+              // flex: 7,
+            ),
+            IconButton(
+                onPressed: () async {
+                  await user
+                      .collection('account/' +
+                          account.currentUser!.uid +
+                          '/family_member')
+                      .doc(widget.id)
+                      .delete();
+                },
+                icon: const Icon(
+                  Icons.delete,
+                  color: Colors.black,
+                  size: 30.0,
+                )),
+          ],
         ),
         // elevation: 8,
         margin: EdgeInsets.all(10),

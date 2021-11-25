@@ -113,7 +113,7 @@ class _FamilyState extends State<Family> {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: DropdownButton<String>(
-                    dropdownColor: Colors.white,
+                    // dropdownColor: Colors.white,
                     borderRadius: BorderRadius.circular(15),
                     isExpanded: true,
                     value: _chosenValue, // this is the magic
@@ -125,7 +125,9 @@ class _FamilyState extends State<Family> {
                       );
                     }).toList(),
                     onChanged: (String? value) {
-                      _chosenValue = value!;
+                      setState(() {
+                        _chosenValue = value!;
+                      });
                     },
                   ),
                 ),
@@ -181,6 +183,10 @@ class _FamilyState extends State<Family> {
                 // Consumer<FamilyProviders>(
                 //   builder: (context, FamilyProviders data, child) {
                 //     return
+                SizedBox(
+                  width: width,
+                  height: height * 0.05,
+                ),
                 ElevatedButton(
                   onPressed: () {
                     user.collection(path).add({

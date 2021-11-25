@@ -44,34 +44,36 @@ class IllState extends State<IllWidget> {
                 ),
                 Container(
                   width: width * 0.6,
-                  child: DropdownButton<String>(
-                    value: widget.selected!.ill,
-                    // icon: const Icon(Icons.down),
-                    iconSize: 24,
-                    elevation: 16,
-                    style: const TextStyle(color: Colors.deepPurple),
-                    onChanged: !widget.edit
-                        ? null
-                        : (String? newValue) {
-                            setState(() {
-                              widget.selected!.ill = newValue!;
-                            });
-                          },
-                    menuMaxHeight: 200,
-                    isExpanded: true,
-                    alignment: Alignment.centerRight,
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: widget.selected!.ill,
+                      // icon: const Icon(Icons.down),
+                      iconSize: 24,
+                      elevation: 16,
+                      style: const TextStyle(color: Colors.deepPurple),
+                      onChanged: !widget.edit
+                          ? null
+                          : (String? newValue) {
+                              setState(() {
+                                widget.selected!.ill = newValue!;
+                              });
+                            },
+                      menuMaxHeight: 500,
+                      isExpanded: true,
+                      // alignment: Alignment.bottomRight,
 
-                    borderRadius: BorderRadius.circular(20),
-                    items:
-                        disease.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 50),
-                          child: Text(value),
-                        ),
-                      );
-                    }).toList(),
+                      borderRadius: BorderRadius.circular(20),
+                      items:
+                          disease.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 50),
+                            child: Text(value),
+                          ),
+                        );
+                      }).toList(),
+                    ),
                   ),
                 ),
               ],
@@ -85,42 +87,38 @@ class IllState extends State<IllWidget> {
                 ),
                 Container(
                   width: width * 0.6,
-                  child: DropdownButton<String>(
-                    // icon: const Icon(Icons.arrow_downward),
-                    iconSize: 24,
-                    elevation: 16,
-                    style: const TextStyle(color: Colors.deepPurple),
-                    // underline: Container(
-                    //   height: 2,
-                    //   color: Colors.deepPurpleAccent,
-                    // ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      // icon: const Icon(Icons.arrow_downward),
+                      iconSize: 24,
+                      elevation: 16,
+                      style: const TextStyle(color: Colors.deepPurple),
+                      menuMaxHeight: 200,
+                      isExpanded: true,
+                      borderRadius: BorderRadius.circular(20),
 
-                    menuMaxHeight: 200,
-                    isExpanded: true,
-
-                    borderRadius: BorderRadius.circular(20),
-
-                    value: widget.selected!.level,
-                    items: <String>[
-                      'Mức nhẹ',
-                      'Mức trung bình',
-                      'Mức nguy hiểm'
-                    ].map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 50),
-                          child: Text(value),
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: !widget.edit
-                        ? null
-                        : (String? newValue) {
-                            setState(() {
-                              widget.selected!.level = newValue!;
-                            });
-                          },
+                      value: widget.selected!.level,
+                      items: <String>[
+                        'Mức nhẹ',
+                        'Mức trung bình',
+                        'Mức nguy hiểm'
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 50),
+                            child: Text(value),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: !widget.edit
+                          ? null
+                          : (String? newValue) {
+                              setState(() {
+                                widget.selected!.level = newValue!;
+                              });
+                            },
+                    ),
                   ),
                 ),
               ],
