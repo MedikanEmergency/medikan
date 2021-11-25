@@ -88,6 +88,7 @@ class _OtpForgotScreenState extends State<OtpForgotScreen> {
               },
               pageBuilder: (context, animation, animationTime) {
                 return NewPassword(
+                  label: "Quên mật khẩu",
                   isForgot: true,
                 );
               }),

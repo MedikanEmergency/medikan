@@ -48,8 +48,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     final user_img = _state.getImg();
-    final default_img =
-        "https://cdn-icons-png.flaticon.com/512/168/168726.png";
+    final default_img = "https://cdn-icons-png.flaticon.com/512/168/168726.png";
     // setState(() {});
 
     return Scaffold(
@@ -82,7 +81,10 @@ class _PersonalInfoState extends State<PersonalInfo> {
                                 },
                                 pageBuilder:
                                     (context, animation, animationTime) {
-                                  return NewPassword(isForgot: false);
+                                  return NewPassword(
+                                    isForgot: false,
+                                    label: "Đổi mật khẩu",
+                                  );
                                 }),
                             // MaterialPageRoute(
                             //   builder: (context) => LoginScreen())

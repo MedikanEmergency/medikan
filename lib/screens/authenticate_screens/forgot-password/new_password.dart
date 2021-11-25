@@ -12,7 +12,8 @@ import 'package:medikan/themes/theme_data.dart';
 
 class NewPassword extends StatefulWidget {
   final isForgot;
-  NewPassword({required this.isForgot});
+  final label;
+  NewPassword({required this.isForgot, required this.label});
   @override
   State<NewPassword> createState() => _NewPasswordState();
 }
@@ -109,7 +110,7 @@ class _NewPasswordState extends State<NewPassword> {
 
   PreferredSizeWidget appBar = AppBar(
     title: Text(
-      "Quên mật khẩu",
+      "",
       style: FontStyleData.H1_bold_36,
     ),
     backgroundColor: ColorData.secondary,
@@ -119,13 +120,19 @@ class _NewPasswordState extends State<NewPassword> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height -
-        MediaQuery.of(context).padding.top -
-        appBar.preferredSize.height;
+    var height =
+        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
 
     return SafeArea(
       child: Scaffold(
-          appBar: appBar,
+          appBar: AppBar(
+            title: Text(
+              widget.label,
+              style: FontStyleData.H1_bold_36,
+            ),
+            backgroundColor: ColorData.secondary,
+            iconTheme: IconThemeData(color: ColorData.onPrimary),
+          ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: ListView(
