@@ -231,7 +231,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: TextStyle(
                             color: ColorData.clickable,
                             fontWeight: FontWeight.bold,
-                            fontSize: 16),
+                            fontSize: 18),
                       ),
                     )
                   ],
@@ -256,7 +256,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: <Widget>[
                     Text(
                       "Chưa có tài khoản? ",
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(fontSize: 18),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -284,7 +284,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: TextStyle(
                             color: ColorData.clickable,
                             fontWeight: FontWeight.bold,
-                            fontSize: 16),
+                            fontSize: 18),
                       ),
                     ),
                   ],
