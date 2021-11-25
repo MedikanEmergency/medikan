@@ -96,20 +96,37 @@ class _OnBoardingState extends State<OnBoarding> {
                   child: Column(
                     children: [
                       SvgPicture.asset(contents[i].image),
+                      // Padding(
+                      //   padding: EdgeInsets.only(
+                      //     top: size.height * .03,
+                      //     bottom: size.height * .03,
+                      //     left: size.height * .02,
+                      //     right: size.height * .02,
+                      //   ),
+                      //   child: Text(
+                      //     contents[i].title,
+                      //     style: const TextStyle(
+                      //       fontSize: 30,
+                      //       letterSpacing: 0,
+                      //       fontWeight: FontWeight.bold,
+                      //       color: ColorData.primaryVariant,
+                      //     ),
+                      //   ),
+                      // ),
                       Padding(
-                        padding: EdgeInsets.only(
-                          top: size.height * .03,
-                          bottom: size.height * .03,
-                          left: size.height * .01,
-                          right: size.height * .01,
-                        ),
-                        child: Text(
-                          contents[i].title,
-                          style: const TextStyle(
-                            fontSize: 30,
-                            letterSpacing: 0,
-                            fontWeight: FontWeight.bold,
-                            color: ColorData.primaryVariant,
+                        padding: EdgeInsets.symmetric(
+                            vertical: size.height * 0.03,
+                            horizontal: size.height * 0.02),
+                        child: Center(
+                          child: Text(
+                            contents[i].title,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 30,
+                              letterSpacing: 0,
+                              fontWeight: FontWeight.bold,
+                              color: ColorData.primaryVariant,
+                            ),
                           ),
                         ),
                       ),
@@ -173,14 +190,15 @@ class _OnBoardingState extends State<OnBoarding> {
           ),
           Padding(
             padding: EdgeInsets.only(
-              bottom: size.height * .01,
+              bottom: size.height * .025,
+              top: size.height * 0.025,
             ),
             child: currentIndex == contents.length - 1
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Đã có tài khoản ?',
+                        'Đã có tài khoản? ',
                         style: FontStyleData.Paragraph_Regular_20,
                       ),
                       GestureDetector(
