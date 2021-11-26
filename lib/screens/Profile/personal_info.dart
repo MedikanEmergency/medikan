@@ -176,6 +176,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                             Text(
                               _state.getName(),
                               style: TextStyle(
+                                  overflow: TextOverflow.ellipsis,
                                   color: ColorData.background,
                                   fontSize: 30,
                                   letterSpacing: 0,
