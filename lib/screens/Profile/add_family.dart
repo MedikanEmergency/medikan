@@ -107,28 +107,33 @@ class _FamilyState extends State<Family> {
                 ),
                 // _buildPanel(),
                 Container(
-                  padding: EdgeInsets.fromLTRB(20, 5, 5, 5),
+                  margin: EdgeInsets.fromLTRB(15, 5, 15, 0),
+                  padding: EdgeInsets.fromLTRB(10, 0, 15, 0),
                   decoration: BoxDecoration(
+                    border:
+                        Border.all(color: ColorData.inactive.withOpacity(0.5)),
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  child: DropdownButton<String>(
-                    // dropdownColor: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
-                    isExpanded: true,
-                    value: _chosenValue, // this is the magic
-                    items:
-                        relation.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String? value) {
-                      setState(() {
-                        _chosenValue = value!;
-                      });
-                    },
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      // dropdownColor: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                      isExpanded: true,
+                      value: _chosenValue, // this is the magic
+                      items: relation
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String? value) {
+                        setState(() {
+                          _chosenValue = value!;
+                        });
+                      },
+                    ),
                   ),
                 ),
                 Container(
